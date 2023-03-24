@@ -1,0 +1,66 @@
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #f4f5f7;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  height: 100vh;
+}
+
+/* Sidebar Nav Styles */
+.sidebar {
+  background-color: #ffffff;
+  padding: 0.5em;
+  height: 100%;
+}
+
+.sidebar__title {
+  margin-bottom: 0.5em;
+}
+
+.sidebar__menu,
+.sidebar__tags,
+.sidebar__status {
+  list-style-type: none;
+  margin-bottom: 0.5em;
+}
+
+.sidebar__menu-item,
+.sidebar__status-item {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.sidebar__separator {
+  border: none;
+  border-top: 1px solid #e1e4e8;
+  margin: 1em;
+}
+
+/* Main Section Styles */
+
+.main {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 1em;
+  padding: 1em;
+}
+
+.main__column {
+  background-color: #ffffff;
+  padding: 1em;
+  overflow-y: auto;
+}
+
+.main__column-title {
+  margin-bottom: 0.5em;
+}
