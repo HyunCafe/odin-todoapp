@@ -46,6 +46,67 @@ body {
   margin: 1em;
 }
 
+/* Add Resource Form Style */
+
+.resource-form-wrapper {
+  /* display: none; */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20%;
+  padding: 1em;
+  background-color: #fff;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+}
+
+.resource-form-wrapper label,
+.resource-form-wrapper input,
+.resource-form-wrapper select,
+.resource-form-wrapper textarea {
+  display: block;
+  width: 100%;
+  margin-bottom: 0.5em;
+  color: #333;
+}
+
+.resource-form-wrapper label {
+  font-weight: bold;
+}
+
+.resource-form-wrapper input,
+.resource-form-wrapper select,
+.resource-form-wrapper textarea {
+  padding: 0.5em;
+  border: 1px solid #ccc;
+}
+
+.resource-form-wrapper input:focus,
+.resource-form-wrapper select:focus,
+.resource-form-wrapper textarea:focus {
+  outline: none;
+  border-color: #7eb5d6;
+}
+
+.resource-form-wrapper button[type="submit"] {
+  display: block;
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #7eb5d6;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.resource-form-wrapper button[type="submit"]:hover {
+  background-color: #60a3c1;
+}
+
+.resource-form textarea[name="description"] {
+  height: 6em;
+}
+
 /* Main Section Styles */
 
 .main {

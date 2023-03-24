@@ -53,23 +53,48 @@
                 Create New
             </button>
         </aside>
-
         <main class="main">
             <section class="main__column main__column--todo">
-                <h3 class="main__column-title">To Do</h3>
-                <!-- Add tasks dynamically through DOM module -->
+              <h3 class="main__column-title">To Do</h3>
+              <!-- Add tasks dynamically through DOM module -->
             </section>
-
+          
             <section class="main__column main__column--in-progress">
-                <h3 class="main__column-title">In Progress</h3>
-                <!-- Add tasks dynamically through DOM module -->
+              <h3 class="main__column-title">In Progress</h3>
+              <!-- Add tasks dynamically through DOM module -->
             </section>
-
+          
             <section class="main__column main__column--completed">
-                <h3 class="main__column-title">Completed</h3>
-                <!-- Add tasks dynamically through DOM module -->
+              <h3 class="main__column-title">Completed</h3>
+              <!-- Add tasks dynamically through DOM module -->
             </section>
-        </main>
+          <!-- ToDo New Resource Inputs -->
+            <div class="resource-form-wrapper">
+              <form class="resource-form">
+                <label for="resource-input">Title:</label>
+                <input type="text" id="resource-input" name="title" required>
+          
+                <label for="description-input">Description:</label>
+                <textarea id="description-input" name="description"></textarea>
+          
+                <label for="date-input">Due Date:</label>
+                <input type="date" id="date-input" name="date">
+          
+                <label for="tags-input">Tags:</label>
+                <input type="text" id="tags-input" name="tags" placeholder="Enter up to 5 tags separated by #">
+          
+                <label for="priority-input">Priority:</label>
+                <select id="priority-input" name="priority">
+                  <option value="Urgent">Urgent</option>
+                  <option value="High">High</option>
+                  <option value="Low">Low</option>
+                </select>
+          
+                <button type="submit">Add To-Do</button>
+              </form>
+            </div>
+          </main>
+          
     </div>
     <script src="main.js" defer crossorigin="anonymous"></script>
   </body>
