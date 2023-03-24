@@ -1,7 +1,7 @@
-#### Initial Design Through Figma
+### Initial Design Through Figma
 
 ---
-#### HTML Structure
+### HTML Structure
 The whole website will basically start out with Grid Structure first:
 with only 2 columns
 
@@ -34,7 +34,7 @@ Create New Button
 
 ---
 
-Game Plan
+### Game Plan
 
 #### Break down the project into smaller tasks:
 * Create the structure for todo items using constructors or classes.
@@ -61,6 +61,6 @@ Game Plan
 * Allow users to expand cards to see or edit details.
 * Implement drag-and-drop functionality for moving todos between projects or changing their order.
 
-Implement localStorage for data persistence:
+#### Implement localStorage for data persistence:
 * Write functions to save and load projects and todos in localStorage.
 * Call these functions when the app is loaded and when changes are made to the data.
