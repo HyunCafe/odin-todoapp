@@ -1,12 +1,13 @@
 const path = require('path');
 
 module.exports = {
+  mode: 'development',
   entry: {
     index: './src/index.js',
-    todocreation: './src/todocreation.js'
+    todocreation: './src/modules/todocreation.js'
   },
   output: {
-    filename: 'bundle.js',
+    filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist'),
   },
   module: {
