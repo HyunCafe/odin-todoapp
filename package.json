@@ -1,0 +1,28 @@
+{
+  "name": "odin-todoapp",
+  "version": "1.0.0",
+  "description": "Break down the project into smaller tasks: a. Create the structure for todo items using constructors or classes. b. Implement project organization. c. Separate application logic from DOM manipulation. d. Design the User Interface. e. Add localStorage for data persistence.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --mode production",
+    "start": "webpack --mode development --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HyunCafe/odin-todoapp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HyunCafe/odin-todoapp/issues"
+  },
+  "homepage": "https://github.com/HyunCafe/odin-todoapp#readme",
+  "devDependencies": {
+    "@babel/core": "^7.21.3",
+    "@babel/preset-env": "^7.20.2",
+    "babel-loader": "^9.1.2",
+    "webpack": "^5.76.3",
+    "webpack-cli": "^5.0.1"
+  }
+}
