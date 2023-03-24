@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Odin Restaurant Project</title>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+        <aside class="sidebar">
+            <h2 class="sidebar__title">Home</h2>
+
+            <ul class="sidebar__menu">
+                <li class="sidebar__menu-item">
+                    <i class="material-icons">today</i> Today
+                </li>
+                <li class="sidebar__menu-item">
+                    <i class="material-icons">calendar_today</i> Next 7 Days
+                </li>
+                <li class="sidebar__menu-item">
+                    <i class="material-icons">assignment</i> All Tasks
+                </li>
+            </ul>
+
+            <hr class="sidebar__separator">
+
+            <h2 class="sidebar__title">Tags</h2>
+            <ul class="sidebar__tags">
+                <!-- Add tags dynamically through DOM module -->
+            </ul>
+
+            <hr class="sidebar__separator">
+
+            <h2 class="sidebar__title">Status</h2>
+            <ul class="sidebar__status">
+                <li class="sidebar__status-item">In Progress</li>
+                <li class="sidebar__status-item">Completed</li>
+                <li class="sidebar__status-item">Trash</li>
+            </ul>
+            <button class="sidebar__create-new-btn">
+                <i class="material-icons">add</i>
+                Create New
+            </button>
+        </aside>
+
+        <main class="main">
+            <section class="main__column main__column--todo">
+                <h3 class="main__column-title">To Do</h3>
+                <!-- Add tasks dynamically through DOM module -->
+            </section>
+
+            <section class="main__column main__column--in-progress">
+                <h3 class="main__column-title">In Progress</h3>
+                <!-- Add tasks dynamically through DOM module -->
+            </section>
+
+            <section class="main__column main__column--completed">
+                <h3 class="main__column-title">Completed</h3>
+                <!-- Add tasks dynamically through DOM module -->
+            </section>
+        </main>
+    </div>
+    <script src="main.js" defer crossorigin="anonymous"></script>
+  </body>
+</html>
