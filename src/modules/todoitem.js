@@ -9,14 +9,16 @@ console.log(formattedDate);
 
 
 
-class Resource {
-    constructor(title, description, date, tags, priority, add) {
+
+class ToDoItem {
+    constructor(title, description, date, tags = [], priority, add ) {
       this.title = title;
       this.description = description;
       this.date = date || "";
       this.tags = tags || [];
       this.priority = priority || 1;
       this.add = add || false;
+      this.completed = false;
     }
   }
 
@@ -29,5 +31,6 @@ class Resource {
 // Tags (Max 5)
 // Priority
 // Add
-  
 
+
+export default ToDoItem;
