@@ -8,8 +8,6 @@ const formattedDate = format(now, 'yyyy-MM-dd');
 console.log(formattedDate);
 
 
-
-
 class ToDoItem {
     constructor(title, description, date, tags = [], priority, add ) {
       this.title = title;
@@ -22,15 +20,14 @@ class ToDoItem {
     }
   }
 
-//   Gonna be located in a new window pop up (blur background)
-// With a Create New (title) and an Close out box top right
 
-// Task Title
-// Description
-// Due Date
-// Tags (Max 5)
-// Priority
-// Add
+
 
 
 export default ToDoItem;
+
+
+//Next Step is create the dispaly look for the appendages
+
+// Feat: Add counter on each column representing total tasks
+// Draggable between eachother as well as each column

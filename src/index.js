@@ -1,3 +1,5 @@
+"use strict";
+
 import TaskCategory from './taskCategory';
 import ToDoItem from './toDoItem';
 
