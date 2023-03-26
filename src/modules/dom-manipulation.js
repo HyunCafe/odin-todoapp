@@ -1,6 +1,8 @@
 "use strict";
 
 export function appendTask(task, categoryElement) {
+    console.log('appendTask called', task, categoryElement); // Add this line
+
   const taskElement = document.createElement("div");
   taskElement.classList.add("task");
 
@@ -22,23 +24,28 @@ export function appendTask(task, categoryElement) {
   const taskFooter = document.createElement("div");
   taskFooter.classList.add("task__footer");
 
-  const taskDate = document.createElement("span");
-  taskDate.classList.add("task__date");
-  taskDate.textContent = task.date;
+  const taskTags = document.createElement("span");
+  taskTags.classList.add("task__tags");
+  taskTags.textContent = task.tags;
 
   const taskPriority = document.createElement("span");
   taskPriority.classList.add("task__priority");
   taskPriority.textContent = task.priority;
 
+  const taskCreatedDate = document.createElement("span");
+  taskCreatedDate.classList.add("task__created-date");
+  taskCreatedDate.textContent = `Created: ${task.formattedCreatedDate()}`;
+
   taskHeader.append(taskTitle);
   taskHeader.append(deleteIcon);
   taskElement.append(taskHeader);
   taskElement.append(taskDescription);
-  taskFooter.append(taskDate);
+  taskFooter.append(taskCreatedDate);
+  taskFooter.append(taskTags);
   taskFooter.append(taskPriority);
   taskElement.append(taskFooter);
 
-  categoryElement.append(taskElement)
+  categoryElement.append(taskElement);
 }
 
 export function updateTaskDisplay(taskElement, task) {

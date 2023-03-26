@@ -143,12 +143,13 @@ h3 {
   width: 100%;
   height: 15%;
   overflow: hidden;
+  margin-bottom: 0.5em;
 }
 
 .task__header {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 0.3em;
 }
 
 .task__title {
@@ -163,8 +164,9 @@ h3 {
 }
 
 .task__description {
-  font-size: 1rem;
-  margin-bottom: 20px;
+  font-size: 0.9rem;
+  height: 80%;
+  margin-bottom: 0.3em;
 }
 
 .task__footer {
@@ -172,7 +174,12 @@ h3 {
   justify-content: space-between;
 }
 
-.task__date {
+.task__tags {
+  font-size: 0.8rem;
+  word-spacing: 4px;
+}
+
+.task__created-date {
   font-size: 0.8rem;
   color: #a1a1a1;
 }

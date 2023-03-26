@@ -1,7 +1,29 @@
 "use strict";
+console.log('test')
+import TaskCategory from './modules/taskcategory.js';
+import TaskCreation from './modules/taskcreationclass.js';
+import { appendTask } from './modules/dom-manipulation.js';
 
-import TaskCategory from './taskCategory';
-import ToDoItem from './toDoItem';
+
+
+
+// Create a sample task
+const sampleTask = new TaskCreation(
+  'Sample Task Title',
+  'Sample task description',
+  '',
+  ['tag1', 'tag2'],
+  'High',
+  true
+);
+
+// Select a category element to append the task to
+const categoryElement = document.querySelector('.main__column--todo');
+console.log('categoryElement', categoryElement); 
+
+
+// Call the appendTask function with the sample task and category element
+appendTask(sampleTask, categoryElement);
 
 
 // const setupEventListeners = () => {

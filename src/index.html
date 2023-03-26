@@ -64,7 +64,8 @@
               </div>
               <p class="task__description">Main Description Text</p>
               <div class="task__footer">
-                <span class="task__date">3 months ago</span>
+                <span class="task__created-date">3 months ago</span>
+                <span class="task__tags">#coding #open-source </span>
                 <span class="task__priority">Urgent</span>
               </div>
             </div>
@@ -95,15 +96,13 @@
             <label for="description-input">Description:</label>
             <textarea id="description-input" name="description"></textarea>
 
-            <label for="date-input">Due Date:</label>
-            <input type="date" id="date-input" name="date" />
-
             <label for="tags-input">Tags:</label>
             <input
               type="text"
               id="tags-input"
               name="tags"
-              placeholder="Enter up to 5 tags separated by #"
+              maxlength="27"
+              placeholder="Enter up to 3 tags separated by #"
             />
 
             <label for="priority-input">Priority:</label>
@@ -118,6 +117,6 @@
         </div>
       </main>
     </div>
-    <script src="main.js" defer crossorigin="anonymous"></script>
+    <script type="module" src="index.js" defer crossorigin="anonymous"></script>
   </body>
 </html>
