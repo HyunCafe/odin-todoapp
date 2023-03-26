@@ -12,7 +12,7 @@ const sampleTask = new TaskCreation(
   'Sample Task Title',
   'Sample task description',
   '',
-  ['tag1', 'tag2'],
+  ['1234567890', '123456789'],
   'High',
   true
 );

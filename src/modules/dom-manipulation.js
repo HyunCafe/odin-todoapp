@@ -4,7 +4,7 @@ export function appendTask(task, categoryElement) {
     console.log('appendTask called', task, categoryElement); // Add this line
 
   const taskElement = document.createElement("div");
-  taskElement.classList.add("task");
+  taskElement.classList.add("main__column", "main__column--tasks");
 
   const taskHeader = document.createElement("div");
   taskHeader.classList.add("task__header");
@@ -34,7 +34,7 @@ export function appendTask(task, categoryElement) {
 
   const taskCreatedDate = document.createElement("span");
   taskCreatedDate.classList.add("task__created-date");
-  taskCreatedDate.textContent = `Created: ${task.formattedCreatedDate()}`;
+  taskCreatedDate.textContent = `${task.formattedCreatedDate()}`;
 
   taskHeader.append(taskTitle);
   taskHeader.append(deleteIcon);
