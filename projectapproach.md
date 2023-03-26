@@ -46,6 +46,13 @@ Create New Button
 #### Design the data structure:
 * Create a Todo class with properties like title, description, dueDate, priority, notes, and checklist.
 * Create a Project class that contains a list of todos and a project title.
+##### Modules
+Will have Module for:
+* todoitem.js (The class constructor template for notes)
+* dom-manipulation.js (DOM Logic, appending, displaying, counters)
+* local-storage.js (Saving, updating local storate)
+* taskcategory.js (for organizing, sorting, edit and delete)
+
 
 #### Implement project organization:
 * Create methods to add, edit, and delete projects.
@@ -64,3 +71,20 @@ Create New Button
 #### Implement localStorage for data persistence:
 * Write functions to save and load projects and todos in localStorage.
 * Call these functions when the app is loaded and when changes are made to the data.
+
+
+
+//Next Step is create the dispaly look for the appendages
+
+// Feat: Add counter on each column representing total tasks
+// Draggable between eachother as well as each column
+
+
+import { format } from 'date-fns';
+
+
+const now = new Date();
+const formattedDate = format(now, 'yyyy-MM-dd');
+console.log(formattedDate);
+
+To use date import library
