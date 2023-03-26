@@ -136,7 +136,7 @@ h3 {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  border: 2px rgb(0, 0, 0) solid;
+  border: 2px rgba(96, 90, 90, 0.582) solid;
   background-color: white;
   border-radius: 5px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -159,7 +159,7 @@ h3 {
 }
 
 .task__title {
-  font-size: 1.2rem;
+  font-size: 1.05rem;
   font-weight: 600;
 }
 
@@ -175,10 +175,15 @@ h3 {
 .task__description {
   font-size: 0.9rem;
   min-height: 63%;
+  max-height: 63%;
   margin-bottom: 0.3em;
+  /* border: 2px red solid; */
 }
 
 .task__delete-icon {
+  position: absolute;
+  top: 3px;
+  right: 5px;
   display: none;
   font-size: 1.2rem;
 }
@@ -200,4 +205,24 @@ h3 {
   position: absolute;
   bottom: 6px;
   left: 8px;
+}
+
+/* Urgent task style */
+.task--urgent {
+  border: 2px solid red;
+}
+
+/* High priority task style */
+.task--high {
+  border: 2px solid orange;
+}
+
+/* Low priority task style */
+.task--low {
+  border: 2px solid green;
+}
+
+/* Completed task style */
+.task--completed {
+  border: 2px solid blue;
 }

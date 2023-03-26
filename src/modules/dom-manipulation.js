@@ -1,8 +1,6 @@
 "use strict";
 
 export function appendTask(task, categoryElement) {
-    console.log('appendTask called', task, categoryElement); // Add this line
-
   const taskElement = document.createElement("div");
   taskElement.classList.add("main__column", "main__column--tasks");
 
@@ -28,13 +26,18 @@ export function appendTask(task, categoryElement) {
   taskTags.classList.add("task__tags");
   taskTags.textContent = task.tags;
 
-  const taskPriority = document.createElement("span");
-  taskPriority.classList.add("task__priority");
-  taskPriority.textContent = task.priority;
-
   const taskCreatedDate = document.createElement("span");
   taskCreatedDate.classList.add("task__created-date");
   taskCreatedDate.textContent = `${task.formattedCreatedDate()}`;
+
+  // Assign border color based on priority level
+  if (task.priority === "Urgent") {
+    taskElement.classList.add("task--urgent");
+  } else if (task.priority === "High") {
+    taskElement.classList.add("task--high");
+  } else {
+    taskElement.classList.add("task--low");
+  }
 
   taskHeader.append(taskTitle);
   taskHeader.append(deleteIcon);
@@ -42,7 +45,6 @@ export function appendTask(task, categoryElement) {
   taskElement.append(taskDescription);
   taskFooter.append(taskCreatedDate);
   taskFooter.append(taskTags);
-  taskFooter.append(taskPriority);
   taskElement.append(taskFooter);
 
   categoryElement.append(taskElement);
