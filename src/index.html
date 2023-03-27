@@ -18,6 +18,7 @@
   </head>
 
   <body>
+    <!------------------------ Side Navbar Section ------------------------>
     <div class="container">
       <aside class="sidebar">
         <h2 class="sidebar__title">Home</h2>
@@ -50,6 +51,7 @@
           <li class="sidebar__status-item">Trash</li>
         </ul>
       </aside>
+      <!------------------------ 3 Main Column Section ------------------------>
       <main class="main">
         <section class="main__column main__column--todo">
           <h3 class="main__column-title">
@@ -72,7 +74,46 @@
           </h3>
           <!-- Add tasks dynamically through DOM module -->
         </section>
-        <!-- ToDo New Resource Inputs -->
+        <!------------------------ Large Details Pop Up ------------------------>
+
+        <div class="offcanvas">
+          <div class="offcanvas__header">
+            <button type="button" class="offcanvas__close-btn"></button>
+          </div>
+          <div class="offcanvas__body">
+            <form class="project-form">
+              <h1 class="project-form__title" contenteditable="true">My project</h1>
+              <div class="input-group input-group--status">
+                <label class="input-group__label" for="statusGroup">Status</label>
+                <select class="form-select" id="statusGroup">
+                  <option value="To Do">To Do</option>
+                  <option value="In Progress">In Progress</option>
+                  <option value="Completed">Completed</option>
+                </select>
+              </div>
+              <div class="input-group input-group--priority">
+                <label class="input-group__label" for="priorityGroup">Priority</label>
+                <select class="form-select" id="priorityGroup">
+                  <option value="Urgent">Urgent</option>
+                  <option value="High">High</option>
+                  <option value="Low">Low</option>
+                </select>
+              </div>
+            
+              <div class="project-form__floating project-form__floating--description">
+                <textarea class="form-control" id="description"></textarea>
+                <label for="description">Description</label>
+              </div>
+            
+              <div class="project-form__floating project-form__floating--actions">
+                <button type="submit" class="project-form__btn-save">Save</button>
+                <button type="button" class="project-form__btn-cancel">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        
+        <!------------------------ Task Form Input ------------------------>
         <div class="resource-form-wrapper">
           <form class="resource-form">
             <label for="resource-input">Title:</label>

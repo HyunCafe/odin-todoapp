@@ -78,13 +78,6 @@ Will have Module for:
 
 // Feat: Add counter on each column representing total tasks
 // Draggable between eachother as well as each column
+// add counter for sidenavbar on tag counts
 
 
-import { format } from 'date-fns';
-
-
-const now = new Date();
-const formattedDate = format(now, 'yyyy-MM-dd');
-console.log(formattedDate);
-
-To use date import library
