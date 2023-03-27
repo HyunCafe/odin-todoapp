@@ -77,12 +77,11 @@
         <!------------------------ Large Details Pop Up ------------------------>
 
         <div class="offcanvas">
-          <div class="offcanvas__header">
-            <button type="button" class="offcanvas__close-btn"></button>
-          </div>
           <div class="offcanvas__body">
-            <form class="project-form">
+            <form class="project-form">      
               <h1 class="project-form__title" contenteditable="true">My project</h1>
+              <button type="button" class="offcanvas__close-btn">X</button>
+
               <div class="input-group input-group--status">
                 <label class="input-group__label" for="statusGroup">Status</label>
                 <select class="form-select" id="statusGroup">
@@ -91,6 +90,7 @@
                   <option value="Completed">Completed</option>
                 </select>
               </div>
+
               <div class="input-group input-group--priority">
                 <label class="input-group__label" for="priorityGroup">Priority</label>
                 <select class="form-select" id="priorityGroup">
@@ -99,6 +99,14 @@
                   <option value="Low">Low</option>
                 </select>
               </div>
+
+              <div class="input-group input-group--tags">
+                <label class="input-group__label" for="tags">Tags</label>
+                <span class="input-group__tags">
+                  <input type="text" class="form-control" id="tags" placeholder="Enter tags">
+                </span>
+              </div>
+              
             
               <div class="project-form__floating project-form__floating--description">
                 <textarea class="form-control" id="description"></textarea>
@@ -107,7 +115,6 @@
             
               <div class="project-form__floating project-form__floating--actions">
                 <button type="submit" class="project-form__btn-save">Save</button>
-                <button type="button" class="project-form__btn-cancel">Cancel</button>
               </div>
             </form>
           </div>

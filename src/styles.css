@@ -1,4 +1,4 @@
-/* Global Styles */
+/* <------------------------ Global Styles ------------------------> */
 * {
   margin: 0;
   padding: 0;
@@ -15,7 +15,7 @@ body {
   height: 100vh;
 }
 
-/* Sidebar Nav Styles */
+/* <------------------------ Side Navbar Section ------------------------> */
 .sidebar {
   background-color: #ffffff;
   padding: 0.5em;
@@ -46,7 +46,7 @@ body {
   margin: 1em;
 }
 
-/* Add Resource Form Style */
+/* <------------------------ Add Task Forms ------------------------> */
 
 .resource-form-wrapper {
   display: none;
@@ -107,7 +107,7 @@ body {
   height: 6em;
 }
 
-/* Main Section Styles */
+/* <------------------------ Main 3 Columns ------------------------> */
 
 .main {
   display: grid;
@@ -131,7 +131,7 @@ h3 {
   justify-content: space-between;
 }
 
-/* Task Containers */
+/* <------------------------ Task Cards/Containers ------------------------> */
 .main__column--tasks {
   display: flex;
   flex-direction: column;
@@ -225,4 +225,126 @@ h3 {
 /* Completed task style */
 .task--completed {
   border: 2px solid blue;
+}
+
+/* <--------------------- Additional Details Section ---------------------> */
+.offcanvas {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 45%;
+  background-color: #ffffff;
+  border: 2px grey solid;
+  /* transform: translateX(100%); */
+  transition: transform 0.3s ease;
+}
+
+.offcanvas__body {
+  padding: 16px;
+}
+
+.offcanvas__close-btn {
+  position: absolute;
+  top: 8px;
+  left: 10px;
+  background-color: transparent;
+  border: none;
+  font-size: 24px;
+  color: #000000;
+  cursor: pointer;
+}
+
+.project-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.project-form__title {
+  margin-bottom: 1em;
+  font-size: 2rem;
+  text-align: center;
+}
+
+.input-group {
+  display: grid;
+  grid-template-columns: 1fr 10fr;
+  margin-bottom: 2rem;
+}
+
+.input-group__label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  background-color: #bdbdbd;
+  width: 4.5em;
+  height: 2em;
+  border-radius: 4px 0 0 4px;
+}
+
+input.form-control {
+  border-radius: 0 4px 4px 0;
+}
+
+.form-select {
+  padding: 0.5em;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0 4px 4px 0;
+  background-color: transparent;
+}
+
+.form-select:focus {
+  box-shadow: 0 0 5px 2px rgba(0, 128, 255, 0.5);
+  outline: none;
+}
+
+.form-control {
+  height: 2em;
+  width: 100%;
+  font-size: 1.2rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form-control:focus {
+  box-shadow: 0 0 5px 2px rgba(0, 128, 255, 0.5);
+  outline: none;
+}
+
+.project-form__floating {
+  position: relative;
+}
+
+.project-form__floating textarea {
+  height: 32em;
+}
+
+.project-form__floating label {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #999;
+}
+
+.project-form__floating--actions {
+  display: flex;
+  justify-content: center;
+}
+
+.project-form__btn-save {
+  margin-top: 0.5em;
+  padding: 8px 16px;
+  font-size: 1rem;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+}
+
+.project-form__btn-save:hover {
+  background-color: #0056b3;
 }
