@@ -261,9 +261,15 @@ h3 {
 }
 
 .project-form__title {
-  margin-bottom: 1em;
+  margin: 0 auto 1em auto;
   font-size: 2rem;
+  width: 90%;
   text-align: center;
+  outline: none;
+}
+
+.project-form__title:focus {
+  box-shadow: 0 0 5px 2px rgba(0, 128, 255, 0.5);
 }
 
 .input-group {
@@ -277,7 +283,7 @@ h3 {
   justify-content: center;
   align-items: center;
   font-size: 1.2rem;
-  background-color: #bdbdbd;
+  background-color: #e7e7e7;
   width: 4.5em;
   height: 2em;
   border-radius: 4px 0 0 4px;
@@ -306,6 +312,7 @@ input.form-control {
   font-size: 1.2rem;
   border: 1px solid #ccc;
   border-radius: 4px;
+  padding-left: 0.2em;
 }
 
 .form-control:focus {
@@ -313,12 +320,17 @@ input.form-control {
   outline: none;
 }
 
+.form-control::placeholder {
+  font-size: 1rem;
+  padding-left: 0.2em;
+}
+
 .project-form__floating {
   position: relative;
 }
 
 .project-form__floating textarea {
-  height: 32em;
+  height: 28em;
 }
 
 .project-form__floating label {

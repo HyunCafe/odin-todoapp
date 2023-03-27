@@ -103,14 +103,14 @@
               <div class="input-group input-group--tags">
                 <label class="input-group__label" for="tags">Tags</label>
                 <span class="input-group__tags">
-                  <input type="text" class="form-control" id="tags" placeholder="Enter tags">
+                  <input type="text" class="form-control" id="tags" placeholder="Enter tags" maxlength="27">
                 </span>
               </div>
               
             
               <div class="project-form__floating project-form__floating--description">
-                <textarea class="form-control" id="description"></textarea>
-                <label for="description">Description</label>
+                <label for="description-input"></label>
+                <textarea class="form-control" id="description-input" name="description" maxlength="333" placeholder="Enter description"></textarea>
               </div>
             
               <div class="project-form__floating project-form__floating--actions">
@@ -127,7 +127,7 @@
             <input type="text" id="resource-input" name="title" required />
 
             <label for="description-input">Description:</label>
-            <textarea id="description-input" name="description"></textarea>
+            <textarea id="description-input" name="description" maxlength="333"></textarea>
 
             <label for="tags-input">Tags:</label>
             <input
@@ -135,8 +135,7 @@
               id="tags-input"
               name="tags"
               maxlength="27"
-              placeholder="Enter up to 3 tags separated by #"
-            />
+              placeholder="Enter up to 3 tags separated by #"/>
 
             <label for="priority-input">Priority:</label>
             <select id="priority-input" name="priority">
