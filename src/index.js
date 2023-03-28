@@ -67,7 +67,7 @@ const defaultTasks = [
     description: "Choose a programming language and start learning its syntax and best practices.",
     date: "2022-12-31",
     tags: "#learning #self-improvement",
-    priority: "High",
+    priority: "Low",
     add: true,
   },
   {
@@ -83,7 +83,7 @@ const defaultTasks = [
     description: "Choose a programming book and aim to read at least one chapter per day.",
     date: "2022-12-15",
     tags: "#reading #self-improvement",
-    priority: "Medium",
+    priority: "High",
     add: true,
   },
   {

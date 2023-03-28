@@ -132,7 +132,7 @@ h3 {
 }
 
 /* <------------------------ Task Cards/Containers ------------------------> */
-.main__column--tasks {
+.task__container {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -148,7 +148,7 @@ h3 {
   position: relative;
 }
 
-.main__column--tasks:hover .task__delete-icon {
+.task__container:hover .task__delete-icon {
   display: block;
 }
 
@@ -227,6 +227,20 @@ h3 {
   border: 2px solid blue;
 }
 
+/* <------------------------ Sort and Drag n Drop  ------------------------> */
+.sortable-ghost {
+  opacity: 0.4;
+}
+
+.sortable-chosen {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+}
+
+.sortable-drag {
+  cursor: move;
+}
+
 /* <--------------------- Additional Details Section ---------------------> */
 .offcanvas {
   position: fixed;
@@ -236,7 +250,7 @@ h3 {
   width: 45%;
   background-color: #ffffff;
   border: 2px grey solid;
-  /* transform: translateX(100%); */
+  transform: translateX(100%); /* Comment out */
   transition: transform 0.3s ease;
 }
 

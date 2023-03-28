@@ -33,6 +33,9 @@
           <li class="sidebar__menu-item">
             <i class="material-icons">assignment</i> All Tasks
           </li>
+          <li class="sidebar__menu-item" id="calendar-view">
+            <i class="material-icons">event</i> Calendar View
+          </li>
         </ul>
 
         <hr class="sidebar__separator" />
@@ -53,27 +56,29 @@
       </aside>
       <!------------------------ 3 Main Column Section ------------------------>
       <main class="main">
-        <section class="main__column main__column--todo">
+        <section class="main__column main__column--todo" data-column-name="todo">
           <h3 class="main__column-title">
             To Do <button class="main__column-button">+</button>
           </h3>
-
+      
           <!-- Add tasks dynamically through DOM module -->
         </section>
-
-        <section class="main__column main__column--in-progress">
+      
+        <section class="main__column main__column--in-progress" data-column-name="in-progress">
           <h3 class="main__column-title">
             In Progress <button class="main__column-button">+</button>
           </h3>
           <!-- Add tasks dynamically through DOM module -->
         </section>
-
-        <section class="main__column main__column--completed">
+      
+        <section class="main__column main__column--completed" data-column-name="completed">
           <h3 class="main__column-title">
             Completed <button class="main__column-button">+</button>
           </h3>
           <!-- Add tasks dynamically through DOM module -->
         </section>
+      </main>
+      
         <!------------------------ Large Details Pop Up ------------------------>
 
         <div class="offcanvas">

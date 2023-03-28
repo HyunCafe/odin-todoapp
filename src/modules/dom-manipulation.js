@@ -1,8 +1,11 @@
 "use strict";
 
+import Sortable from 'sortablejs';
+
+
 export function appendTask(task, categoryElement) {
   const taskElement = document.createElement("div");
-  taskElement.classList.add("main__column", "main__column--tasks");
+  taskElement.classList.add("task__container");
 
   const taskHeader = document.createElement("div");
   taskHeader.classList.add("task__header");
@@ -39,6 +42,12 @@ export function appendTask(task, categoryElement) {
     taskElement.classList.add("task--low");
   }
 
+    // Add a click event listener to the task element
+  taskElement.addEventListener('click', () => {
+    showTaskDetails(task);
+  });
+
+
   taskHeader.append(taskTitle);
   taskHeader.append(deleteIcon);
   taskElement.append(taskHeader);
@@ -57,3 +66,31 @@ export function updateTaskDisplay(taskElement, task) {
 export function removeTaskFromDisplay(taskElement) {
   // Remove a task element from the DOM
 }
+
+
+export function showTaskDetails(task) {
+  // Create a modal or a pop-up to display task details
+  // Populate the modal with task details (title, description, date, etc.)
+  // Add event listeners to close the modal
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const taskColumns = document.querySelectorAll('.main__column');
+
+  if (taskColumns.length) {
+    taskColumns.forEach((column) => {
+      const sortable = new Sortable(column, {
+        animation: 150,
+        ghostClass: 'sortable-ghost',
+        chosenClass: 'sortable-chosen',
+        dragClass: 'sortable-drag',
+        group: {
+          name: column.getAttribute('data-column-name'),
+          pull: true,
+          put: true,
+        },
+        draggable: '.task__container',
+      });
+    });
+  }
+});

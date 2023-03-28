@@ -26,6 +26,9 @@
     "webpack-cli": "^5.0.1"
   },
   "dependencies": {
-    "date-fns": "^2.29.3"
+    "@fullcalendar/core": "^6.1.5",
+    "@fullcalendar/daygrid": "^6.1.5",
+    "date-fns": "^2.29.3",
+    "sortablejs": "^1.15.0"
   }
 }
