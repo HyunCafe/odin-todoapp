@@ -42,12 +42,12 @@ Bug: Attempt to fix Webpack environment bug for improved stability and functiona
 
 ## Challenges
 #### Sort and Drag Challenge
-* I was struggling with items being dragged into task containers in my to-do list project. First, I tried limiting the draggable items to only the tasks within each column with the 'draggable: .main__column--tasks' option. But those sneaky little items still managed to sneak into the task containers.
+* I encountered a problem in my to-do list project where draggable items were being placed into task containers. Initially, I tried to limit draggable items to only the tasks within each column using the 'draggable: .main__column--tasks' option. However, this proved ineffective as the items still managed to find their way into task containers.
 
-* So, I added an 'onMove' function to the Sortable constructor to check if the destination element of the drag event was a task container. If it was, I told it to 'get lost' by returning false.
+* To remedy this, I added an 'onMove' function to the Sortable constructor to check whether the destination element of the drag event was a task container. If it was, I returned false to prevent it from being placed there.
 
-* Next, I tried making the entire task container draggable with 'draggable: .task__container' and excluding the task content with the 'filter' option. But that didn't work out as planned.
+* Subsequently, I attempted to make the entire task container draggable with 'draggable: .task__container' while excluding task content with the 'filter' option, but this did not yield the desired outcome.
 
-* I even tried adding the 'group: shared' option to allow items to be dragged between columns. That was cool and all, but it still let items slip into task containers.
+* I also tried adding the 'group: shared' option to enable items to be dragged between columns, but it still resulted in draggable items being placed into task containers.
 
-* After trying all kinds of solutions, I finally had a "duh" moment and changed the class name of the task container from main__column--tasks to task__container. And voila! The solution was as simple as that. I was chasing my tail for hours, and all I needed was a good old-fashioned name change... at least I got some cardio in.
+* Finally, after exploring different solutions, I realized that the issue was simply caused by the class name of the task container, which I changed from main__column--tasks to task__container (Since my columns also had that name). This resolved the problem, and the solution was much simpler than I initially thought.

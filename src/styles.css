@@ -131,6 +131,26 @@ h3 {
   justify-content: space-between;
 }
 
+.main__column-title__text {
+  padding: 0.3em;
+  border-radius: 5px;
+}
+.main__column-title__text--todo {
+  background-color: rgba(0, 150, 0, 0.5);
+}
+
+.main__column-title__text--inprogress {
+  background-color: rgba(247, 216, 150, 0.572);
+}
+
+.main__column-title__text--completed {
+  background-color: rgba(108, 184, 255, 0.566);
+}
+
+.main__column-title__taskcount {
+background-color: transparent;
+}
+
 /* <------------------------ Task Cards/Containers ------------------------> */
 .task__container {
   display: flex;

@@ -77,7 +77,7 @@ Will have Module for:
 //Next Step is create the dispaly look for the appendages
 
 // Feat: Add counter on each column representing total tasks
-// Draggable between eachother as well as each column
+
 // add counter for sidenavbar on tag counts
 // Have the offcanvas grab the information from the selected Cards and also transfer the new values in
 // Want to add calender view, will use fullcalender lib
@@ -85,3 +85,6 @@ Will have Module for:
 
 
 // Using FullCalender Library, Date FNS library, sortableJS library
+
+Features Finished
+// Draggable between eachother as well as each column
