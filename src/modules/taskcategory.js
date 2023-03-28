@@ -1,5 +1,7 @@
 "use strict";
 import Sortable from "sortablejs";
+import { saveCategories } from './local-storage';
+
 
 class TaskCategory {
   constructor(name, taskCountElement) {
@@ -56,4 +58,10 @@ function updateTaskCounters() {
   todoCategory.updateTaskCountFromDOM();
   inProgressCategory.updateTaskCountFromDOM();
   completedCategory.updateTaskCountFromDOM();
+  saveCategories([todoCategory, inProgressCategory, completedCategory]);
+
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  updateTaskCounters();
+});

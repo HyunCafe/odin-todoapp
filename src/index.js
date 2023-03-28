@@ -1,8 +1,8 @@
 "use strict";
-console.log('test')
 import TaskCategory from './modules/taskcategory.js';
 import TaskCreation from './modules/taskcreationclass.js';
 import { appendTask } from './modules/dom-manipulation.js';
+import { saveCategories, loadCategories, updateCategory } from './modules/local-storage';
 
 
 

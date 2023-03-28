@@ -2,10 +2,12 @@
 
 import Sortable from 'sortablejs';
 
+let taskId = 1;
 
 export function appendTask(task, categoryElement) {
   const taskElement = document.createElement("div");
   taskElement.classList.add("task__container");
+  taskElement.setAttribute('data-task-id', taskId);
 
   const taskHeader = document.createElement("div");
   taskHeader.classList.add("task__header");
@@ -55,8 +57,8 @@ export function appendTask(task, categoryElement) {
   taskFooter.append(taskCreatedDate);
   taskFooter.append(taskTags);
   taskElement.append(taskFooter);
-
   categoryElement.append(taskElement);
+  taskId++;
 }
 
 export function updateTaskDisplay(taskElement, task) {

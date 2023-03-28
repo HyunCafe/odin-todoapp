@@ -76,7 +76,7 @@ Will have Module for:
 
 //Next Step is create the dispaly look for the appendages
 
-// Feat: Add counter on each column representing total tasks
+
 
 // add counter for sidenavbar on tag counts
 // Have the offcanvas grab the information from the selected Cards and also transfer the new values in
@@ -88,3 +88,4 @@ Will have Module for:
 
 Features Finished
 // Draggable between eachother as well as each column
+// Feat: Add counter on each column representing total tasks
