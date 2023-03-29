@@ -1,7 +1,11 @@
 "use strict";
 
 import Sortable from "sortablejs";
-import { saveCategories } from "./local-storage.js";
+import {
+  saveCategories,
+  loadCategories,
+  updateCategory,
+} from "./local-storage";
 
 let taskId = 1;
 
@@ -57,7 +61,14 @@ export function appendTask(task, categoryElement) {
   taskFooter.append(taskCreatedDate);
   taskFooter.append(taskTags);
   taskElement.append(taskFooter);
-  categoryElement.append(taskElement);
+
+  // Check if categoryElement is defined before appending taskElement
+  if (categoryElement) {
+    categoryElement.append(taskElement);
+  } else {
+    console.log("Category element is not defined!");
+  }
+
   taskId++;
 }
 
@@ -77,7 +88,6 @@ export function showTaskDetails(task) {
 
 document.addEventListener("DOMContentLoaded", () => {
   const taskColumns = document.querySelectorAll(".main__column");
-  console.log("taskColumns:", taskColumns); // Add this line
 
   if (taskColumns.length) {
     taskColumns.forEach((column) => {
@@ -101,18 +111,8 @@ document.addEventListener("DOMContentLoaded", () => {
             ".main__column--in-progress"
           );
           const completedColumnElement = document.querySelector(
-            ".main_column--completed"
+            ".main__column--completed"
           );
-
-          console.log("todoColumn (before saveCategories):", todoColumn); // Add this line
-          console.log(
-            "inProgressColumn (before saveCategories):",
-            inProgressColumn
-          ); // Add this line
-          console.log(
-            "completedColumn (before saveCategories):",
-            completedColumn
-          ); // Add this line
 
           // Call the saveCategories function with the updated categories
           saveCategories(
