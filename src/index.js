@@ -59,7 +59,7 @@ defaultTasks.forEach(task => {
     task.title,
     task.description,
     task.date,
-    task.tags.split(' '),
+    task.tags.split(','),
     task.priority,
     task.add
   );

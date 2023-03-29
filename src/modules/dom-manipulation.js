@@ -77,6 +77,7 @@ export function showTaskDetails(task) {
 
 document.addEventListener("DOMContentLoaded", () => {
   const taskColumns = document.querySelectorAll(".main__column");
+  console.log("taskColumns:", taskColumns); // Add this line
 
   if (taskColumns.length) {
     taskColumns.forEach((column) => {
@@ -93,10 +94,32 @@ document.addEventListener("DOMContentLoaded", () => {
         draggable: ".task__container",
         onEnd: () => {
           // Call the loadCategories function to get the current categories
-          const { categories } = loadCategories();
+          const todoColumnElement = document.querySelector(
+            ".main__column--todo"
+          );
+          const inProgressColumnElement = document.querySelector(
+            ".main__column--in-progress"
+          );
+          const completedColumnElement = document.querySelector(
+            ".main_column--completed"
+          );
+
+          console.log("todoColumn (before saveCategories):", todoColumn); // Add this line
+          console.log(
+            "inProgressColumn (before saveCategories):",
+            inProgressColumn
+          ); // Add this line
+          console.log(
+            "completedColumn (before saveCategories):",
+            completedColumn
+          ); // Add this line
 
           // Call the saveCategories function with the updated categories
-          saveCategories(categories);
+          saveCategories(
+            todoColumnElement,
+            inProgressColumnElement,
+            completedColumnElement
+          );
         },
       });
     });

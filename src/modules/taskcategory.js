@@ -1,7 +1,6 @@
 "use strict";
 import Sortable from "sortablejs";
-import { saveCategories } from './local-storage';
-
+import { saveCategories } from "./local-storage";
 
 class TaskCategory {
   constructor(name, taskCountElement) {
@@ -32,23 +31,27 @@ const completedCategory = new TaskCategory(
   document.querySelector(".main__column-title__taskcount--completed")
 );
 
-const todoColumn = document.querySelector(".main__column--todo");
-const inProgressColumn = document.querySelector(".main__column--in-progress");
-const completedColumn = document.querySelector(".main__column--completed");
+const toDoColumnElement = document.querySelector(".main__column--todo");
+const inProgressColumnElement = document.querySelector(
+  ".main__column--in-progress"
+);
+const completedColumnElement = document.querySelector(
+  ".main__column--completed"
+);
 
-const todoSortable = new Sortable(todoColumn, {
+const todoSortable = new Sortable(toDoColumnElement, {
   group: "shared",
   onEnd: updateTaskCounters,
   draggable: ".task__container:not(.no-drag)",
 });
 
-const inProgressSortable = new Sortable(inProgressColumn, {
+const inProgressSortable = new Sortable(inProgressColumnElement, {
   group: "shared",
   onEnd: updateTaskCounters,
   draggable: ".task__container:not(.no-drag)",
 });
 
-const completedSortable = new Sortable(completedColumn, {
+const completedSortable = new Sortable(completedColumnElement, {
   group: "shared",
   onEnd: updateTaskCounters,
   draggable: ".task__container:not(.no-drag)",
@@ -58,8 +61,11 @@ function updateTaskCounters() {
   todoCategory.updateTaskCountFromDOM();
   inProgressCategory.updateTaskCountFromDOM();
   completedCategory.updateTaskCountFromDOM();
-  saveCategories([todoCategory, inProgressCategory, completedCategory]);
-
+  saveCategories(
+    toDoColumnElement,
+    inProgressColumnElement,
+    completedColumnElement
+  );
 }
 
 document.addEventListener("DOMContentLoaded", () => {
