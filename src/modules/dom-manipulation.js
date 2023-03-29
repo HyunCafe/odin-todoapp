@@ -38,7 +38,13 @@ export function appendTask(task, categoryElement, callback) {
 
   const taskCreatedDate = document.createElement("span");
   taskCreatedDate.classList.add("task__created-date");
-  taskCreatedDate.textContent = `${task.formattedCreatedDate()}`;
+  const date = new Date();
+  const formattedDate = date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+  taskCreatedDate.textContent = formattedDate;
 
   // Assign border color based on priority level
   if (task.priority === "Urgent") {
