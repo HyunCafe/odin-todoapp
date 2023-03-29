@@ -5,63 +5,9 @@ import { appendTask } from './modules/dom-manipulation.js';
 import { saveCategories, loadCategories, updateCategory } from './modules/local-storage';
 
 
-
-// const setupEventListeners = () => {
-//     const navLinks = document.querySelectorAll("nav a");
-//     navLinks.forEach((link) => {
-//       link.addEventListener("click", (e) => {
-//         e.preventDefault();
-//         const content = document.querySelector("#content");
-//         content.innerHTML = "";
-//         switch (link.textContent.toLowerCase()) {
-//           case "home":
-//             content.append(createHeader());
-//             content.append(createMain());
-//             content.append(createFooter());
-//             setupEventListeners();
-//             break;
-//           case "menu":
-//             import("./modules/menu.js").then((module) => {
-//               content.append(module.default());
-//               setupEventListeners();
-//             });
-//             break;
-//           case "about":
-//             import("./modules/about.js").then((module) => {
-//               content.append(module.default());
-//               setupEventListeners();
-//             });
-//             break;
-//           case "reservations":
-//             import("./modules/reservations.js").then((module) => {
-//               content.append(module.default());
-//               setupEventListeners();
-//             });
-//             break;
-//           case "contact":
-//             import("./modules/contact.js").then((module) => {
-//               content.append(module.default());
-//               setupEventListeners();
-//             });
-//             break;
-//           default:
-//             break;
-//         }
-//       });
-//     });
-//   };
-  
-//   setupEventListeners();
-
-
-
-
-// const toDoCategory = new TaskCategory('To Do');
-// const inProgressCategory = new TaskCategory('In Progress');
-// const completedCategory = new TaskCategory('Completed');
 const categoryElement = document.querySelector('.main__column--todo');
 
-const defaultTasks = [
+export const defaultTasks = [
   {
     title: "Learn a new programming language",
     description: "Choose a programming language and start learning its syntax and best practices.",
@@ -96,21 +42,34 @@ const defaultTasks = [
   }
 ];
 
+if (!localStorage.getItem("categories")) {
+  const todoColumn = document.querySelector(".main__column--todo");
+  const inProgressColumn = document.querySelector(".main__column--in-progress");
+  const completedColumn = document.querySelector(".main__column--completed");
+
+  const todoCategory = { name: "todo", tasks: defaultTasks };
+  categories.push(todoCategory);
+
+  saveCategories(todoColumn, inProgressColumn, completedColumn);
+}
+
 // Loop through the default tasks array and create a TaskCreation object for each task
 defaultTasks.forEach(task => {
   const newTask = new TaskCreation(
     task.title,
     task.description,
     task.date,
-    task.tags.split(', '),
+    task.tags.split(' '),
     task.priority,
     task.add
   );
 
-  // Append the task to the appropriate category element
   appendTask(newTask, categoryElement);
 });
 
+// Load the categories from local storage and update the task counters on the page
+loadCategories();
+updateCategory();
 
  
   

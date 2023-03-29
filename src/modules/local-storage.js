@@ -1,105 +1,73 @@
-export function saveCategories(categories) {
-  // Create an array to store the task__container data
-  const taskData = [];
-  const columns = document.querySelectorAll('.main__column');
+import { ca } from "date-fns/locale";
+import TaskCreation from "./taskcreationclass.js";
+import { appendTask } from "./dom-manipulation.js";
+import { defaultTasks } from "../index.js";
 
-  // Convert each task to an object with its properties
-  columns.forEach(column => {
-    const category = categories.find(category => category.name === column.dataset.category);
+// <------------------------ Save to Local Storage ------------------------> //
+export function saveCategories(todoColumn, inProgressColumn, completedColumn) {
 
-    if (category) {
-      category.tasks.forEach(task => {
-        taskData.push({
-          id: task.id,
-          title: task.title,
-          description: task.description,
-          date: task.date,
-          tags: task.tags,
-          priority: task.priority,
-          add: task.add,
-          completed: task.completed,
-          content: task.content // include the content property
-        });
-      });
+  const categories = [];
+
+  // Create object for each category and add it to the "categories" array
+  const todoCategory = { name: "todo", tasks: defaultTasks };
+  categories.push(todoCategory);
+  
+
+  const inProgressCategory = { name: "inProgress", tasks: [] };
+  categories.push(inProgressCategory);
+
+  const completedCategory = { name: "completed", tasks: [] };
+  categories.push(completedCategory);
+
+  // Loop through each task container and add it to the appropriate category's tasks array
+  const taskContainers = document.querySelectorAll(
+    ".task__container:not(.no-drag)"
+  );
+
+  taskContainers.forEach((taskContainer) => {
+    const taskTitle = taskContainer.querySelector(".task__title").textContent;
+    const taskDescription =
+      taskContainer.querySelector(".task__description").textContent;
+    const taskDate = taskContainer.querySelector(
+      ".task__created-date"
+    ).textContent;
+    const taskTags = taskContainer.querySelector(".task__tags").textContent;
+    const taskPriority = taskContainer.querySelector(".task__priority");
+    const taskAdd = false;
+    const taskCompleted = taskContainer.classList.contains(
+      "task__container--completed"
+    );
+    const taskContent = taskContainer.querySelector(".task__content");
+
+    const task = new TaskCreation(
+      taskTitle,
+      taskDescription,
+      taskDate,
+      taskTags,
+      taskPriority,
+      taskAdd,
+      taskCompleted,
+      taskContent
+    );
+
+    if (taskContainer.closest(".todo-column")) {
+      todoCategory.tasks.push(task);
+    } else if (taskContainer.closest(".in-progress-column")) {
+      inProgressCategory.tasks.push(task);
+    } else if (taskContainer.closest(".completed-column")) {
+      completedCategory.tasks.push(task);
     }
   });
 
-  // Iterate over each category and get its task__containers
-  columns.forEach((column) => {
-    const taskContainers = column.querySelectorAll('.task__container');
-
-    // Iterate over each task__container and add its data to the taskData array
-    taskContainers.forEach((container) => {
-      const id = container.getAttribute('data-task-id');
-      const taskTitle = container.querySelector('.task__title').textContent;
-      const taskDescription = container.querySelector('.task__description').textContent;
-      const taskCreatedDate = container.querySelector('.task__created-date').textContent;
-      const taskTags = container.querySelector('.task__tags').textContent;
-      const contentElement = container.querySelector('.task__content');
-      const content = contentElement ? contentElement.textContent : "";
-
-      taskData.push({
-        id,
-        title: taskTitle,
-        description: taskDescription,
-        date: taskCreatedDate,
-        tags: taskTags,
-        priority: 1,
-        add: false,
-        completed: false,
-        content, 
-      });
-    });
-  });
-
-  // Save the task data and categories to local storage
-  const taskDataJson = JSON.stringify(taskData);
-  window.localStorage.setItem('taskData', taskDataJson);
-
-  const categoriesJson = JSON.stringify(categories);
-  window.localStorage.setItem('categories', categoriesJson);
+  // Save the "categories" array to local storage
+  localStorage.setItem("categories", JSON.stringify(categories));
 }
 
+// <------------------------ Load to Local Storage ------------------------> //
+export function loadCategories() {}
 
+// <------------------------ Update to Local Storage ------------------------> //
 
+export function updateCategory(category, index) {}
 
-export function loadCategories() {
-  // Load categories from local storage
-  const categoriesJson = window.localStorage.getItem('categories');
-  
-  // Parse JSON string to object
-  const categories = JSON.parse(categoriesJson);
-
-  // Loop through each category and its tasks to create task elements on the page
-  categories.forEach(category => {
-    const categoryElement = document.querySelector(`.main__column[data-category="${category.name}"]`);
-  
-    category.tasks.forEach(task => {
-      const newTask = new TaskCreation(
-        task.title,
-        task.description,
-        task.date,
-        task.tags,
-        task.priority,
-        task.add
-      );
-  
-      appendTask(newTask, categoryElement);
-    });
-  });
-
-  // Return categories object
-  return categories;
-}
-
-
-export function updateCategory(category, index) {
-  // Get existing categories from local storage
-  const categories = loadCategories();
-
-  // Update specific category in categories array
-  categories[index] = category;
-
-  // Save updated categories to local storage
-  saveCategories(categories);
-}
+saveCategories();
