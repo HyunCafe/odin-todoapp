@@ -9,7 +9,7 @@ import {
 
 let taskId = 1;
 
-export function appendTask(task, categoryElement) {
+export function appendTask(task, categoryElement, callback) {
   const taskElement = document.createElement("div");
   taskElement.classList.add("task__container");
   taskElement.setAttribute("data-task-id", taskId);
@@ -65,13 +65,13 @@ export function appendTask(task, categoryElement) {
   // Check if categoryElement is defined before appending taskElement
   if (categoryElement) {
     categoryElement.append(taskElement);
-  } else {
-    console.log("Category element is not defined!");
+    if (callback) {
+      callback();
+    }
   }
 
   taskId++;
 }
-
 export function updateTaskDisplay(taskElement, task) {
   // Update the display of a task element based on the task object's properties
 }

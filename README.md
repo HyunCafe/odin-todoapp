@@ -51,3 +51,19 @@ Bug: Attempt to fix Webpack environment bug for improved stability and functiona
 * I also tried adding the 'group: shared' option to enable items to be dragged between columns, but it still resulted in draggable items being placed into task containers.
 
 * Finally, after exploring different solutions, I realized that the issue was simply caused by the class name of the task container, which I changed from main__column--tasks to task__container (Since my columns also had that name). This resolved the problem, and the solution was much simpler than I initially thought.
+
+#### Invalid Date Challenge
+* The problem encountered was an "Invalid Date" error in the to-do list project, caused by incorrect date parsing in the TaskCreation class.
+
+* To investigate, I reviewed the code, focusing on the TaskCreation class and the date input format in the defaultTasks array. Additionally, I utilized console.log statements to trace the source of the issue.
+
+* By adding console.log statements at key points in the TaskCreation class, I was able to track how the date was being processed and identify the inconsistencies in the date format, which led to the error.
+
+* To fix this, I updated the date format in the defaultTasks array to YYYY-MM-DD and ensured proper parsing in the TaskCreation class. After making these changes, the "Invalid Date" error was resolved, and the application functioned as expected.
+
+#### Duplication Challenge
+* I recently encountered a bug where duplicate tasks were being created every time the page was refreshed. After investigating the issue, I found that the problem was related to tasks being saved in local storage every time they were moved to a different category. This caused the task list to be saved multiple times, leading to duplicates if the same task was moved more than once.
+
+* To solve this problem, I added a check to the loadCategories function to prevent duplicate tasks from being created. The check involved verifying whether a task with the same content (title, description, date, tags, and priority) already existed in the category before adding it. If a task with the same content was found, it was skipped to prevent duplicates.
+
+* After implementing this fix, I tested the application and confirmed that the duplication issue was resolved. 

@@ -1,10 +1,14 @@
 import { ca } from "date-fns/locale";
 import TaskCreation from "./taskcreationclass.js";
 import { appendTask } from "./dom-manipulation.js";
-import { defaultTasks } from "../index.js";
+import { defaultTasks, updateTaskCounters } from "../index.js";
 
 // <------------------------ Save to Local Storage ------------------------> //
-export function saveCategories(todoColumnElement, inProgressColumnElement, completedColumnElement) {
+export function saveCategories(
+  todoColumnElement,
+  inProgressColumnElement,
+  completedColumnElement
+) {
   const columns = document.querySelectorAll(".main__column");
   const tasksData = {};
 
@@ -41,9 +45,7 @@ function extractTaskFromElement(taskContainer) {
   const taskTitle = taskContainer.querySelector(".task__title").textContent;
   const taskDescription =
     taskContainer.querySelector(".task__description").textContent;
-  const taskDate = new Date(
-    Date.parse(taskContainer.querySelector(".task__created-date").textContent)
-  );
+  const taskDate = taskContainer.querySelector(".task__created-date").textContent;
   const taskTags = taskContainer.querySelector(".task__tags").textContent;
   const taskPriority = taskContainer.querySelector(".task__priority");
   const taskAdd = false;
@@ -65,8 +67,14 @@ function extractTaskFromElement(taskContainer) {
   return task;
 }
 
+
+function appendTaskToDOM(taskData, taskContainer) {
+  const task = new TaskCreation(taskData);
+  appendTask(task, taskContainer, updateTaskCounters); // Pass updateTaskCounters as a callback
+}
+
 // <------------------------ Load to Local Storage ------------------------> //
-export function loadCategories(categoryElement) {
+export function loadCategories() {
   const tasksData = JSON.parse(localStorage.getItem("tasks")) || {};
 
   Object.keys(tasksData).forEach((columnName) => {
@@ -76,6 +84,24 @@ export function loadCategories(categoryElement) {
     const tasks = tasksData[columnName];
 
     tasks.forEach((task) => {
+      // Check if task already exists in category by comparing title and description
+      const existingTaskElements =
+        categoryElement.querySelectorAll(".task__container");
+      const existingTask = Array.from(existingTaskElements).find(
+        (taskElement) => {
+          const taskTitle =
+            taskElement.querySelector(".task__title").textContent;
+          const taskDescription =
+            taskElement.querySelector(".task__description").textContent;
+          return (
+            taskTitle === task.title && taskDescription === task.description
+          );
+        }
+      );
+      if (existingTask) {
+        return;
+      }
+
       const taskObj = new TaskCreation(
         task.title,
         task.description,
@@ -88,6 +114,9 @@ export function loadCategories(categoryElement) {
   });
 }
 
+// localStorage.clear()
+
 // <------------------------ Update to Local Storage ------------------------> //
 
 export function updateCategory(category, index) {}
+// localStorage.clear();

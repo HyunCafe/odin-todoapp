@@ -22,6 +22,17 @@ class TaskCategory {
   }
 }
 
+export function updateTaskCounters() {
+  todoCategory.updateTaskCountFromDOM();
+  inProgressCategory.updateTaskCountFromDOM();
+  completedCategory.updateTaskCountFromDOM();
+  saveCategories(
+    toDoColumnElement,
+    inProgressColumnElement,
+    completedColumnElement
+  );
+}
+
 const todoCategory = new TaskCategory(
   "todo",
   document.querySelector(".main__column-title__taskcount--todo")
@@ -60,17 +71,6 @@ const completedSortable = new Sortable(completedColumnElement, {
   onEnd: updateTaskCounters,
   draggable: ".task__container:not(.no-drag)",
 });
-
-function updateTaskCounters() {
-  todoCategory.updateTaskCountFromDOM();
-  inProgressCategory.updateTaskCountFromDOM();
-  completedCategory.updateTaskCountFromDOM();
-  saveCategories(
-    toDoColumnElement,
-    inProgressColumnElement,
-    completedColumnElement
-  );
-}
 
 document.addEventListener("DOMContentLoaded", () => {
   loadCategories();
