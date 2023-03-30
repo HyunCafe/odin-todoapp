@@ -86,7 +86,29 @@ export function updateCategory(todoColumnElement, inProgressColumnElement, compl
 
 }
 
-// <------------------------ Tag Counting Module ------------------------> //
-let tagCount = [];
+// <------------------------ Tag Counting Feature ------------------------> //
+let tagCount = {};
 
-// export function tag
+export const tagTracker = () => {
+  const categories = loadCategories();
+  Object.keys(categories).forEach((columnName) => {
+    const taskList = categories[columnName];
+    taskList.forEach((task) => {
+      const tags = task.tags.split(' #');
+      tags.forEach((tag) => {
+        if (!tagCount[tag]) {
+          tagCount[tag] = 0;
+        }
+        tagCount[tag]++;
+      })
+    })
+  })
+
+  const sortedTagCount = Object.fromEntries(
+    Object.entries(tagCount).sort((a, b) => b[1] - a[1])
+  );
+
+  console.log(sortedTagCount);
+};
+
+tagTracker();
