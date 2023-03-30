@@ -11,17 +11,16 @@ import {
 
 let taskId = 1;
 
-export function getTaskColumn(columnName) {
+export const getTaskColumn = (columnName) => {
   const columns = {
     todo: document.querySelector(".main__column--todo"),
     "in-progress": document.querySelector(".main__column--in-progress"),
     completed: document.querySelector(".main__column--completed"),
   };
   return columns[columnName];
-}
+};
 
-
-export function appendTask(task, categoryElement, callback) {
+export const appendTask = (task, categoryElement, callback) => {
   const taskElement = document.createElement("div");
   taskElement.classList.add("task__container");
   taskElement.setAttribute("data-task-id", taskId);
@@ -72,7 +71,7 @@ export function appendTask(task, categoryElement, callback) {
     event.stopPropagation(); // Prevent triggering the taskElement click event
     removeTaskFromDisplay(taskElement);
   });
-  
+
   // Add a click event listener to the task element
   taskElement.addEventListener("click", () => {
     showTaskDetails(task);
@@ -101,8 +100,8 @@ export function appendTask(task, categoryElement, callback) {
   }
 
   taskId++;
-}
-// Append new form submissions 
+};
+// Append new form submissions
 const form = document.querySelector(".resource-form");
 
 form.addEventListener("submit", (event) => {
@@ -128,16 +127,24 @@ form.addEventListener("submit", (event) => {
 
   // Save the task to local storage
   const todoColumnElement = document.querySelector(".main__column--todo");
-  const inProgressColumnElement = document.querySelector(".main__column--in-progress");
-  const completedColumnElement = document.querySelector(".main__column--completed");
-  saveCategories(todoColumnElement, inProgressColumnElement, completedColumnElement);
+  const inProgressColumnElement = document.querySelector(
+    ".main__column--in-progress"
+  );
+  const completedColumnElement = document.querySelector(
+    ".main__column--completed"
+  );
+  saveCategories(
+    todoColumnElement,
+    inProgressColumnElement,
+    completedColumnElement
+  );
 });
 
-export function updateTaskDisplay(taskElement, task) {
+export const updateTaskDisplay = (taskElement, task) => {
   // Update the display of a task element based on the task object's properties
-}
+};
 
-function removeTaskFromDisplay(taskElement) {
+const removeTaskFromDisplay = (taskElement) => {
   const taskId = taskElement.getAttribute("data-task-id");
 
   // Remove the task container from the DOM
@@ -145,14 +152,13 @@ function removeTaskFromDisplay(taskElement) {
 
   // Remove the task from local storage
   deleteTaskFromLocalStorage(taskId);
-}
+};
 
-
-export function showTaskDetails(task) {
+export const showTaskDetails = (task) => {
   // Create a modal or a pop-up to display task details
   // Populate the modal with task details (title, description, date, etc.)
   // Add event listeners to close the modal
-}
+};
 
 document.addEventListener("DOMContentLoaded", () => {
   const taskColumns = document.querySelectorAll(".main__column");

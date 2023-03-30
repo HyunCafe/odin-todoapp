@@ -54,11 +54,9 @@ export const defaultTasks = {
   completed: [],
 };
 
-
 const todoColumn = document.querySelector(".main__column--todo");
 const inProgressColumn = document.querySelector(".main__column--in-progress");
 const completedColumn = document.querySelector(".main__column--completed");
-
 
 // To re add the default tasks
 // defaultTasks.todo.forEach((task) => {
@@ -82,8 +80,6 @@ if (!tasksData) {
     completed: [],
   };
 }
-
-console.log("Tasks data before saving:", tasksData);
 
 localStorage.setItem("tasks", JSON.stringify(tasksData));
 

@@ -3,11 +3,7 @@ import { appendTask, getTaskColumn } from "./dom-manipulation.js";
 import { defaultTasks, updateTaskCounters } from "../index.js";
 
 // <------------------------ Save to Local Storage ------------------------> //
-export function saveCategories(
-  todoColumnElement,
-  inProgressColumnElement,
-  completedColumnElement
-) {
+export const saveCategories = (todoColumnElement, inProgressColumnElement, completedColumnElement) => {
 
   const columns = [todoColumnElement, inProgressColumnElement, completedColumnElement];
   const tasksData = {};
@@ -48,7 +44,7 @@ export function loadCategories() {
   return tasksData;
 }
 
-export function populateTasksFromLocalStorage() {
+export const populateTasksFromLocalStorage = () => {
   const tasks = JSON.parse(localStorage.getItem("tasks"));
 
   if (tasks) {
@@ -68,11 +64,11 @@ export function populateTasksFromLocalStorage() {
       }
     });
   }
-}
+};
 
 // <------------------------ Delete from Local Storage ------------------------> //
 
-export function deleteTaskFromLocalStorage(taskId) {
+export const deleteTaskFromLocalStorage = (taskId) => {
   const categories = loadCategories();
 
   Object.keys(categories).forEach((category) => {
@@ -89,3 +85,8 @@ export function deleteTaskFromLocalStorage(taskId) {
 export function updateCategory(todoColumnElement, inProgressColumnElement, completedColumnElement, taskId) {
 
 }
+
+// <------------------------ Tag Counting Module ------------------------> //
+let tagCount = [];
+
+// export function tag

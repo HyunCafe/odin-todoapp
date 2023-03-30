@@ -1,6 +1,8 @@
+## Project Pre Plan Stage
+
 ### Initial Design Through Figma
 
----
+
 ### HTML Structure
 The whole website will basically start out with Grid Structure first:
 with only 2 columns
@@ -34,7 +36,7 @@ Create New Button
 
 ---
 
-### Game Plan
+### Beginning Project Design Game Plan
 
 #### Break down the project into smaller tasks:
 * Create the structure for todo items using constructors or classes.
@@ -74,6 +76,7 @@ Will have Module for:
 
 ----------------------------------------
 
+### Approaching Each Feature 
 #### Tackling the Delete Feature
 Add a delete icon to each task container in HTML structure. Use a data attribute (e.g., data-task-id) to store the unique task ID on the icon element.
 
@@ -90,8 +93,14 @@ Serialize the updated tasks array and save it back to local storage.
 d. Update the task counters and any other related UI elements.
 Test the delete feature to ensure tasks are removed from both the DOM and local storage, and the UI updates correctly in real time.
 
-
-
+### Tag Display Count Feature
+Create an empty object to store tag counts.
+Iterate through each task in local storage.
+For each task, iterate through the tags array and increment the count for each tag in the tag count object.
+Sort the tag count object by count in descending order.
+Select the top five tags and display them in a tag cloud or list, along with their counts.
+Update the tag cloud or list whenever a task is added or deleted.
+Bonus: add a search feature that allows users to filter tasks by tag.
 
 
 ----------------------------------------

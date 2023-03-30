@@ -13,16 +13,17 @@ class TaskCategory {
     this.taskCountElement = taskCountElement;
   }
 
-  updateTaskCountFromDOM() {
+  updateTaskCountFromDOM = () => {
     const taskContainers = this.taskCountElement
       .closest(".main__column")
       .querySelectorAll(".task__container");
     this.taskCount = taskContainers.length;
     this.taskCountElement.textContent = this.taskCount;
   }
+  
 }
 
-export function updateTaskCounters() {
+export const updateTaskCounters = () => {
   todoCategory.updateTaskCountFromDOM();
   inProgressCategory.updateTaskCountFromDOM();
   completedCategory.updateTaskCountFromDOM();
