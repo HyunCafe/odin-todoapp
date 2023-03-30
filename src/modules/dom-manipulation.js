@@ -5,9 +5,21 @@ import {
   saveCategories,
   loadCategories,
   updateCategory,
+  deleteTaskFromLocalStorage,
+  populateTasksFromLocalStorage,
 } from "./local-storage";
 
 let taskId = 1;
+
+export function getTaskColumn(columnName) {
+  const columns = {
+    todo: document.querySelector(".main__column--todo"),
+    "in-progress": document.querySelector(".main__column--in-progress"),
+    completed: document.querySelector(".main__column--completed"),
+  };
+  return columns[columnName];
+}
+
 
 export function appendTask(task, categoryElement, callback) {
   const taskElement = document.createElement("div");
@@ -55,6 +67,12 @@ export function appendTask(task, categoryElement, callback) {
     taskElement.classList.add("task--low");
   }
 
+  // Delete icon click listener
+  deleteIcon.addEventListener("click", (event) => {
+    event.stopPropagation(); // Prevent triggering the taskElement click event
+    removeTaskFromDisplay(taskElement);
+  });
+  
   // Add a click event listener to the task element
   taskElement.addEventListener("click", () => {
     showTaskDetails(task);
@@ -71,20 +89,64 @@ export function appendTask(task, categoryElement, callback) {
   // Check if categoryElement is defined before appending taskElement
   if (categoryElement) {
     categoryElement.append(taskElement);
-    if (callback) {
-      callback();
+    if (callback && typeof callback === "function") {
+      callback(taskElement);
     }
+    // Save the categories to local storage
+    saveCategories(
+      document.querySelector(".main__column--todo"),
+      document.querySelector(".main__column--in-progress"),
+      document.querySelector(".main__column--completed")
+    );
   }
 
   taskId++;
 }
+// Append new form submissions 
+const form = document.querySelector(".resource-form");
+
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  // Get the input values
+  const title = event.target.elements.title.value;
+  const description = event.target.elements.description.value;
+  const tags = event.target.elements.tags.value;
+  const priority = event.target.elements.priority.value;
+
+  // Create the task object
+  const task = {
+    title,
+    description,
+    tags,
+    priority,
+  };
+
+  // Call the appendTask function with the task object and the categoryElement
+  const categoryElement = document.querySelector(".main__column--todo");
+  appendTask(task, categoryElement);
+
+  // Save the task to local storage
+  const todoColumnElement = document.querySelector(".main__column--todo");
+  const inProgressColumnElement = document.querySelector(".main__column--in-progress");
+  const completedColumnElement = document.querySelector(".main__column--completed");
+  saveCategories(todoColumnElement, inProgressColumnElement, completedColumnElement);
+});
+
 export function updateTaskDisplay(taskElement, task) {
   // Update the display of a task element based on the task object's properties
 }
 
-export function removeTaskFromDisplay(taskElement) {
-  // Remove a task element from the DOM
+function removeTaskFromDisplay(taskElement) {
+  const taskId = taskElement.getAttribute("data-task-id");
+
+  // Remove the task container from the DOM
+  taskElement.remove();
+
+  // Remove the task from local storage
+  deleteTaskFromLocalStorage(taskId);
 }
+
 
 export function showTaskDetails(task) {
   // Create a modal or a pop-up to display task details
@@ -130,4 +192,5 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
   }
+  populateTasksFromLocalStorage();
 });

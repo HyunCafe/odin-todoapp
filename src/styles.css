@@ -49,7 +49,7 @@ body {
 /* <------------------------ Add Task Forms ------------------------> */
 
 .resource-form-wrapper {
-  display: none;
+  /* display: none; */
   position: fixed;
   top: 50%;
   left: 50%;
@@ -90,7 +90,7 @@ body {
 
 .resource-form-wrapper button[type="submit"] {
   display: block;
-  margin-top: 20px;
+  margin: 20px auto 0;
   padding: 10px;
   background-color: #7eb5d6;
   color: #fff;
@@ -224,6 +224,9 @@ background-color: transparent;
   position: absolute;
   bottom: 6px;
   left: 8px;
+}
+.task__delete-icon {
+  cursor: pointer;
 }
 
 /* Urgent task style */

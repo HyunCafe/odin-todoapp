@@ -72,6 +72,29 @@ Will have Module for:
 * Write functions to save and load projects and todos in localStorage.
 * Call these functions when the app is loaded and when changes are made to the data.
 
+----------------------------------------
+
+#### Tackling the Delete Feature
+Add a delete icon to each task container in HTML structure. Use a data attribute (e.g., data-task-id) to store the unique task ID on the icon element.
+
+Attach an event listener to the delete icon. Can use event delegation to listen for click events on a common parent element and filter by the delete icon selector.
+
+In the event handler:
+a. Retrieve the unique task ID from the clicked delete icon's data attribute.
+b. Remove the task container from the DOM using the remove() method.
+c. Remove the task from local storage:
+
+Load tasks from local storage, parse them into an array of task objects.
+Filter out the task with the matching ID.
+Serialize the updated tasks array and save it back to local storage.
+d. Update the task counters and any other related UI elements.
+Test the delete feature to ensure tasks are removed from both the DOM and local storage, and the UI updates correctly in real time.
+
+
+
+
+
+----------------------------------------
 
 
 //Next Step is create the dispaly look for the appendages
