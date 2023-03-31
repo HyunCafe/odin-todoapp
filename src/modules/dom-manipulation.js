@@ -98,13 +98,13 @@ export const appendTask = (task, categoryElement, callback) => {
       document.querySelector(".main__column--completed")
     );
   }
-  // Add a "dragenter" event listener to the task element
+  // Add a drop event listener to the task element
   let taskCompleted = false;
   const completedColumn = document.querySelector(".main__column--completed");
 
-  taskElement.addEventListener("drop", (event) => {
+  taskElement.addEventListener("dragend", (event) => {
     const taskContainer = event.target.closest(".task__container");
-    const isInCompletedColumn = completedColumn.contains(event.target);
+    const isInCompletedColumn = completedColumn.contains(taskContainer);
 
     if (isInCompletedColumn) {
       taskContainer.classList.add("task--completed");

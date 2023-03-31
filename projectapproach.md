@@ -109,11 +109,13 @@ Option 2: add and remove new CSS class "task--completed" on task element
 Achieves same result as option 1
 Easier to maintain
 Choose option 2 as solution
-discovered the On Drop event listener compared to on drag or click
+discovered the On Drop event listener compared to on drag or click (Ended up using dragend alone)
 
 
 ----------------------------------------
 
+
+----------------------------------------
 
 //Next Step is create the dispaly look for the appendages
 

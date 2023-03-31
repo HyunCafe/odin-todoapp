@@ -58,3 +58,8 @@ Bug: Attempt to fix Webpack environment bug for improved stability and functiona
 * To solve this problem, I added a check to the loadCategories function to prevent duplicate tasks from being created. The check involved verifying whether a task with the same content (title, description, date, tags, and priority) already existed in the category before adding it. If a task with the same content was found, it was skipped to prevent duplicates.
 
 * After implementing this fix, I tested the application and confirmed that the duplication issue was resolved. 
+
+#### Color Coded Class Change Challenge
+*  I aimed to implement a Color Coded Priority change feature for task elements when they were completed or put in the completed column. Initially, I faced issues with event inconsistencies when using both dragstart and dragend events, as they would fire multiple times, making the implementation inefficient. I discovered the drop event listener as an alternative, which seemed to work, but about 10% of the time, it wouldn't trigger, especially when holding task cards for too long before dropping them.
+
+*  After some research, I found solutions that involved adding more event listeners like dragstart, but I felt it wasn't necessary and would introduce extra code. Instead, I decided to replace the drop event with the dragend event and used console.logs to track when events were firing correctly, as well as to check for multiple firings. This simple change to using only the dragend event solved the issue effectively.
