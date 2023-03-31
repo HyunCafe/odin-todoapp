@@ -19,8 +19,7 @@ class TaskCategory {
       .querySelectorAll(".task__container");
     this.taskCount = taskContainers.length;
     this.taskCountElement.textContent = this.taskCount;
-  }
-  
+  }  
 }
 
 export const updateTaskCounters = () => {

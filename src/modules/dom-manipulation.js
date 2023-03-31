@@ -57,15 +57,6 @@ export const appendTask = (task, categoryElement, callback) => {
   });
   taskCreatedDate.textContent = formattedDate;
 
-  // Assign border color based on priority level
-  if (task.priority === "Urgent") {
-    taskElement.classList.add("task--urgent");
-  } else if (task.priority === "High") {
-    taskElement.classList.add("task--high");
-  } else {
-    taskElement.classList.add("task--low");
-  }
-
   // Delete icon click listener
   deleteIcon.addEventListener("click", (event) => {
     event.stopPropagation(); // Prevent triggering the taskElement click event
@@ -85,6 +76,15 @@ export const appendTask = (task, categoryElement, callback) => {
   taskFooter.append(taskTags);
   taskElement.append(taskFooter);
 
+  // Assign border color based on priority level
+  if (task.priority === "Urgent") {
+    taskElement.classList.add("task--urgent");
+  } else if (task.priority === "High") {
+    taskElement.classList.add("task--high");
+  } else {
+    taskElement.classList.add("task--low");
+  }
+
   // Check if categoryElement is defined before appending taskElement
   if (categoryElement) {
     categoryElement.append(taskElement);
@@ -98,9 +98,24 @@ export const appendTask = (task, categoryElement, callback) => {
       document.querySelector(".main__column--completed")
     );
   }
+  // Add a "dragenter" event listener to the task element
+  let taskCompleted = false;
+  const completedColumn = document.querySelector(".main__column--completed");
+
+  taskElement.addEventListener("drop", (event) => {
+    const taskContainer = event.target.closest(".task__container");
+    const isInCompletedColumn = completedColumn.contains(event.target);
+
+    if (isInCompletedColumn) {
+      taskContainer.classList.add("task--completed");
+    } else {
+      taskContainer.classList.remove("task--completed");
+    }
+  });
 
   taskId++;
 };
+
 // Append new form submissions
 const form = document.querySelector(".resource-form");
 

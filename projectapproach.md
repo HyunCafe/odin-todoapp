@@ -93,14 +93,23 @@ Serialize the updated tasks array and save it back to local storage.
 d. Update the task counters and any other related UI elements.
 Test the delete feature to ensure tasks are removed from both the DOM and local storage, and the UI updates correctly in real time.
 
-### Tag Display Count Feature
+#### Tag Display Count Feature
 Create an empty object to store tag counts.
 Iterate through each task in local storage.
 For each task, iterate through the tags array and increment the count for each tag in the tag count object.
 Sort the tag count object by count in descending order.
 Select the top five tags and display them in a tag cloud or list, along with their counts.
 Update the tag cloud or list whenever a task is added or deleted.
-Bonus: add a search feature that allows users to filter tasks by tag.
+
+
+#### Color Change based on Priority + Completed Column Block
+Wanted to provide a visual indication when a task is moved to "Completed" column
+initial idea was to store previous priority value of task and re-assign it when moved back to original column after some trial and error, it was more complicated, and added unnecessary complexity
+Option 2: add and remove new CSS class "task--completed" on task element
+Achieves same result as option 1
+Easier to maintain
+Choose option 2 as solution
+discovered the On Drop event listener compared to on drag or click
 
 
 ----------------------------------------
@@ -121,3 +130,4 @@ Bonus: add a search feature that allows users to filter tasks by tag.
 Features Finished
 // Draggable between eachother as well as each column
 // Feat: Add counter on each column representing total tasks
+// Feat: Blue indicator for completed tasks, and listens for on drop.
