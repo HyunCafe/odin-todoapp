@@ -3,9 +3,16 @@ import { appendTask, getTaskColumn } from "./dom-manipulation.js";
 import { defaultTasks, updateTaskCounters } from "../index.js";
 
 // <------------------------ Save to Local Storage ------------------------> //
-export const saveCategories = (todoColumnElement, inProgressColumnElement, completedColumnElement) => {
-
-  const columns = [todoColumnElement, inProgressColumnElement, completedColumnElement];
+export const saveCategories = (
+  todoColumnElement,
+  inProgressColumnElement,
+  completedColumnElement
+) => {
+  const columns = [
+    todoColumnElement,
+    inProgressColumnElement,
+    completedColumnElement,
+  ];
   const tasksData = {};
 
   columns.forEach((column) => {
@@ -22,20 +29,31 @@ export const saveCategories = (todoColumnElement, inProgressColumnElement, compl
       const createdDate = taskElement.querySelector(
         ".task__created-date"
       ).textContent;
-      const priority = taskElement.classList.contains("task--urgent")
+      const priority = taskElement.classList.contains("task--completed")
+        ? "task--completed"
+        : taskElement.classList.contains("task--urgent")
         ? "Urgent"
         : taskElement.classList.contains("task--high")
         ? "High"
         : "Low";
+      const classList = Array.from(taskElement.classList);
 
-      tasks.push({ taskId, title, description, tags, createdDate, priority });
+      tasks.push({
+        taskId,
+        title,
+        description,
+        tags,
+        createdDate,
+        priority,
+        taskClasses: Array.from(taskElement.classList),
+      });
     });
 
     tasksData[columnName] = tasks;
   });
 
   localStorage.setItem("tasks", JSON.stringify(tasksData));
-}
+};
 
 // <------------------------ Load from Local Storage ------------------------> //
 export function loadCategories() {
@@ -59,7 +77,12 @@ export const populateTasksFromLocalStorage = () => {
             task.tags,
             task.priority
           );
-          appendTask(taskObj, getTaskColumn(columnName));
+          const columnElement = getTaskColumn(columnName);
+          appendTask(taskObj, columnElement, (taskElement) => {
+            // Apply saved class names to the task container
+            taskElement.className = "";
+            task.taskClasses.forEach((cls) => taskElement.classList.add(cls));
+          });
         });
       }
     });
@@ -78,13 +101,16 @@ export const deleteTaskFromLocalStorage = (taskId) => {
   });
 
   localStorage.setItem("tasks", JSON.stringify(categories));
-}
+};
 
 // <------------------------ Update to Local Storage ------------------------> //
 
-export function updateCategory(todoColumnElement, inProgressColumnElement, completedColumnElement, taskId) {
-
-}
+export function updateCategory(
+  todoColumnElement,
+  inProgressColumnElement,
+  completedColumnElement,
+  taskId
+) {}
 
 // <------------------------ Tag Counting Feature ------------------------> //
 let tagCount = {};
@@ -94,15 +120,15 @@ export const tagTracker = () => {
   Object.keys(categories).forEach((columnName) => {
     const taskList = categories[columnName];
     taskList.forEach((task) => {
-      const tags = task.tags.split(' #');
+      const tags = task.tags.split(" #");
       tags.forEach((tag) => {
         if (!tagCount[tag]) {
           tagCount[tag] = 0;
         }
         tagCount[tag]++;
-      })
-    })
-  })
+      });
+    });
+  });
 
   const sortedTagCount = Object.fromEntries(
     Object.entries(tagCount).sort((a, b) => b[1] - a[1])

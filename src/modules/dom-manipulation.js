@@ -98,7 +98,7 @@ export const appendTask = (task, categoryElement, callback) => {
       document.querySelector(".main__column--completed")
     );
   }
-  // Add a drop event listener to the task element
+  // Add a event listener to the task element for Complete Color Code
   let taskCompleted = false;
   const completedColumn = document.querySelector(".main__column--completed");
 
@@ -111,6 +111,12 @@ export const appendTask = (task, categoryElement, callback) => {
     } else {
       taskContainer.classList.remove("task--completed");
     }
+    // Save the categories to local storage
+    saveCategories(
+      document.querySelector(".main__column--todo"),
+      document.querySelector(".main__column--in-progress"),
+      document.querySelector(".main__column--completed")
+    );
   });
 
   taskId++;
