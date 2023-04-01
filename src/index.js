@@ -5,6 +5,8 @@ import {
   saveCategories,
   loadCategories,
   updateCategory,
+  tagTracker,
+  updateTagDisplay
 } from "./modules/local-storage";
 import { updateTaskCounters } from "./modules/taskcategory.js";
 import { populateTasksFromLocalStorage } from "./modules/local-storage.js";
@@ -58,20 +60,6 @@ const todoColumn = document.querySelector(".main__column--todo");
 const inProgressColumn = document.querySelector(".main__column--in-progress");
 const completedColumn = document.querySelector(".main__column--completed");
 
-// To re add the default tasks
-// defaultTasks.todo.forEach((task) => {
-//   const newTask = new TaskCreation(
-//     task.title,
-//     task.description,
-//     task.date,
-//     task.tags.split(","),
-//     task.priority,
-//     task.add
-//   );
-
-//   appendTask(newTask, todoColumn);
-// });
-
 let tasksData = JSON.parse(localStorage.getItem("tasks"));
 if (!tasksData) {
   tasksData = {
@@ -86,3 +74,22 @@ localStorage.setItem("tasks", JSON.stringify(tasksData));
 // Load the categories from local storage and update the task counters on the page
 loadCategories();
 updateCategory();
+
+
+const sortedTagCount = tagTracker();
+updateTagDisplay(sortedTagCount, 7);
+
+
+// To re add the default tasks
+// defaultTasks.todo.forEach((task) => {
+//   const newTask = new TaskCreation(
+//     task.title,
+//     task.description,
+//     task.date,
+//     task.tags.split(","),
+//     task.priority,
+//     task.add
+//   );
+
+//   appendTask(newTask, todoColumn);
+// });

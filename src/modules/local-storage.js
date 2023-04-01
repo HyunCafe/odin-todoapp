@@ -1,3 +1,5 @@
+"use strict";
+
 import TaskCreation from "./taskcreationclass.js";
 import { appendTask, getTaskColumn } from "./dom-manipulation.js";
 import { defaultTasks, updateTaskCounters } from "../index.js";
@@ -122,10 +124,12 @@ export const tagTracker = () => {
     taskList.forEach((task) => {
       const tags = task.tags.split(" #");
       tags.forEach((tag) => {
-        if (!tagCount[tag]) {
-          tagCount[tag] = 0;
+        // Remove the '#' sign from the tag
+        const cleanTag = tag.replace("#", "");
+        if (!tagCount[cleanTag]) {
+          tagCount[cleanTag] = 0;
         }
-        tagCount[tag]++;
+        tagCount[cleanTag]++;
       });
     });
   });
@@ -134,7 +138,25 @@ export const tagTracker = () => {
     Object.entries(tagCount).sort((a, b) => b[1] - a[1])
   );
 
-  console.log(sortedTagCount);
+  return sortedTagCount;
 };
 
 tagTracker();
+
+export const updateTagDisplay = (sortedTagCount, maxTags = 10) => {
+  const tagContainer = document.querySelector('.sidebar__tags');
+  tagContainer.textContent = '';
+
+  let displayedTags = 0;
+  for (const [tag, count] of Object.entries(sortedTagCount)) {
+    if (displayedTags >= maxTags) {
+      break;
+    }
+
+    const tagElement = document.createElement('span');
+    tagElement.classList.add("tag");
+    tagElement.textContent = `${count} ${tag}`;
+    tagContainer.append(tagElement);
+    displayedTags++;
+  }
+}
