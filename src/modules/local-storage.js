@@ -38,7 +38,7 @@ export const saveCategories = (
         : taskElement.classList.contains("task--high")
         ? "High"
         : "Low";
-      const classList = Array.from(taskElement.classList);
+        const classList = [...taskElement.classList];
 
       tasks.push({
         taskId,
@@ -141,7 +141,6 @@ export const tagTracker = () => {
   return sortedTagCount;
 };
 
-tagTracker();
 
 export const updateTagDisplay = (sortedTagCount, maxTags = 10) => {
   const tagContainer = document.querySelector('.sidebar__tags');

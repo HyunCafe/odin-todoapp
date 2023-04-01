@@ -4,12 +4,13 @@ import Sortable from "sortablejs";
 import {
   saveCategories,
   loadCategories,
-  updateCategory,
   deleteTaskFromLocalStorage,
   populateTasksFromLocalStorage,
 } from "./local-storage";
 
 let taskId = 1;
+
+// <------------------------ Creation and Append Task Cards to Columns ------------------------> //
 
 export const getTaskColumn = (columnName) => {
   const columns = {
@@ -47,15 +48,11 @@ export const appendTask = (task, categoryElement, callback) => {
   taskTags.classList.add("task__tags");
   taskTags.textContent = task.tags;
 
-  const taskCreatedDate = document.createElement("span");
-  taskCreatedDate.classList.add("task__created-date");
-  const date = new Date();
-  const formattedDate = date.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  });
-  taskCreatedDate.textContent = formattedDate;
+const taskCreatedDate = document.createElement("span");
+taskCreatedDate.classList.add("task__created-date");
+const formattedDate = formatDateAgo(task.createdDate || new Date());
+taskCreatedDate.textContent = formattedDate;
+  
 
   // Delete icon click listener
   deleteIcon.addEventListener("click", (event) => {
@@ -87,6 +84,8 @@ export const appendTask = (task, categoryElement, callback) => {
 
   // Check if categoryElement is defined before appending taskElement
   if (categoryElement) {
+    console.log(`Appending task to ${categoryElement.classList[1]} column: ${task.title}`);
+
     categoryElement.append(taskElement);
     if (callback && typeof callback === "function") {
       callback(taskElement);
@@ -122,7 +121,24 @@ export const appendTask = (task, categoryElement, callback) => {
   taskId++;
 };
 
-// Append new form submissions
+// <------------------------ Custom Helper Date Function ------------------------> //
+
+function formatDateAgo(dateString) {
+  const date = new Date(dateString);
+  const now = new Date();
+  const monthsDifference = Math.floor(
+    (now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24 * 30)
+  );
+
+  return monthsDifference > 1
+    ? `${monthsDifference} Months Ago`
+    : monthsDifference === 1
+    ? "1 Month Ago"
+    : "Less than a Month Ago";
+}
+
+// <------------------------ Append New Form Submission Cards  ------------------------> //
+
 const form = document.querySelector(".resource-form");
 
 form.addEventListener("submit", (event) => {
@@ -161,6 +177,9 @@ form.addEventListener("submit", (event) => {
   );
 });
 
+// <------------------------ Update Task Display------------------------> //
+
+
 export const updateTaskDisplay = (taskElement, task) => {
   // Update the display of a task element based on the task object's properties
 };
@@ -180,6 +199,9 @@ export const showTaskDetails = (task) => {
   // Populate the modal with task details (title, description, date, etc.)
   // Add event listeners to close the modal
 };
+
+// <------------------------ Sortable Task Column Initialization------------------------> //
+
 
 document.addEventListener("DOMContentLoaded", () => {
   const taskColumns = document.querySelectorAll(".main__column");
