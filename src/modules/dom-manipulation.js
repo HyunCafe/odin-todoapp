@@ -84,7 +84,7 @@ taskCreatedDate.textContent = formattedDate;
 
   // Check if categoryElement is defined before appending taskElement
   if (categoryElement) {
-    console.log(`Appending task to ${categoryElement.classList[1]} column: ${task.title}`);
+    // console.log(`Appending task to ${categoryElement.classList[1]} column: ${task.title}`);
 
     categoryElement.append(taskElement);
     if (callback && typeof callback === "function") {
@@ -219,25 +219,6 @@ document.addEventListener("DOMContentLoaded", () => {
           put: true,
         },
         draggable: ".task__container",
-        onEnd: () => {
-          // Call the loadCategories function to get the current categories
-          const todoColumnElement = document.querySelector(
-            ".main__column--todo"
-          );
-          const inProgressColumnElement = document.querySelector(
-            ".main__column--in-progress"
-          );
-          const completedColumnElement = document.querySelector(
-            ".main__column--completed"
-          );
-
-          // Call the saveCategories function with the updated categories
-          saveCategories(
-            todoColumnElement,
-            inProgressColumnElement,
-            completedColumnElement
-          );
-        },
       });
     });
   }
