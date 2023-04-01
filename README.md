@@ -5,8 +5,32 @@ For my TODO App project, I wanted to level up my planning and implementation ski
 To design the app, I drew inspiration from Notion and Trello and used Figma to visualize the app after completing the HTML pseudo-code. Although the project is still ongoing, I'm excited about the progress I've made and how much I've learned about module coding, SOLID principles, and the value of libraries.
 
 ### Summary of Key Features:
-* 
+Drag and Drop Functionality:
+* Tasks can be dragged and dropped between the three columns (todo, in progress, and completed).
 
+Color-coded Priorities:
+* Tasks are color-coded based on their priority level.
+* Urgent tasks are marked with a red border, high priority tasks with a yellow border, and low priority tasks with a green border.
+
+Completion Color Code:
+* When a task is checked off as completed or moved to the completed column, it changes color to a blue completion color.
+* If the task is moved out of the completed column, it reverts to its original priority color.
+
+Tag Tracking:
+* Tags can be added to tasks.
+* The frequency of tags used across tasks is tracked.
+* The top tags are displayed in a sidebar, sorted by frequency.
+* The maximum number of tags displayed can be limited by setting a specific value.
+
+Pop-up Task Display:
+* The application includes a pop-up display that shows additional information for a task when clicked.
+
+Delete Feature:
+* Users can delete individual tasks
+
+Local Storage Saves:
+* The application saves all data to local storage and loads it on subsequent visits.
+* The data includes all tasks, columns, tags, and their respective properties.
 
 ### Libraries Used:
 * (Date FNS)[https://github.com/date-fns/date-fns]
@@ -35,10 +59,40 @@ To design the app, I drew inspiration from Notion and Trello and used Figma to v
 * Updated Readme
 
 #### March 26, 2023
-Feat: Add color coding to task cards based on priority level
-Feat: Implement dynamic task append feature using DOM manipulation in JavaScript
-Fix: Resolve pathing issues for Webpack and improve task card styling
-Bug: Attempt to fix Webpack environment bug for improved stability and functionality
+* Feat: Add color coding to task cards based on priority level
+* Feat: Implement dynamic task append feature using DOM manipulation in JavaScript
+* Fix: Resolve pathing issues for Webpack and improve task card styling
+* Bug: Attempt to fix Webpack environment bug for improved stability and functionality
+
+#### March 27, 2023
+* Feat: Added additional details pop up with Notion styling
+* Style: Styled the additional detail pop up for a better user experience
+* Style: Improved the aesthetics of the application by making the outlines cleaner and adding an active soft blue color
+* Feat: Added sort and drag functionality using the SortableJS library for improved task management
+* Doc: Updated the progress and timeline documentation
+
+#### March 28, 2023
+* Add: Counter for each column to show the number of cards contained
+* Add: Saving to local storage for better data persistence
+* Fix: Working on issue with saving storage
+* Fix: Issue with save function
+
+#### March 29, 2023
+* Fix: Fix invalid date bug, wasn't parsing correctly
+* Fix: Fix save/load storage, working on date bug again
+* Refactor: Remove date FNS formulas for now, to new date for simplicity
+
+#### March 30, 2023
+* Add: Added tag count logic to count the number of tags, working as intended
+* Refactor: Refactored to arrow syntax for better readability
+* Refactor: Refactored code, added feature delete to work correctly
+#### March 31, 2023
+* Feat: Added blue indicator color change for completed tasks
+* Fix: Fixed bug where event of complete sometimes did not trigger
+* Add: Fixed the save and local state to account for completed class
+
+#### April 1, 2023
+
 
 ## Challenges
 #### Sort and Drag Challenge

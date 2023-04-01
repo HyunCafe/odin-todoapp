@@ -46,10 +46,19 @@ body {
   margin: 1em;
 }
 
+.tag {
+  display: inline-block;
+  background-color: #f0f0f0;
+  padding: .4em .4em;
+  margin: .3em;
+  border-radius: 5px;
+  color: #333;
+}
+
 /* <------------------------ Add Task Forms ------------------------> */
 
 .resource-form-wrapper {
-  /* display: none; */
+  display: none;
   position: fixed;
   top: 50%;
   left: 50%;
