@@ -8,9 +8,11 @@ import {
   populateTasksFromLocalStorage,
 } from "./local-storage";
 
+import { updateTaskCounters } from "./taskcategory.js";
+
 let taskId = 1;
 
-// <------------------------ Creation and Append Task Cards to Columns ------------------------> //
+// <------------------------ Task Column Helper Function ------------------------> //
 
 export const getTaskColumn = (columnName) => {
   const columns = {
@@ -21,7 +23,9 @@ export const getTaskColumn = (columnName) => {
   return columns[columnName];
 };
 
-export const appendTask = (task, categoryElement, callback) => {
+// <------------------------ Create Task Element ------------------------> //
+
+function createTaskElement(task) {
   const taskElement = document.createElement("div");
   taskElement.classList.add("task__container");
   taskElement.setAttribute("data-task-id", taskId);
@@ -53,17 +57,6 @@ export const appendTask = (task, categoryElement, callback) => {
   const formattedDate = formatDateAgo(task.createdDate || new Date());
   taskCreatedDate.textContent = formattedDate;
 
-  // Delete icon click listener
-  deleteIcon.addEventListener("click", (event) => {
-    event.stopPropagation(); // Prevent triggering the taskElement click event
-    removeTaskFromDisplay(taskElement);
-  });
-
-  // Add a click event listener to the task element
-  taskElement.addEventListener("click", () => {
-    showTaskDetails(task);
-  });
-
   taskHeader.append(taskTitle);
   taskHeader.append(deleteIcon);
   taskElement.append(taskHeader);
@@ -71,6 +64,65 @@ export const appendTask = (task, categoryElement, callback) => {
   taskFooter.append(taskCreatedDate);
   taskFooter.append(taskTags);
   taskElement.append(taskFooter);
+
+  return taskElement;
+}
+
+// <------------------------ Delete and Move to Trash ------------------------> //
+
+function addDeleteIconEventListener(deleteIcon, taskElement) {
+  deleteIcon.addEventListener("click", (event) => {
+    event.stopPropagation(); // Prevent triggering the taskElement click event
+
+    // Load tasks from local storage, parse them into an object
+    const tasksData = JSON.parse(localStorage.getItem("tasks"));
+
+    // Get the task ID and current column name
+    const taskId = taskElement.dataset.taskId;
+    const currentColumn =
+      taskElement.closest(".main__column").dataset.columnName;
+
+    // Find the task in the tasksData object
+    const taskIndex = tasksData[currentColumn].findIndex(
+      (task) => task.taskId === taskId
+    );
+
+    // Remove the task from its current column
+    const task = tasksData[currentColumn].splice(taskIndex, 1)[0];
+    removeTaskFromDisplay(taskElement);
+
+    // Move the task to the Trash column if it's not already there
+    const trashColumn = document.querySelector(".main__column--trash");
+    if (currentColumn !== "trash") {
+      appendTask(task, trashColumn, (taskElement) => {
+        // Re-apply the saved taskId to the taskElement in the trash column
+        taskElement.dataset.taskId = taskId;
+      });
+    }
+
+    // Update the tasksData object and save it back to local storage
+    localStorage.setItem("tasks", JSON.stringify(tasksData));
+
+    // Update the task counters and any other related UI elements
+    updateTaskCounters();
+  });
+}
+
+function addTaskElementClickListener(taskElement) {
+  // Add a click event listener to the task element
+  taskElement.addEventListener("click", () => {
+    // showTaskDetails(task); // Did not make this feature yet
+  });
+}
+
+// <------------------------ Append Task to Column ------------------------> //
+
+export const appendTask = (task, categoryElement, callback) => {
+  const taskElement = createTaskElement(task);
+  const deleteIcon = taskElement.querySelector(".task__delete-icon");
+
+  addDeleteIconEventListener(deleteIcon, taskElement);
+  addTaskElementClickListener(taskElement);
 
   // Assign border color based on priority level
   if (task.priority === "Urgent") {
@@ -83,9 +135,9 @@ export const appendTask = (task, categoryElement, callback) => {
 
   // Check if categoryElement is defined before appending taskElement
   if (categoryElement) {
-    console.log(
-      `Appending task to ${categoryElement.classList[1]} column: ${task.title}`
-    );
+    // console.log(
+    //   `Appending task to ${categoryElement.classList[1]} column: ${task.title}`
+    // );
 
     categoryElement.append(taskElement);
     if (callback && typeof callback === "function") {
@@ -95,12 +147,14 @@ export const appendTask = (task, categoryElement, callback) => {
     saveCategories(
       document.querySelector(".main__column--todo"),
       document.querySelector(".main__column--in-progress"),
-      document.querySelector(".main__column--completed")
+      document.querySelector(".main__column--completed"),
+      document.querySelector(".main__column--trash")
     );
   }
   // Add a event listener to the task element for Complete Color Code
   let taskCompleted = false;
   const completedColumn = document.querySelector(".main__column--completed");
+  const trashColumn = document.querySelector(".main__column--trash");
 
   taskElement.addEventListener("dragend", (event) => {
     const taskContainer = event.target.closest(".task__container");
@@ -108,14 +162,18 @@ export const appendTask = (task, categoryElement, callback) => {
 
     if (isInCompletedColumn) {
       taskContainer.classList.add("task--completed");
-    } else {
+    } else if (
+      !completedColumn.contains(taskContainer) &&
+      !trashColumn.contains(taskContainer)
+    ) {
       taskContainer.classList.remove("task--completed");
     }
     // Save the categories to local storage
     saveCategories(
       document.querySelector(".main__column--todo"),
       document.querySelector(".main__column--in-progress"),
-      document.querySelector(".main__column--completed")
+      document.querySelector(".main__column--completed"),
+      document.querySelector(".main__column--trash")
     );
   });
 
@@ -171,10 +229,12 @@ form.addEventListener("submit", (event) => {
   const completedColumnElement = document.querySelector(
     ".main__column--completed"
   );
+  const trashColumnElement = document.querySelector(".main__column--trash");
   saveCategories(
     todoColumnElement,
     inProgressColumnElement,
-    completedColumnElement
+    completedColumnElement,
+    trashColumnElement
   );
 });
 

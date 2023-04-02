@@ -5,23 +5,16 @@ import { appendTask, getTaskColumn } from "./dom-manipulation.js";
 import { defaultTasks, updateTaskCounters } from "../index.js";
 
 // <------------------------ Save to Local Storage ------------------------> //
-export const saveCategories = (
-  todoColumnElement,
-  inProgressColumnElement,
-  completedColumnElement
-) => {
-  const columns = [
-    todoColumnElement,
-    inProgressColumnElement,
-    completedColumnElement,
-  ];
+export const saveCategories = () => {
+  const columns = ["todo", "in-progress", "completed", "trash"];
   const tasksData = {};
 
-  columns.forEach((column) => {
-    const columnName = column.dataset.columnName;
-    const taskElements = column.querySelectorAll(".task__container");
-    const tasks = [];
+  columns.forEach((columnName) => {
+    const taskElements = document.querySelectorAll(
+      `.main__column--${columnName} .task__container`
+    );
 
+    const tasks = [];
     taskElements.forEach((taskElement) => {
       const taskId = taskElement.dataset.taskId;
       const title = taskElement.querySelector(".task__title").textContent;
@@ -57,9 +50,15 @@ export const saveCategories = (
   localStorage.setItem("tasks", JSON.stringify(tasksData));
 };
 
+
 // <------------------------ Load from Local Storage ------------------------> //
 export function loadCategories() {
-  const tasksData = JSON.parse(localStorage.getItem("tasks")) || {};
+  const tasksData = JSON.parse(localStorage.getItem("tasks")) || {
+    todo: [],
+    "in-progress": [],
+    completed: [],
+    trash: [],
+  };
 
   return tasksData;
 }

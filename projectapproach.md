@@ -141,6 +141,8 @@ Update the local-storage.js module to handle tasks in the Trash column when savi
 
 // add a popup warning once trash icon is pressed within the trash column, saying do you want to perm delete?
 
+// needed to add a trash property
+
 ----------------------------------------
 
 

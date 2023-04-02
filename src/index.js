@@ -13,10 +13,11 @@ import { populateTasksFromLocalStorage } from "./modules/local-storage.js";
 import { defaultTasks } from "./modules/default-tasks.js";
 
 const categoryElement = document.querySelector(".main__column--todo");
-
 const todoColumn = document.querySelector(".main__column--todo");
 const inProgressColumn = document.querySelector(".main__column--in-progress");
 const completedColumn = document.querySelector(".main__column--completed");
+const trashColumn = document.querySelector(".main__column--trash");
+
 
 let tasksData = JSON.parse(localStorage.getItem("tasks"));
 if (!tasksData) {
@@ -37,15 +38,15 @@ const sortedTagCount = tagTracker();
 updateTagDisplay(sortedTagCount, 7);
 
 // <------------------------ to Re-Add default tasks to local storage  ------------------------> //
-// defaultTasks.todo.forEach((task) => {
-//   const newTask = new TaskCreation(
-//     task.title,
-//     task.description,
-//     task.date,
-//     task.tags.split(","),
-//     task.priority,
-//     task.add
-//   );
+defaultTasks.todo.forEach((task) => {
+  const newTask = new TaskCreation(
+    task.title,
+    task.description,
+    task.date,
+    task.tags.split(","),
+    task.priority,
+    task.add
+  );
 
-//   appendTask(newTask, todoColumn);
-// });
+  appendTask(newTask, todoColumn);
+});
