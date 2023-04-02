@@ -21,9 +21,8 @@ export const saveCategories = () => {
       const description =
         taskElement.querySelector(".task__description").textContent;
       const tags = taskElement.querySelector(".task__tags").textContent;
-      const createdDate = taskElement.querySelector(
-        ".task__created-date"
-      ).textContent;
+      const task = taskElement.__data;
+      const createdDate = task.createdDate;
       const priority = taskElement.classList.contains("task--completed")
         ? "task--completed"
         : taskElement.classList.contains("task--urgent")
@@ -50,7 +49,6 @@ export const saveCategories = () => {
   localStorage.setItem("tasks", JSON.stringify(tasksData));
 };
 
-
 // <------------------------ Load from Local Storage ------------------------> //
 export function loadCategories() {
   const tasksData = JSON.parse(localStorage.getItem("tasks")) || {
@@ -76,11 +74,13 @@ export const populateTasksFromLocalStorage = () => {
             task.description,
             task.createdDate,
             task.tags,
-            task.priority
+            task.priority,
+            false,
+            "",
+            task.taskId
           );
           const columnElement = getTaskColumn(columnName);
           appendTask(taskObj, columnElement, (taskElement) => {
-            // Apply saved class names to the task container
             taskElement.className = "";
             task.taskClasses.forEach((cls) => taskElement.classList.add(cls));
           });
@@ -89,7 +89,6 @@ export const populateTasksFromLocalStorage = () => {
     });
   }
 };
-
 // <------------------------ Delete from Local Storage ------------------------> //
 
 export const deleteTaskFromLocalStorage = (taskId) => {

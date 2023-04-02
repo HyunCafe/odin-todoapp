@@ -25,6 +25,7 @@ if (!tasksData) {
     todo: defaultTasks,
     "in-progress": [],
     completed: [],
+    trash: [],
   };
 }
 
@@ -38,15 +39,15 @@ const sortedTagCount = tagTracker();
 updateTagDisplay(sortedTagCount, 7);
 
 // <------------------------ to Re-Add default tasks to local storage  ------------------------> //
-defaultTasks.todo.forEach((task) => {
-  const newTask = new TaskCreation(
-    task.title,
-    task.description,
-    task.date,
-    task.tags.split(","),
-    task.priority,
-    task.add
-  );
+// defaultTasks.todo.forEach((task) => {
+//   const newTask = new TaskCreation(
+//     task.title,
+//     task.description,
+//     task.date,
+//     task.tags.split(","),
+//     task.priority,
+//     task.add
+//   );
 
-  appendTask(newTask, todoColumn);
-});
+//   appendTask(newTask, todoColumn);
+// });

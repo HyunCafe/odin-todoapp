@@ -117,3 +117,21 @@ Local Storage Saves:
 *  I aimed to implement a Color Coded Priority change feature for task elements when they were completed or put in the completed column. Initially, I faced issues with event inconsistencies when using both dragstart and dragend events, as they would fire multiple times, making the implementation inefficient. I discovered the drop event listener as an alternative, which seemed to work, but about 10% of the time, it wouldn't trigger, especially when holding task cards for too long before dropping them.
 
 *  After some research, I found solutions that involved adding more event listeners like dragstart, but I felt it wasn't necessary and would introduce extra code. Instead, I decided to replace the drop event with the dragend event and used console.logs to track when events were firing correctly, as well as to check for multiple firings. This simple change to using only the dragend event solved the issue effectively.
+
+#### Completed Class not saving From Completed Column to Trash Column
+##### Issue: 
+completed tasks were not retaining their priority level when they were deleted from the Completed column and moved to the Trash column. Instead, their priority level was defaulting to "low" in the Trash column.
+##### Approach: 
+*  Checked the code that saves task data to local storage, found that it was correctly saving the priority level of completed tasks.
+*  Checked the code that deletes tasks from local storage, found that it was correctly removing tasks from local storage.
+*  Checked the code that loads tasks from local storage and renders them to the UI, found that it was correctly loading the priority level of completed tasks.
+*  Suspected the issue might be with the code that handles deleting a completed task from the Completed column.
+*  Checked the code that removes a task from the Completed column and adds it to the Trash column, found that it was not explicitly setting the priority level of the task to "completed".
+*  Added code to explicitly set the priority level of the task to "completed" when moving a completed task to the Trash column.
+*  Tested the solution by deleting a completed task from the Completed column and confirmed that the issue was resolved.
+*  Despite these changes, the issue persisted and I used breakpoints to step through the code and identify where the issue might be happening.
+*  Found that in the appendTask function, there was an assign border color based on priority level that did not include the "complete" class since it was a feature added after the fact.
+*  Added the "complete" class to the assign border color based on priority level code in the appendTask function.
+*  Tested the solution by deleting a completed task from the Completed column and confirmed that the issue was resolved.
+*  Used the Chrome debugger and console.log statements to help debug the issue and track the values of variables at various points in the code.
+*  Made changes to various modules to update saving the new Trash column to local storage and loading it correctly.

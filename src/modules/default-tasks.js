@@ -41,4 +41,5 @@ export const defaultTasks = {
   ],
   "in-progress": [],
   completed: [],
+  trash: [],
 };

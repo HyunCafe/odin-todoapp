@@ -6,9 +6,10 @@ class TaskCreation {
     tags = [],
     priority,
     add,
-    content = ""
+    content = "",
+    taskId
   ) {
-    this.id = new Date().getTime().toString(); // generate task ID using timestamp
+    this.id = taskId || new Date().getTime().toString();
     this.title = title;
     this.description = description;
     this.tags = tags || [];
@@ -16,6 +17,7 @@ class TaskCreation {
     this.add = add || false;
     this.completed = false;
     this.content = content;
+    this.createdDate = dateString || new Date().toISOString();
   }
 }
 

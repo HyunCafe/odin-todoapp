@@ -19,6 +19,7 @@ export const getTaskColumn = (columnName) => {
     todo: document.querySelector(".main__column--todo"),
     "in-progress": document.querySelector(".main__column--in-progress"),
     completed: document.querySelector(".main__column--completed"),
+    trash: document.querySelector(".main__column--trash"),
   };
   return columns[columnName];
 };
@@ -69,7 +70,6 @@ function createTaskElement(task) {
 }
 
 // <------------------------ Delete and Move to Trash ------------------------> //
-
 function addDeleteIconEventListener(deleteIcon, taskElement) {
   deleteIcon.addEventListener("click", (event) => {
     event.stopPropagation(); // Prevent triggering the taskElement click event
@@ -94,11 +94,16 @@ function addDeleteIconEventListener(deleteIcon, taskElement) {
     // Move the task to the Trash column if it's not already there
     const trashColumn = document.querySelector(".main__column--trash");
     if (currentColumn !== "trash") {
-      appendTask(task, trashColumn, (taskElement) => {
+      appendTask(task, trashColumn, (newTaskElement) => {
         // Re-apply the saved taskId to the taskElement in the trash column
-        taskElement.dataset.taskId = taskId;
+        newTaskElement.dataset.taskId = taskId;
+
+        // Copy the classes from the original task element
+        newTaskElement.className = taskElement.className;
       });
     }
+    // Save the categories after updating the task.priority
+    saveCategories();
 
     // Update the tasksData object and save it back to local storage
     localStorage.setItem("tasks", JSON.stringify(tasksData));
@@ -129,16 +134,16 @@ export const appendTask = (task, categoryElement, callback) => {
     taskElement.classList.add("task--urgent");
   } else if (task.priority === "High") {
     taskElement.classList.add("task--high");
+  } else if (task.priority === "completed") {
+    taskElement.classList.add("task--completed");
   } else {
     taskElement.classList.add("task--low");
   }
 
+  taskElement.__data = task;
+
   // Check if categoryElement is defined before appending taskElement
   if (categoryElement) {
-    // console.log(
-    //   `Appending task to ${categoryElement.classList[1]} column: ${task.title}`
-    // );
-
     categoryElement.append(taskElement);
     if (callback && typeof callback === "function") {
       callback(taskElement);
@@ -281,5 +286,5 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
   }
-  populateTasksFromLocalStorage();
 });
+populateTasksFromLocalStorage();
