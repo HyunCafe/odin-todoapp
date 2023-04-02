@@ -19,7 +19,7 @@ class TaskCategory {
       .querySelectorAll(".task__container");
     this.taskCount = taskContainers.length;
     this.taskCountElement.textContent = this.taskCount;
-  }  
+  };
 }
 
 export const updateTaskCounters = () => {
@@ -31,7 +31,7 @@ export const updateTaskCounters = () => {
     inProgressColumnElement,
     completedColumnElement
   );
-}
+};
 
 const todoCategory = new TaskCategory(
   "todo",

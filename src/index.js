@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 import TaskCreation from "./modules/taskcreationclass.js";
 import { appendTask } from "./modules/dom-manipulation.js";
 import {
@@ -6,7 +6,7 @@ import {
   loadCategories,
   updateCategory,
   tagTracker,
-  updateTagDisplay
+  updateTagDisplay,
 } from "./modules/local-storage";
 import { updateTaskCounters } from "./modules/taskcategory.js";
 import { populateTasksFromLocalStorage } from "./modules/local-storage.js";
@@ -33,21 +33,19 @@ localStorage.setItem("tasks", JSON.stringify(tasksData));
 loadCategories();
 updateCategory();
 
-
 const sortedTagCount = tagTracker();
 updateTagDisplay(sortedTagCount, 7);
 
+// <------------------------ to Re-Add default tasks to local storage  ------------------------> //
+// defaultTasks.todo.forEach((task) => {
+//   const newTask = new TaskCreation(
+//     task.title,
+//     task.description,
+//     task.date,
+//     task.tags.split(","),
+//     task.priority,
+//     task.add
+//   );
 
-// To re add the default tasks
-defaultTasks.todo.forEach((task) => {
-  const newTask = new TaskCreation(
-    task.title,
-    task.description,
-    task.date,
-    task.tags.split(","),
-    task.priority,
-    task.add
-  );
-
-  appendTask(newTask, todoColumn);
-});
+//   appendTask(newTask, todoColumn);
+// });

@@ -33,9 +33,9 @@ Local Storage Saves:
 * The data includes all tasks, columns, tags, and their respective properties.
 
 ### Libraries Used:
-* (Date FNS)[https://github.com/date-fns/date-fns]
-* (FullCalender)[https://github.com/fullcalendar/fullcalendar]
-* (SortableJS)[https://github.com/SortableJS/Sortable]
+* [Date FNS](https://github.com/date-fns/date-fns)
+* [FullCalender](https://github.com/fullcalendar/fullcalendar)
+* [SortableJS](https://github.com/SortableJS/Sortable)
 
 
 ## Project Timeline

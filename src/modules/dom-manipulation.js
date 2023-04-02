@@ -48,11 +48,10 @@ export const appendTask = (task, categoryElement, callback) => {
   taskTags.classList.add("task__tags");
   taskTags.textContent = task.tags;
 
-const taskCreatedDate = document.createElement("span");
-taskCreatedDate.classList.add("task__created-date");
-const formattedDate = formatDateAgo(task.createdDate || new Date());
-taskCreatedDate.textContent = formattedDate;
-  
+  const taskCreatedDate = document.createElement("span");
+  taskCreatedDate.classList.add("task__created-date");
+  const formattedDate = formatDateAgo(task.createdDate || new Date());
+  taskCreatedDate.textContent = formattedDate;
 
   // Delete icon click listener
   deleteIcon.addEventListener("click", (event) => {
@@ -84,7 +83,9 @@ taskCreatedDate.textContent = formattedDate;
 
   // Check if categoryElement is defined before appending taskElement
   if (categoryElement) {
-    // console.log(`Appending task to ${categoryElement.classList[1]} column: ${task.title}`);
+    console.log(
+      `Appending task to ${categoryElement.classList[1]} column: ${task.title}`
+    );
 
     categoryElement.append(taskElement);
     if (callback && typeof callback === "function") {
@@ -179,7 +180,6 @@ form.addEventListener("submit", (event) => {
 
 // <------------------------ Update Task Display------------------------> //
 
-
 export const updateTaskDisplay = (taskElement, task) => {
   // Update the display of a task element based on the task object's properties
 };
@@ -201,7 +201,6 @@ export const showTaskDetails = (task) => {
 };
 
 // <------------------------ Sortable Task Column Initialization------------------------> //
-
 
 document.addEventListener("DOMContentLoaded", () => {
   const taskColumns = document.querySelectorAll(".main__column");

@@ -111,6 +111,35 @@ Easier to maintain
 Choose option 2 as solution
 discovered the On Drop event listener compared to on drag or click (Ended up using dragend alone)
 
+#### Local Storage Save and Load
+Create two main functions: saveCategories() and loadCategories().
+saveCategories() function:
+a. Serialize the tasksData object into a JSON string.
+b. Save the JSON string to local storage using localStorage.setItem("tasks", jsonString).
+loadCategories() function:
+a. Retrieve the JSON string from local storage using localStorage.getItem("tasks").
+b. Parse the JSON string into the tasksData object.
+c. Check if tasksData is empty or doesn't exist. If so, set tasksData to the defaultTasks object and save it back to local storage.
+In the main index.js file, call loadCategories() function at the start of the app to load the tasks from local storage.
+After loading the tasks, update the UI by calling updateCategory(), tagTracker(), and updateTagDisplay() functions.
+Whenever a task is added, edited, or deleted, call saveCategories() to save the updated tasksData object to local storage.
+When tasks are moved to the trash, update the local storage by modifying the tasksData object and calling saveCategories().
+
+#### Trash Feature
+Create a new "Trash" column in the main section, hidden by default.
+Modify the delete event handler in the dom-manipulation.js module:
+a. When a task is deleted, instead of removing it from the DOM and local storage, move it to the Trash column.
+b. Update the local storage to reflect the new state.
+Add an event listener to the "Trash" link in the left sidebar:
+a. When the link is clicked, toggle the visibility of the Trash column.
+b. Update the UI to show the Trash column as active.
+Create a new function to handle the permanent deletion of tasks from the trash:
+a. Add a "delete permanently" icon to the tasks in the Trash column.
+b. Attach an event listener to the icon.
+c. In the event handler, remove the task from the DOM and local storage, then update the task counters and related UI elements.
+Update the local-storage.js module to handle tasks in the Trash column when saving and loading data.
+
+// add a popup warning once trash icon is pressed within the trash column, saying do you want to perm delete?
 
 ----------------------------------------
 
@@ -133,3 +162,15 @@ Features Finished
 // Draggable between eachother as well as each column
 // Feat: Add counter on each column representing total tasks
 // Feat: Blue indicator for completed tasks, and listens for on drop.
+// Feat: Tags and Tag Counters
+
+
+Bugs:
+Bug with date feature not showing correctly for Default tasks (not a big deal, since new tasks are by new date())
+
+TODO: 
+- Finish the additional Details display (possibly add feature sorting by tags..)
+- Calender View with Tasks appended
+- Trash feature
+- Maybe list of completed in a linear format (between date creation and completed status)
+- Finish the aesthetic styling

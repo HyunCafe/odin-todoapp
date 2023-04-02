@@ -1,164 +1,192 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Odin To Do App</title>
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-    <link
-      href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css"
-    />
-    <link rel="stylesheet" href="styles.css" />
-  </head>
 
-  <body>
-    <!------------------------ Side Navbar Section ------------------------>
-    <div class="container">
-      <aside class="sidebar">
-        <h2 class="sidebar__title">Home</h2>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Odin To Do App</title>
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
 
-        <ul class="sidebar__menu">
-          <li class="sidebar__menu-item">
-            <i class="material-icons">today</i> Today
-          </li>
-          <li class="sidebar__menu-item">
-            <i class="material-icons">calendar_today</i> Next 7 Days
-          </li>
-          <li class="sidebar__menu-item">
-            <i class="material-icons">assignment</i> All Tasks
-          </li>
-          <li class="sidebar__menu-item" id="calendar-view">
-            <i class="material-icons">event</i> Calendar View
-          </li>
-        </ul>
+<body>
+  <!------------------------ Side Navbar Section ------------------------>
+  <div class="container">
+    <aside class="sidebar">
+      <h2 class="sidebar__title">Home</h2>
 
-        <hr class="sidebar__separator" />
+      <ul class="sidebar__menu">
+        <li class="sidebar__menu-item">
+          <i class="material-icons">today</i> Today
+        </li>
+        <li class="sidebar__menu-item">
+          <i class="material-icons">calendar_today</i> Next 7 Days
+        </li>
+        <li class="sidebar__menu-item">
+          <i class="material-icons">assignment</i> All Tasks
+        </li>
+        <li class="sidebar__menu-item" id="calendar-view">
+          <i class="material-icons">event</i> Calendar View
+        </li>
+      </ul>
 
-        <h2 class="sidebar__title">Tags</h2>
-        <ul class="sidebar__tags">
-          <!-- Add tags dynamically through DOM module -->
-        </ul>
+      <hr class="sidebar__separator" />
 
-        <hr class="sidebar__separator" />
+      <h2 class="sidebar__title">Tags</h2>
+      <ul class="sidebar__tags">
+        <!-- Add tags dynamically through DOM module -->
+      </ul>
 
-        <h2 class="sidebar__title">Status</h2>
-        <ul class="sidebar__status">
-          <li class="sidebar__status-item">In Progress</li>
-          <li class="sidebar__status-item">Completed</li>
-          <li class="sidebar__status-item">Trash</li>
-        </ul>
-      </aside>
-      <!------------------------ 3 Main Column Section ------------------------>
-      <main class="main">
-        <section class="main__column main__column--todo" data-column-name="todo">
-          <h3 class="main__column-title no-drag">
-            <span class="main__column-title__text main__column-title__text--todo">To Do: <span class="main__column-title__taskcount--todo">0</span> </span>
-    
-            <button class="main__column-title__button">+</button>
+      <hr class="sidebar__separator" />
+
+      <h2 class="sidebar__title">Status</h2>
+      <ul class="sidebar__status">
+        <li class="sidebar__status-item">In Progress</li>
+        <li class="sidebar__status-item">Completed</li>
+        <li class="sidebar__status-item">Trash</li>
+      </ul>
+    </aside>
+    <!------------------------ 3 Main Column Section ------------------------>
+    <main class="main">
+      <section class="main__column main__column--todo" data-column-name="todo">
+        <h3 class="main__column-title no-drag">
+          <span class="main__column-title__text main__column-title__text--todo">To Do: <span
+              class="main__column-title__taskcount--todo">0</span> </span>
+
+          <button class="main__column-title__button">+</button>
         </h3>
-      
-          <!-- Add tasks dynamically through DOM module -->
-        </section>
-      
-        <section class="main__column main__column--in-progress" data-column-name="in-progress">
-          <h3 class="main__column-title no-drag">
-            <span class="main__column-title__text main__column-title__text--inprogress">In Progress: <span class="main__column-title__taskcount--inprogress">0</span> </span>
-            <button class="main__column-title__button">+</button>
-          </h3>
-          <!-- Add tasks dynamically through DOM module -->
-        </section>
-      
-        <section class="main__column main__column--completed" data-column-name="completed">
-          <h3 class="main__column-title no-drag">
-            <span class="main__column-title__text main__column-title__text--completed">Completed: <span class="main__column-title__taskcount--completed">0</span> </span>
-            <button class="main__column-title__button">+</button>
-          </h3>
-          <!-- Add tasks dynamically through DOM module -->
-        </section>
-      </main>
-      
-        <!------------------------ Large Details Pop Up ------------------------>
 
-        <div class="offcanvas">
-          <div class="offcanvas__body">
-            <form class="project-form">      
-              <h1 class="project-form__title" contenteditable="true">My project</h1>
-              <button type="button" class="offcanvas__close-btn">X</button>
+        <!-- Add tasks dynamically through DOM module -->
+      </section>
 
-              <div class="input-group input-group--status">
-                <label class="input-group__label" for="statusGroup">Status</label>
-                <select class="form-select" id="statusGroup">
-                  <option value="To Do">To Do</option>
-                  <option value="In Progress">In Progress</option>
-                  <option value="Completed">Completed</option>
-                </select>
-              </div>
+      <section class="main__column main__column--in-progress" data-column-name="in-progress">
+        <h3 class="main__column-title no-drag">
+          <span class="main__column-title__text main__column-title__text--inprogress">In Progress: <span
+              class="main__column-title__taskcount--inprogress">0</span> </span>
+          <button class="main__column-title__button">+</button>
+        </h3>
+        <!-- Add tasks dynamically through DOM module -->
+      </section>
 
-              <div class="input-group input-group--priority">
-                <label class="input-group__label" for="priorityGroup">Priority</label>
-                <select class="form-select" id="priorityGroup">
-                  <option value="Urgent">Urgent</option>
-                  <option value="High">High</option>
-                  <option value="Low">Low</option>
-                </select>
-              </div>
+      <section class="main__column main__column--completed" data-column-name="completed">
+        <h3 class="main__column-title no-drag">
+          <span class="main__column-title__text main__column-title__text--completed">Completed: <span
+              class="main__column-title__taskcount--completed">0</span> </span>
+          <button class="main__column-title__button">+</button>
+        </h3>
+        <!-- Add tasks dynamically through DOM module -->
+      </section>
+    </main>
 
-              <div class="input-group input-group--tags">
-                <label class="input-group__label" for="tags">Tags</label>
-                <span class="input-group__tags">
-                  <input type="text" class="form-control" id="tags" placeholder="Enter tags" maxlength="27">
-                </span>
-              </div>
-              
-            
-              <div class="project-form__floating project-form__floating--description">
-                <label for="description-input"></label>
-                <textarea class="form-control" id="description-input" name="description" maxlength="333" placeholder="Enter description"></textarea>
-              </div>
-            
-              <div class="project-form__floating project-form__floating--actions">
-                <button type="submit" class="project-form__btn-save">Save</button>
-              </div>
-            </form>
+    <!------------------------ Trash Pop Up ------------------------>
+    <div class="trash-popup" id="trash-popup">
+      <div class="trash-popup__content">
+        <h2 class="trash-popup__title">Trash</h2>
+        <div class="trash-popup__column" data-column-name="trash">
+
+          <!-- <div class="task__container" data-task-id="1">
+            <div class="task__header">
+              <h4 class="task__title">Learn a new programming language</h4>
+              <span class="task__delete-icon material-icons">delete</span>
+            </div>
+            <p class="task__description">Choose a programming language and start learning its syntax and best practices.</p>
+            <div class="task__footer">
+              <span class="task__tags">#learning #self-improvement</span>
+              <span class="task__created-date">2 years ago</span>
+            </div>
           </div>
+
+          <div class="task__container" data-task-id="1">
+            <div class="task__header">
+              <h4 class="task__title">Learn a new programming language</h4>
+              <span class="task__delete-icon material-icons">delete</span>
+            </div>
+            <p class="task__description">Choose a programming language and start learning its syntax and best practices.</p>
+            <div class="task__footer">
+              <span class="task__tags">#learning #self-improvement</span>
+              <span class="task__created-date">2 years ago</span>
+            </div>
+          </div>
+           -->
+           
+          <!-- Add tasks dynamically through DOM module -->
         </div>
-        
-        <!------------------------ Task Form Input ------------------------>
-        <div class="resource-form-wrapper">
-          <form class="resource-form">
-            <label for="resource-input">Title:</label>
-            <input type="text" id="resource-input" name="title" required />
-            <label for="description-input">Description:</label>
-            <textarea id="description-input" name="description" maxlength="333"></textarea>
-            <label for="tags-input">Tags:</label>
-            <input
-              type="text"
-              id="tags-input"
-              name="tags"
-              maxlength="27"
-              placeholder="Enter up to 3 tags separated by #"/>
-            <label for="priority-input">Priority:</label>
-            <select id="priority-input" name="priority">
+      </div>
+    </div>
+
+
+
+    <!------------------------ Additional Details Pop Up ------------------------>
+
+    <div class="offcanvas">
+      <div class="offcanvas__body">
+        <form class="project-form">
+          <h1 class="project-form__title" contenteditable="true">My project</h1>
+          <button type="button" class="offcanvas__close-btn">X</button>
+
+          <div class="input-group input-group--status">
+            <label class="input-group__label" for="statusGroup">Status</label>
+            <select class="form-select" id="statusGroup">
+              <option value="To Do">To Do</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Completed">Completed</option>
+            </select>
+          </div>
+
+          <div class="input-group input-group--priority">
+            <label class="input-group__label" for="priorityGroup">Priority</label>
+            <select class="form-select" id="priorityGroup">
               <option value="Urgent">Urgent</option>
               <option value="High">High</option>
               <option value="Low">Low</option>
             </select>
-            <button type="submit">Add To-Do</button>
-          </form>
-        </div>
-      </main>
+          </div>
+
+          <div class="input-group input-group--tags">
+            <label class="input-group__label" for="tags">Tags</label>
+            <span class="input-group__tags">
+              <input type="text" class="form-control" id="tags" placeholder="Enter tags" maxlength="27">
+            </span>
+          </div>
+
+
+          <div class="project-form__floating project-form__floating--description">
+            <label for="description-input"></label>
+            <textarea class="form-control" id="description-input" name="description" maxlength="333"
+              placeholder="Enter description"></textarea>
+          </div>
+
+          <div class="project-form__floating project-form__floating--actions">
+            <button type="submit" class="project-form__btn-save">Save</button>
+          </div>
+        </form>
+      </div>
     </div>
-    <script
-      type="module"
-      src="/dist/main.bundle.js"
-      defer
-      crossorigin="anonymous"
-    ></script>
-  </body>
+
+    <!------------------------ Task Form Input ------------------------>
+    <div class="resource-form-wrapper">
+      <form class="resource-form">
+        <label for="resource-input">Title:</label>
+        <input type="text" id="resource-input" name="title" required />
+        <label for="description-input">Description:</label>
+        <textarea id="description-input" name="description" maxlength="333"></textarea>
+        <label for="tags-input">Tags:</label>
+        <input type="text" id="tags-input" name="tags" maxlength="27" placeholder="Enter up to 3 tags separated by #" />
+        <label for="priority-input">Priority:</label>
+        <select id="priority-input" name="priority">
+          <option value="Urgent">Urgent</option>
+          <option value="High">High</option>
+          <option value="Low">Low</option>
+        </select>
+        <button type="submit">Add To-Do</button>
+      </form>
+    </div>
+    </main>
+  </div>
+  <script type="module" src="/dist/main.bundle.js" defer crossorigin="anonymous"></script>
+</body>
+
 </html>

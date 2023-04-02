@@ -49,8 +49,8 @@ body {
 .tag {
   display: inline-block;
   background-color: #f0f0f0;
-  padding: .4em .4em;
-  margin: .3em;
+  padding: 0.4em 0.4em;
+  margin: 0.3em;
   border-radius: 5px;
   color: #333;
 }
@@ -157,7 +157,7 @@ h3 {
 }
 
 .main__column-title__taskcount {
-background-color: transparent;
+  background-color: transparent;
 }
 /* <------------------------ Task Cards/Containers ------------------------> */
 .task__container {
@@ -270,6 +270,28 @@ background-color: transparent;
 
 .sortable-drag {
   cursor: move;
+}
+
+/* <--------------------- Trash Details Section ---------------------> */
+.trash-popup {
+  /* display: none; */
+  text-align: center;
+  height: 85%;
+  width: 35%;
+  position: fixed;
+  overflow: auto;
+  top: 50%;
+  left: 50%; 
+  padding: 2em;
+  transform: translate(-50%, -50%);
+  background: rgb(255, 255, 255);
+  box-shadow: 0 0 40px rgba(172, 177, 179, 1);
+  border-radius: 10px;
+}
+
+.trash-popup__title {
+  font-size: 2rem;
+  margin-bottom: 1em;
 }
 
 /* <--------------------- Additional Details Section ---------------------> */

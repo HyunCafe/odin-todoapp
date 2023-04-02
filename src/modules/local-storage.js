@@ -38,7 +38,7 @@ export const saveCategories = (
         : taskElement.classList.contains("task--high")
         ? "High"
         : "Low";
-        const classList = [...taskElement.classList];
+      const classList = [...taskElement.classList];
 
       tasks.push({
         taskId,
@@ -141,10 +141,9 @@ export const tagTracker = () => {
   return sortedTagCount;
 };
 
-
 export const updateTagDisplay = (sortedTagCount, maxTags = 10) => {
-  const tagContainer = document.querySelector('.sidebar__tags');
-  tagContainer.textContent = '';
+  const tagContainer = document.querySelector(".sidebar__tags");
+  tagContainer.textContent = "";
 
   let displayedTags = 0;
   for (const [tag, count] of Object.entries(sortedTagCount)) {
@@ -152,10 +151,10 @@ export const updateTagDisplay = (sortedTagCount, maxTags = 10) => {
       break;
     }
 
-    const tagElement = document.createElement('span');
+    const tagElement = document.createElement("span");
     tagElement.classList.add("tag");
     tagElement.textContent = `${count} ${tag}`;
     tagContainer.append(tagElement);
     displayedTags++;
   }
-}
+};
