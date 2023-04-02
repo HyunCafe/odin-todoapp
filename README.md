@@ -122,16 +122,13 @@ Local Storage Saves:
 ##### Issue: 
 completed tasks were not retaining their priority level when they were deleted from the Completed column and moved to the Trash column. Instead, their priority level was defaulting to "low" in the Trash column.
 ##### Approach: 
-*  Checked the code that saves task data to local storage, found that it was correctly saving the priority level of completed tasks.
-*  Checked the code that deletes tasks from local storage, found that it was correctly removing tasks from local storage.
-*  Checked the code that loads tasks from local storage and renders them to the UI, found that it was correctly loading the priority level of completed tasks.
-*  Suspected the issue might be with the code that handles deleting a completed task from the Completed column.
-*  Checked the code that removes a task from the Completed column and adds it to the Trash column, found that it was not explicitly setting the priority level of the task to "completed".
-*  Added code to explicitly set the priority level of the task to "completed" when moving a completed task to the Trash column.
-*  Tested the solution by deleting a completed task from the Completed column and confirmed that the issue was resolved.
-*  Despite these changes, the issue persisted and I used breakpoints to step through the code and identify where the issue might be happening.
-*  Found that in the appendTask function, there was an assign border color based on priority level that did not include the "complete" class since it was a feature added after the fact.
-*  Added the "complete" class to the assign border color based on priority level code in the appendTask function.
-*  Tested the solution by deleting a completed task from the Completed column and confirmed that the issue was resolved.
-*  Used the Chrome debugger and console.log statements to help debug the issue and track the values of variables at various points in the code.
-*  Made changes to various modules to update saving the new Trash column to local storage and loading it correctly.
+* Checked saving task data to local storage and confirmed correct saving of priority level of completed tasks.
+* Checked deleting tasks from local storage and confirmed correct removal.
+* Checked loading tasks from local storage and rendering to UI and confirmed correct loading of priority level of completed tasks.
+* Suspected issue with deleting completed tasks from Completed column.
+* Used console logs to check priority level before and after deletion and confirmed correct state saving.
+* Used breakpoints to step through code and identified missing "complete" class in appendTask function.
+* Added "complete" class to assign border color based on priority level in appendTask function.
+* Tested solution and confirmed issue was resolved.
+* Used Chrome debugger and console.log statements to help debug and track variable values.
+* Made changes to update saving and loading of new Trash column.
