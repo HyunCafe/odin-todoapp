@@ -1,8 +1,10 @@
 "use strict";
 
 import TaskCreation from "./taskcreationclass.js";
+import { handleFormSubmit } from "./showtaskdetails";
 import { appendTask, getTaskColumn } from "./dom-manipulation.js";
 import { defaultTasks, updateTaskCounters } from "../index.js";
+import { populateOffcanvasForm } from "./showtaskdetails";
 
 // <------------------------ Save to Local Storage ------------------------> //
 export const saveCategories = () => {
@@ -111,6 +113,22 @@ export function updateCategory(
   completedColumnElement,
   taskId
 ) {}
+
+export const updateTaskElement = (taskElement, task) => {
+  // Open the offcanvas element
+  const offcanvas = document.querySelector(".offcanvas");
+  offcanvas.classList.add("offcanvas--open");
+
+  // Populate the form fields with the current task data
+  populateOffcanvasForm(task);
+
+  // Set up a new form submit event listener with the current task data
+  const form = document.querySelector(".project-form");
+  form.removeEventListener("submit", handleFormSubmit); // Remove previous event listener
+  form.addEventListener("submit", (event) =>
+    handleFormSubmit(event, taskElement, task)
+  );
+};
 
 // <------------------------ Tag Counting Feature ------------------------> //
 let tagCount = {};

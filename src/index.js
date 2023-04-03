@@ -18,7 +18,6 @@ const inProgressColumn = document.querySelector(".main__column--in-progress");
 const completedColumn = document.querySelector(".main__column--completed");
 const trashColumn = document.querySelector(".main__column--trash");
 
-
 let tasksData = JSON.parse(localStorage.getItem("tasks"));
 if (!tasksData) {
   tasksData = {

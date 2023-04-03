@@ -9,6 +9,7 @@ import {
 } from "./local-storage";
 
 import { updateTaskCounters } from "./taskcategory.js";
+import { showTaskDetails, addTaskElementClickListener } from "./showtaskdetails";
 
 let taskId = 1;
 
@@ -28,7 +29,7 @@ export const getTaskColumn = (columnName) => {
 
 function createTaskElement(task) {
   const taskElement = document.createElement("div");
-  taskElement.classList.add("task__container");
+  taskElement.classList.add("task__container", "task");
   taskElement.setAttribute("data-task-id", taskId);
 
   const taskHeader = document.createElement("div");
@@ -76,8 +77,6 @@ function addDeleteIconEventListener(deleteIcon, taskElement) {
 
     // Load tasks from local storage, parse them into an object
     const tasksData = JSON.parse(localStorage.getItem("tasks"));
-
-    // Get the task ID and current column name
     const taskId = taskElement.dataset.taskId;
     const currentColumn =
       taskElement.closest(".main__column").dataset.columnName;
@@ -102,23 +101,15 @@ function addDeleteIconEventListener(deleteIcon, taskElement) {
         newTaskElement.className = taskElement.className;
       });
     }
-    // Save the categories after updating the task.priority
     saveCategories();
 
     // Update the tasksData object and save it back to local storage
     localStorage.setItem("tasks", JSON.stringify(tasksData));
 
-    // Update the task counters and any other related UI elements
     updateTaskCounters();
   });
 }
 
-function addTaskElementClickListener(taskElement) {
-  // Add a click event listener to the task element
-  taskElement.addEventListener("click", () => {
-    // showTaskDetails(task); // Did not make this feature yet
-  });
-}
 
 // <------------------------ Append Task to Column ------------------------> //
 
@@ -251,18 +242,8 @@ export const updateTaskDisplay = (taskElement, task) => {
 
 const removeTaskFromDisplay = (taskElement) => {
   const taskId = taskElement.getAttribute("data-task-id");
-
-  // Remove the task container from the DOM
   taskElement.remove();
-
-  // Remove the task from local storage
   deleteTaskFromLocalStorage(taskId);
-};
-
-export const showTaskDetails = (task) => {
-  // Create a modal or a pop-up to display task details
-  // Populate the modal with task details (title, description, date, etc.)
-  // Add event listeners to close the modal
 };
 
 // <------------------------ Sortable Task Column Initialization------------------------> //

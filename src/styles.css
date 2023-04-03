@@ -273,7 +273,7 @@ h3 {
 
 /* <--------------------- Trash Details Section ---------------------> */
 .trash-popup {
-  /* display: none; */
+  display: none;
   text-align: center;
   height: 85%;
   width: 35%;
@@ -302,7 +302,7 @@ h3 {
   width: 45%;
   background-color: #ffffff;
   border: 2px grey solid;
-  transform: translateX(100%); /* Comment out */
+  /* transform: translateX(100%); Comment out */
   transition: transform 0.3s ease;
 }
 

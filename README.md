@@ -132,3 +132,10 @@ completed tasks were not retaining their priority level when they were deleted f
 * Tested solution and confirmed issue was resolved.
 * Used Chrome debugger and console.log statements to help debug and track variable values.
 * Made changes to update saving and loading of new Trash column.
+
+#### Update Submission Called Multiple Times
+* The issue I had was that the handleFormSubmit function was being called multiple times when a user clicked on a task element to edit it. This was because the taskClickHandler function was calling the handleFormSubmit function each time a user clicked on a task element to edit it.
+
+* I tried a few solutions, such as removing the event listener on the task element after it was clicked and changing the event listener to use the once option, but neither of these solutions worked.
+
+* The ultimate solution I ended up with was to remove the event listener on the task element inside the handleFormSubmit function. This prevented the function from being called multiple times when a user clicked on a task element to edit it. I also added an if statement to check whether the form had been submitted before running the updateTaskElementInUI function to prevent the function from being called multiple times in a row.
