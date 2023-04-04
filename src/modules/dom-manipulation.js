@@ -1,5 +1,6 @@
 "use strict";
 
+import { isValid, formatDistance, parseISO } from "date-fns";
 import Sortable from "sortablejs";
 import {
   saveCategories,
@@ -7,9 +8,12 @@ import {
   deleteTaskFromLocalStorage,
   populateTasksFromLocalStorage,
 } from "./local-storage";
-
+import { TaskCreation, createTaskFromObject } from "./taskcreationclass.js";
 import { updateTaskCounters } from "./taskcategory.js";
-import { showTaskDetails, addTaskElementClickListener } from "./showtaskdetails";
+import {
+  showTaskDetails,
+  addTaskElementClickListener,
+} from "./showtaskdetails";
 
 let taskId = 1;
 
@@ -54,16 +58,26 @@ function createTaskElement(task) {
   taskTags.classList.add("task__tags");
   taskTags.textContent = task.tags;
 
-  const taskCreatedDate = document.createElement("span");
-  taskCreatedDate.classList.add("task__created-date");
-  const formattedDate = formatDateAgo(task.createdDate || new Date());
-  taskCreatedDate.textContent = formattedDate;
+  const taskDueDate = document.createElement("span");
+  taskDueDate.classList.add("task__due-date");
+
+  if (typeof task.dueDate === "string") {
+    task.dueDate = parseISO(task.dueDate);
+  }
+
+  if (isValid(task.dueDate)) {
+    const formattedDueDate = formatDistance(task.dueDate, new Date(), {
+      addSuffix: true,
+    });
+    taskDueDate.textContent = `Due: ${formattedDueDate}`;
+  } else {
+  }
 
   taskHeader.append(taskTitle);
   taskHeader.append(deleteIcon);
   taskElement.append(taskHeader);
   taskElement.append(taskDescription);
-  taskFooter.append(taskCreatedDate);
+  taskFooter.append(taskDueDate);
   taskFooter.append(taskTags);
   taskElement.append(taskFooter);
 
@@ -110,7 +124,6 @@ function addDeleteIconEventListener(deleteIcon, taskElement) {
   });
 }
 
-
 // <------------------------ Append Task to Column ------------------------> //
 
 export const appendTask = (task, categoryElement, callback) => {
@@ -147,6 +160,7 @@ export const appendTask = (task, categoryElement, callback) => {
       document.querySelector(".main__column--trash")
     );
   }
+
   // Add a event listener to the task element for Complete Color Code
   let taskCompleted = false;
   const completedColumn = document.querySelector(".main__column--completed");
@@ -175,64 +189,6 @@ export const appendTask = (task, categoryElement, callback) => {
 
   taskId++;
 };
-
-// <------------------------ Custom Helper Date Function ------------------------> //
-
-function formatDateAgo(dateString) {
-  const date = new Date(dateString);
-  const now = new Date();
-  const monthsDifference = Math.floor(
-    (now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24 * 30)
-  );
-
-  return monthsDifference > 1
-    ? `${monthsDifference} Months Ago`
-    : monthsDifference === 1
-    ? "1 Month Ago"
-    : "Less than a Month Ago";
-}
-
-// <------------------------ Append New Form Submission Cards  ------------------------> //
-
-const form = document.querySelector(".resource-form");
-
-form.addEventListener("submit", (event) => {
-  event.preventDefault();
-
-  // Get the input values
-  const title = event.target.elements.title.value;
-  const description = event.target.elements.description.value;
-  const tags = event.target.elements.tags.value;
-  const priority = event.target.elements.priority.value;
-
-  // Create the task object
-  const task = {
-    title,
-    description,
-    tags,
-    priority,
-  };
-
-  // Call the appendTask function with the task object and the categoryElement
-  const categoryElement = document.querySelector(".main__column--todo");
-  appendTask(task, categoryElement);
-
-  // Save the task to local storage
-  const todoColumnElement = document.querySelector(".main__column--todo");
-  const inProgressColumnElement = document.querySelector(
-    ".main__column--in-progress"
-  );
-  const completedColumnElement = document.querySelector(
-    ".main__column--completed"
-  );
-  const trashColumnElement = document.querySelector(".main__column--trash");
-  saveCategories(
-    todoColumnElement,
-    inProgressColumnElement,
-    completedColumnElement,
-    trashColumnElement
-  );
-});
 
 // <------------------------ Update Task Display------------------------> //
 

@@ -1,13 +1,13 @@
 "use strict";
 
-import TaskCreation from "./taskcreationclass.js";
+import { TaskCreation, createTaskFromObject } from "./taskcreationclass.js";
 import { handleFormSubmit } from "./showtaskdetails";
 import { appendTask, getTaskColumn } from "./dom-manipulation.js";
 import { defaultTasks, updateTaskCounters } from "../index.js";
 import { populateOffcanvasForm } from "./showtaskdetails";
 
 // <------------------------ Save to Local Storage ------------------------> //
-export const saveCategories = () => {
+export const saveCategories = (tasks) => {
   const columns = ["todo", "in-progress", "completed", "trash"];
   const tasksData = {};
 
@@ -24,7 +24,6 @@ export const saveCategories = () => {
         taskElement.querySelector(".task__description").textContent;
       const tags = taskElement.querySelector(".task__tags").textContent;
       const task = taskElement.__data;
-      const createdDate = task.createdDate;
       const priority = taskElement.classList.contains("task--completed")
         ? "task--completed"
         : taskElement.classList.contains("task--urgent")
@@ -39,9 +38,9 @@ export const saveCategories = () => {
         title,
         description,
         tags,
-        createdDate,
         priority,
         taskClasses: Array.from(taskElement.classList),
+        dueDate: task.dueDate ? new Date(task.dueDate).toISOString() : null,
       });
     });
 
@@ -71,16 +70,7 @@ export const populateTasksFromLocalStorage = () => {
       const taskList = tasks[columnName];
       if (Array.isArray(taskList)) {
         taskList.forEach((task) => {
-          const taskObj = new TaskCreation(
-            task.title,
-            task.description,
-            task.createdDate,
-            task.tags,
-            task.priority,
-            false,
-            "",
-            task.taskId
-          );
+          const taskObj = createTaskFromObject(task);
           const columnElement = getTaskColumn(columnName);
           appendTask(taskObj, columnElement, (taskElement) => {
             taskElement.className = "";
@@ -91,6 +81,7 @@ export const populateTasksFromLocalStorage = () => {
     });
   }
 };
+
 // <------------------------ Delete from Local Storage ------------------------> //
 
 export const deleteTaskFromLocalStorage = (taskId) => {

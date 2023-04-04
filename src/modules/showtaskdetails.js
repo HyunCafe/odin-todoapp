@@ -11,6 +11,7 @@ export const populateOffcanvasForm = (task) => {
   const descriptionInput = document.querySelector("#description-input");
   const statusInput = document.querySelector("#statusGroup");
   const priorityInput = document.querySelector("#priorityGroup");
+  const dateInput = document.querySelector("#due-date");
   const tagsInput = document.querySelector("#tags");
 
   titleInput.textContent = task.title;
@@ -24,6 +25,8 @@ export const populateOffcanvasForm = (task) => {
     : "To Do";
   statusInput.value = statusValue;
   priorityInput.value = task.priority;
+  dateInput.value = task.dueDate ? task.dueDate.substring(0, 10) : "";
+
   tagsInput.value = task.tags;
 };
 
@@ -115,6 +118,11 @@ export const handleFormSubmit = (event, taskElement, task) => {
   const statusInput = document.querySelector("#statusGroup");
   task.status = statusInput.value;
 
+  const dueDateInput = document.querySelector("#due-date");
+  task.dueDate = dueDateInput.value
+    ? new Date(dueDateInput.value).toISOString()
+    : null;
+
   const priorityInput = document.querySelector("#priorityGroup");
   task.priority = priorityInput.value;
 
@@ -126,7 +134,11 @@ export const handleFormSubmit = (event, taskElement, task) => {
 
   updateTaskElement(taskElement, task);
   updateTaskElementInUI(task.taskId, task);
-  saveCategories();
+
+  // Get all tasks after the update
+  const tasks = loadCategories();
+  // Save the tasks to localStorage
+  saveCategories(tasks);
 
   // Hide the offcanvas element
   const offcanvas = document.querySelector(".offcanvas");
@@ -145,6 +157,16 @@ export const updateTaskElementInUI = (taskId, updatedTask) => {
 
   const titleElement = taskElement.querySelector(".task__title");
   titleElement.textContent = updatedTask.title;
+  const dueDateElement = taskElement.querySelector(".task__due-date");
+  dueDateElement.textContent = new Date(
+    updatedTask.dueDate
+  ).toLocaleDateString();
+
+  if (updatedTask.dueDate) {
+    dueDateElement.textContent = new Date(
+      updatedTask.dueDate
+    ).toLocaleDateString();
+  }
 
   const descriptionElement = taskElement.querySelector(".task__description");
   descriptionElement.textContent = updatedTask.description;
