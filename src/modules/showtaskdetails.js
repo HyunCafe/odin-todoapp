@@ -138,11 +138,9 @@ export const handleFormSubmit = (event, taskElement, task) => {
   }, 1000);
 };
 
-
 // <------------------------ Submit New Detail changes ------------------------> //
 
 export const updateTaskElementInUI = (taskId, updatedTask) => {
-
   const taskElement = document.querySelector(`[data-task-id="${taskId}"]`);
 
   const titleElement = taskElement.querySelector(".task__title");
@@ -154,40 +152,44 @@ export const updateTaskElementInUI = (taskId, updatedTask) => {
   const tagsElement = taskElement.querySelector(".task__tags");
   tagsElement.textContent = updatedTask.tags.join(", ");
 
-  taskElement.classList.remove("task--urgent", "task--high", "task--low", "task--completed");
+  taskElement.classList.remove(
+    "task--urgent",
+    "task--high",
+    "task--low",
+    "task--completed"
+  );
 
-switch (updatedTask.priority) {
-  case "Urgent":
-    taskElement.classList.remove(
-      "task--high",
-      "task--completed",
-      "task--low"
-    );
-    taskElement.classList.add("task--urgent");
-    break;
-  case "High":
-    taskElement.classList.remove(
-      "task--urgent",
-      "task--completed",
-      "task--low"
-    );
-    taskElement.classList.add("task--high");
-    break;
-  case "Low":
-    taskElement.classList.remove(
-      "task--urgent",
-      "task--completed",
-      "task--high"
-    );
-    taskElement.classList.add("task--low");
-    break;
-  case "task--completed":
-    taskElement.classList.add("task--completed");
-    break;
-  default:
-    break;
-}
-
+  switch (updatedTask.priority) {
+    case "Urgent":
+      taskElement.classList.remove(
+        "task--high",
+        "task--completed",
+        "task--low"
+      );
+      taskElement.classList.add("task--urgent");
+      break;
+    case "High":
+      taskElement.classList.remove(
+        "task--urgent",
+        "task--completed",
+        "task--low"
+      );
+      taskElement.classList.add("task--high");
+      break;
+    case "Low":
+      taskElement.classList.remove(
+        "task--urgent",
+        "task--completed",
+        "task--high"
+      );
+      taskElement.classList.add("task--low");
+      break;
+    case "Completed":
+      taskElement.classList.add("task--completed");
+      break;
+    default:
+      break;
+  }
 
   // Update the taskClasses array on the task element
   taskElement.__data.taskClasses = updatedTask.taskClasses;
