@@ -1,5 +1,5 @@
 "use strict";
-import TaskCreation from "./modules/taskcreationclass.js";
+import { TaskCreation, createTaskFromObject } from "./modules/taskcreationclass.js";
 import { appendTask } from "./modules/dom-manipulation.js";
 import {
   saveCategories,
@@ -39,14 +39,6 @@ updateTagDisplay(sortedTagCount, 7);
 
 // <------------------------ to Re-Add default tasks to local storage  ------------------------> //
 // defaultTasks.todo.forEach((task) => {
-//   const newTask = new TaskCreation(
-//     task.title,
-//     task.description,
-//     task.date,
-//     task.tags.split(","),
-//     task.priority,
-//     task.add
-//   );
-
+//   const newTask = createTaskFromObject(task);
 //   appendTask(newTask, todoColumn);
 // });

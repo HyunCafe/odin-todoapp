@@ -165,7 +165,7 @@ h3 {
   word-spacing: 4px;
 }
 
-.task__created-date {
+.task__due-date {
   font-size: 0.75rem;
   color: #a1a1a1;
   word-spacing: -1px;
@@ -213,7 +213,7 @@ h3 {
 /* <------------------------ Add Task Forms ------------------------> */
 
 .resource-form-wrapper {
-  display: none;
+  /* display: none; */
   position: fixed;
   top: 50%;
   left: 50%;
@@ -302,7 +302,7 @@ h3 {
   width: 45%;
   background-color: #ffffff;
   border: 2px grey solid;
-  /* transform: translateX(100%); Comment out */
+  transform: translateX(100%); /* comment out */
   transition: transform 0.3s ease;
 }
 
@@ -396,7 +396,7 @@ input.form-control {
 }
 
 .project-form__floating textarea {
-  height: 28em;
+  height: 23em;
 }
 
 .project-form__floating label {

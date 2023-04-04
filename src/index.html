@@ -37,7 +37,6 @@
 
       <h2 class="sidebar__title">Tags</h2>
       <ul class="sidebar__tags">
-        <!-- Add tags dynamically through DOM module -->
       </ul>
 
       <hr class="sidebar__separator" />
@@ -58,8 +57,6 @@
 
           <button class="main__column-title__button">+</button>
         </h3>
-
-        <!-- Add tasks dynamically through DOM module -->
       </section>
 
       <section class="main__column main__column--in-progress" data-column-name="in-progress">
@@ -68,7 +65,6 @@
               class="main__column-title__taskcount--inprogress">0</span> </span>
           <button class="main__column-title__button">+</button>
         </h3>
-        <!-- Add tasks dynamically through DOM module -->
       </section>
 
       <section class="main__column main__column--completed" data-column-name="completed">
@@ -77,7 +73,6 @@
               class="main__column-title__taskcount--completed">0</span> </span>
           <button class="main__column-title__button">+</button>
         </h3>
-        <!-- Add tasks dynamically through DOM module -->
       </section>
     </main>
 
@@ -86,7 +81,6 @@
       <div class="trash-popup__content">
         <h2 class="trash-popup__title">Trash</h2>
         <div class="trash-popup__column main__column main__column--trash" data-column-name="trash">
-          <!-- Add tasks dynamically through DOM module -->
         </div>
       </div>
     </div>
@@ -118,6 +112,12 @@
             </select>
           </div>
 
+          <div class="input-group input-group--due-date">
+            <label class="input-group__label" for="due-date">Due Date</label>
+            <input type="date" class="form-control" id="due-date">
+          </div>
+          
+
           <div class="input-group input-group--tags">
             <label class="input-group__label" for="tags">Tags</label>
             <span class="input-group__tags">
@@ -138,28 +138,7 @@
         </form>
       </div>
     </div>
-
-    <!------------------------ Task Form Input ------------------------>
-    <div class="resource-form-wrapper">
-      <form class="resource-form">
-        <label for="resource-input">Title:</label>
-        <input type="text" id="resource-input" name="title" required />
-        <label for="description-input">Description:</label>
-        <textarea id="description-input" name="description" maxlength="333"></textarea>
-        <label for="tags-input">Tags:</label>
-        <input type="text" id="tags-input" name="tags" maxlength="27" placeholder="Enter up to 3 tags separated by #" />
-        <label for="priority-input">Priority:</label>
-        <select id="priority-input" name="priority">
-          <option value="Urgent">Urgent</option>
-          <option value="High">High</option>
-          <option value="Low">Low</option>
-        </select>
-        <button type="submit">Add To-Do</button>
-      </form>
-    </div>
-    </main>
-  </div>
+    
   <script type="module" src="/dist/main.bundle.js" defer crossorigin="anonymous"></script>
 </body>
-
 </html>
