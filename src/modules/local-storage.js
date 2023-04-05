@@ -7,103 +7,39 @@ import { defaultTasks, updateTaskCounters } from "../index.js";
 import { populateOffcanvasForm } from "./showtaskdetails";
 
 // <------------------------ Save to Local Storage ------------------------> //
-export const saveCategories = (tasks) => {
-  const columns = ["todo", "in-progress", "completed", "trash"];
-  const tasksData = {};
 
-  columns.forEach((columnName) => {
-    const taskElements = document.querySelectorAll(
-      `.main__column--${columnName} .task__container`
-    );
+export const WebStorageAPI = {
+  keyName: "Tasks",
+  save(tasksData) {
+    localStorage.setItem(this.keyName, JSON.stringify(tasksData));
+  },
+  load() {
+    const tasksData = JSON.parse(localStorage.getItem(this.keyName)) || {
+      todo: [],
+      "in-progress": [],
+      completed: [],
+      trash: [],
+    };
 
-    const tasks = [];
-    taskElements.forEach((taskElement) => {
-      const taskId = taskElement.dataset.taskId;
-      const title = taskElement.querySelector(".task__title").textContent;
-      const description =
-        taskElement.querySelector(".task__description").textContent;
-      const tags = taskElement.querySelector(".task__tags").textContent;
-      const task = taskElement.__data;
-      const priority = taskElement.classList.contains("task--completed")
-        ? "task--completed"
-        : taskElement.classList.contains("task--urgent")
-        ? "Urgent"
-        : taskElement.classList.contains("task--high")
-        ? "High"
-        : "Low";
-      const classList = [...taskElement.classList];
-
-      tasks.push({
-        taskId,
-        title,
-        description,
-        tags,
-        priority,
-        taskClasses: Array.from(taskElement.classList),
-        dueDate: task.dueDate ? new Date(task.dueDate).toISOString() : null,
-      });
-    });
-
-    tasksData[columnName] = tasks;
-  });
-
-  localStorage.setItem("tasks", JSON.stringify(tasksData));
+    return tasksData;
+  },
 };
-
-// <------------------------ Load from Local Storage ------------------------> //
-export function loadCategories() {
-  const tasksData = JSON.parse(localStorage.getItem("tasks")) || {
-    todo: [],
-    "in-progress": [],
-    completed: [],
-    trash: [],
-  };
-
-  return tasksData;
-}
-
-export const populateTasksFromLocalStorage = () => {
-  const tasks = JSON.parse(localStorage.getItem("tasks"));
-
-  if (tasks) {
-    Object.keys(tasks).forEach((columnName) => {
-      const taskList = tasks[columnName];
-      if (Array.isArray(taskList)) {
-        taskList.forEach((task) => {
-          const taskObj = createTaskFromObject(task);
-          const columnElement = getTaskColumn(columnName);
-          appendTask(taskObj, columnElement, (taskElement) => {
-            taskElement.className = "";
-            task.taskClasses.forEach((cls) => taskElement.classList.add(cls));
-          });
-        });
-      }
-    });
-  }
-};
-
+// localStorage.clear()
 // <------------------------ Delete from Local Storage ------------------------> //
 
 export const deleteTaskFromLocalStorage = (taskId) => {
-  const categories = loadCategories();
+  const tasksData = WebStorageAPI.load();
 
-  Object.keys(categories).forEach((category) => {
-    categories[category] = categories[category].filter(
+  Object.keys(tasksData).forEach((columnName) => {
+    tasksData[columnName] = tasksData[columnName].filter(
       (task) => task.taskId !== taskId
     );
   });
 
-  localStorage.setItem("tasks", JSON.stringify(categories));
+  WebStorageAPI.save(tasksData);
 };
 
 // <------------------------ Update to Local Storage ------------------------> //
-
-export function updateCategory(
-  todoColumnElement,
-  inProgressColumnElement,
-  completedColumnElement,
-  taskId
-) {}
 
 export const updateTaskElement = (taskElement, task) => {
   // Open the offcanvas element
@@ -125,9 +61,10 @@ export const updateTaskElement = (taskElement, task) => {
 let tagCount = {};
 
 export const tagTracker = () => {
-  const categories = loadCategories();
-  Object.keys(categories).forEach((columnName) => {
-    const taskList = categories[columnName];
+  const tasks = WebStorageAPI.load();
+
+  Object.keys(tasks).forEach((columnName) => {
+    const taskList = tasks[columnName];
     taskList.forEach((task) => {
       const tags = task.tags.split(" #");
       tags.forEach((tag) => {

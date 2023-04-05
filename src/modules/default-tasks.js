@@ -1,5 +1,8 @@
 "use strict";
 
+import { WebStorageAPI } from "./local-storage";
+
+
 export const defaultTasks = {
   todo: [
     {
@@ -43,3 +46,5 @@ export const defaultTasks = {
   completed: [],
   trash: [],
 };
+
+WebStorageAPI.save(defaultTasks);

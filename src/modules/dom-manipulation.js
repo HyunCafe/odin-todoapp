@@ -1,19 +1,10 @@
 "use strict";
 
 import { isValid, formatDistance, parseISO } from "date-fns";
-import Sortable from "sortablejs";
-import {
-  saveCategories,
-  loadCategories,
-  deleteTaskFromLocalStorage,
-  populateTasksFromLocalStorage,
-} from "./local-storage";
+import { WebStorageAPI, deleteTaskFromLocalStorage } from "./local-storage";
 import { TaskCreation, createTaskFromObject } from "./taskcreationclass.js";
 import { updateTaskCounters } from "./taskcategory.js";
-import {
-  showTaskDetails,
-  addTaskElementClickListener,
-} from "./showtaskdetails";
+import {} from "./showtaskdetails";
 
 let taskId = 1;
 
@@ -31,7 +22,7 @@ export const getTaskColumn = (columnName) => {
 
 // <------------------------ Create Task Element ------------------------> //
 
-function createTaskElement(task) {
+function createTaskElement(taskData) {
   const taskElement = document.createElement("div");
   taskElement.classList.add("task__container", "task");
   taskElement.setAttribute("data-task-id", taskId);
@@ -41,7 +32,7 @@ function createTaskElement(task) {
 
   const taskTitle = document.createElement("h4");
   taskTitle.classList.add("task__title");
-  taskTitle.textContent = task.title;
+  taskTitle.textContent = taskData.title;
 
   const deleteIcon = document.createElement("span");
   deleteIcon.classList.add("task__delete-icon", "material-icons");
@@ -49,24 +40,24 @@ function createTaskElement(task) {
 
   const taskDescription = document.createElement("p");
   taskDescription.classList.add("task__description");
-  taskDescription.textContent = task.description;
+  taskDescription.textContent = taskData.description;
 
   const taskFooter = document.createElement("div");
   taskFooter.classList.add("task__footer");
 
   const taskTags = document.createElement("span");
   taskTags.classList.add("task__tags");
-  taskTags.textContent = task.tags;
+  taskTags.textContent = taskData.tags;
 
   const taskDueDate = document.createElement("span");
   taskDueDate.classList.add("task__due-date");
 
-  if (typeof task.dueDate === "string") {
-    task.dueDate = parseISO(task.dueDate);
+  if (typeof taskData.dueDate === "string") {
+    taskData.dueDate = parseISO(taskData.dueDate);
   }
 
-  if (isValid(task.dueDate)) {
-    const formattedDueDate = formatDistance(task.dueDate, new Date(), {
+  if (isValid(taskData.dueDate)) {
+    const formattedDueDate = formatDistance(taskData.dueDate, new Date(), {
       addSuffix: true,
     });
     taskDueDate.textContent = `Due: ${formattedDueDate}`;
@@ -80,7 +71,7 @@ function createTaskElement(task) {
   taskFooter.append(taskDueDate);
   taskFooter.append(taskTags);
   taskElement.append(taskFooter);
-
+  // Add the click event listener to the task element
   return taskElement;
 }
 
@@ -90,7 +81,7 @@ function addDeleteIconEventListener(deleteIcon, taskElement) {
     event.stopPropagation(); // Prevent triggering the taskElement click event
 
     // Load tasks from local storage, parse them into an object
-    const tasksData = JSON.parse(localStorage.getItem("tasks"));
+    const tasksData = JSON.parse(localStorage.getItem("Tasks"));
     const taskId = taskElement.dataset.taskId;
     const currentColumn =
       taskElement.closest(".main__column").dataset.columnName;
@@ -115,23 +106,27 @@ function addDeleteIconEventListener(deleteIcon, taskElement) {
         newTaskElement.className = taskElement.className;
       });
     }
-    saveCategories();
+    WebStorageAPI.save(tasksData);
 
     // Update the tasksData object and save it back to local storage
-    localStorage.setItem("tasks", JSON.stringify(tasksData));
+    localStorage.setItem("Tasks", JSON.stringify(tasksData));
 
-    updateTaskCounters();
+    updateTaskCounters(tasksData);
   });
 }
 
 // <------------------------ Append Task to Column ------------------------> //
-
 export const appendTask = (task, categoryElement, callback) => {
+  console.log(
+    "Appending task to column:",
+    categoryElement.getAttribute("data-column-name"),
+    task
+  );
+
   const taskElement = createTaskElement(task);
   const deleteIcon = taskElement.querySelector(".task__delete-icon");
 
   addDeleteIconEventListener(deleteIcon, taskElement);
-  addTaskElementClickListener(taskElement);
 
   // Assign border color based on priority level
   if (task.priority === "Urgent") {
@@ -153,12 +148,7 @@ export const appendTask = (task, categoryElement, callback) => {
       callback(taskElement);
     }
     // Save the categories to local storage
-    saveCategories(
-      document.querySelector(".main__column--todo"),
-      document.querySelector(".main__column--in-progress"),
-      document.querySelector(".main__column--completed"),
-      document.querySelector(".main__column--trash")
-    );
+    WebStorageAPI.save(WebStorageAPI.load()); // Load the tasksData from local storage
   }
 
   // Add a event listener to the task element for Complete Color Code
@@ -179,22 +169,13 @@ export const appendTask = (task, categoryElement, callback) => {
       taskContainer.classList.remove("task--completed");
     }
     // Save the categories to local storage
-    saveCategories(
-      document.querySelector(".main__column--todo"),
-      document.querySelector(".main__column--in-progress"),
-      document.querySelector(".main__column--completed"),
-      document.querySelector(".main__column--trash")
-    );
+    WebStorageAPI.save(WebStorageAPI.load()); // Load the tasksData from local storage
   });
 
   taskId++;
 };
 
 // <------------------------ Update Task Display------------------------> //
-
-export const updateTaskDisplay = (taskElement, task) => {
-  // Update the display of a task element based on the task object's properties
-};
 
 const removeTaskFromDisplay = (taskElement) => {
   const taskId = taskElement.getAttribute("data-task-id");
@@ -203,25 +184,19 @@ const removeTaskFromDisplay = (taskElement) => {
 };
 
 // <------------------------ Sortable Task Column Initialization------------------------> //
-
 document.addEventListener("DOMContentLoaded", () => {
   const taskColumns = document.querySelectorAll(".main__column");
+  const tasksData = {};
 
-  if (taskColumns.length) {
-    taskColumns.forEach((column) => {
-      const sortable = new Sortable(column, {
-        animation: 150,
-        ghostClass: "sortable-ghost",
-        chosenClass: "sortable-chosen",
-        dragClass: "sortable-drag",
-        group: {
-          name: column.getAttribute("data-column-name"),
-          pull: true,
-          put: true,
-        },
-        draggable: ".task__container",
-      });
-    });
-  }
+  taskColumns.forEach((column) => {
+    const columnName = column.getAttribute("data-column-name");
+    const tasks = Array.from(column.querySelectorAll(".task__container")).map(
+      (taskElement) => taskElement.__data
+    );
+    console.log("Tasks in column", columnName, tasks);
+
+    tasksData[columnName] = tasks;
+  });
+
+  WebStorageAPI.save(tasksData);
 });
-populateTasksFromLocalStorage();

@@ -1,10 +1,6 @@
 "use strict";
 import Sortable from "sortablejs";
-import {
-  saveCategories,
-  loadCategories,
-  updateCategory,
-} from "./local-storage";
+import { WebStorageAPI, updateCategory } from "./local-storage";
 
 class TaskCategory {
   constructor(name, taskCountElement) {
@@ -22,23 +18,14 @@ class TaskCategory {
   };
 }
 
-export const updateTaskCounters = () => {
-  todoCategory.updateTaskCountFromDOM();
-  inProgressCategory.updateTaskCountFromDOM();
-  completedCategory.updateTaskCountFromDOM();
-  saveCategories(
-    toDoColumnElement,
-    inProgressColumnElement,
-    completedColumnElement
-  );
-};
+const tasksData = WebStorageAPI.load();
 
 const todoCategory = new TaskCategory(
   "todo",
   document.querySelector(".main__column-title__taskcount--todo")
 );
 const inProgressCategory = new TaskCategory(
-  "inProgress",
+  "in-progress",
   document.querySelector(".main__column-title__taskcount--inprogress")
 );
 const completedCategory = new TaskCategory(
@@ -56,23 +43,42 @@ const completedColumnElement = document.querySelector(
 
 const todoSortable = new Sortable(toDoColumnElement, {
   group: "shared",
-  onEnd: updateTaskCounters,
+  onEnd: () => updateTaskCounters(tasksData),
   draggable: ".task__container:not(.no-drag)",
 });
 
 const inProgressSortable = new Sortable(inProgressColumnElement, {
   group: "shared",
-  onEnd: updateTaskCounters,
+  onEnd: () => updateTaskCounters(tasksData),
   draggable: ".task__container:not(.no-drag)",
 });
 
 const completedSortable = new Sortable(completedColumnElement, {
   group: "shared",
-  onEnd: updateTaskCounters,
+  onEnd: () => updateTaskCounters(tasksData),
   draggable: ".task__container:not(.no-drag)",
 });
 
+export const updateTaskCounters = () => {
+  todoCategory.updateTaskCountFromDOM();
+  inProgressCategory.updateTaskCountFromDOM();
+  completedCategory.updateTaskCountFromDOM();
+
+  // update tasks data
+  tasksData.todo = Array.from(
+    toDoColumnElement.querySelectorAll(".task__container")
+  ).map((taskElement) => taskElement.__data);
+  tasksData["in-progress"] = Array.from(
+    inProgressColumnElement.querySelectorAll(".task__container")
+  ).map((taskElement) => taskElement.__data);
+  tasksData.completed = Array.from(
+    completedColumnElement.querySelectorAll(".task__container")
+  ).map((taskElement) => taskElement.__data);
+
+  // save to local storage
+  WebStorageAPI.save(tasksData);
+};
+
 document.addEventListener("DOMContentLoaded", () => {
-  loadCategories();
   updateTaskCounters();
 });
