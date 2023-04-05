@@ -3,9 +3,10 @@
 import { WebStorageAPI } from "./local-storage";
 
 
-export const defaultTasks = {
+const defaultTasks = {
   todo: [
     {
+      taskId: "1",
       title: "Learn a new programming language",
       description:
         "Choose a programming language and start learning its syntax and best practices.",
@@ -15,6 +16,7 @@ export const defaultTasks = {
       add: true,
     },
     {
+      taskId: "2",
       title: "Finish building a to-do app",
       description:
         "Complete the final touches on the to-do app, such as adding a due date feature or enabling drag and drop functionality.",
@@ -24,6 +26,7 @@ export const defaultTasks = {
       add: true,
     },
     {
+      taskId: "3",
       title: "Read a programming book",
       description:
         "Choose a programming book and aim to read at least one chapter per day.",
@@ -33,6 +36,7 @@ export const defaultTasks = {
       add: true,
     },
     {
+      taskId: "4",
       title: "Contribute to an open source project",
       description:
         "Find an open source project that interests you and make a contribution, such as fixing a bug or implementing a new feature.",
@@ -47,4 +51,9 @@ export const defaultTasks = {
   trash: [],
 };
 
-WebStorageAPI.save(defaultTasks);
+
+let Tasks = WebStorageAPI.load();
+if (!Tasks) {
+  Tasks = defaultTasks;
+  WebStorageAPI.save(Tasks);
+}

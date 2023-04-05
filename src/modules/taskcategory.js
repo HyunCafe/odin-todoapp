@@ -1,84 +1,50 @@
 "use strict";
 import Sortable from "sortablejs";
-import { WebStorageAPI, updateCategory } from "./local-storage";
+import { WebStorageAPI } from "./local-storage";
 
-class TaskCategory {
-  constructor(name, taskCountElement) {
-    this.name = name;
-    this.taskCount = 0;
-    this.taskCountElement = taskCountElement;
-  }
 
-  updateTaskCountFromDOM = () => {
-    const taskContainers = this.taskCountElement
-      .closest(".main__column")
-      .querySelectorAll(".task__container");
-    this.taskCount = taskContainers.length;
-    this.taskCountElement.textContent = this.taskCount;
-  };
-}
-
-const tasksData = WebStorageAPI.load();
-
-const todoCategory = new TaskCategory(
-  "todo",
-  document.querySelector(".main__column-title__taskcount--todo")
-);
-const inProgressCategory = new TaskCategory(
-  "in-progress",
-  document.querySelector(".main__column-title__taskcount--inprogress")
-);
-const completedCategory = new TaskCategory(
-  "completed",
-  document.querySelector(".main__column-title__taskcount--completed")
-);
-
-const toDoColumnElement = document.querySelector(".main__column--todo");
-const inProgressColumnElement = document.querySelector(
-  ".main__column--in-progress"
-);
-const completedColumnElement = document.querySelector(
-  ".main__column--completed"
-);
-
-const todoSortable = new Sortable(toDoColumnElement, {
-  group: "shared",
-  onEnd: () => updateTaskCounters(tasksData),
-  draggable: ".task__container:not(.no-drag)",
-});
-
-const inProgressSortable = new Sortable(inProgressColumnElement, {
-  group: "shared",
-  onEnd: () => updateTaskCounters(tasksData),
-  draggable: ".task__container:not(.no-drag)",
-});
-
-const completedSortable = new Sortable(completedColumnElement, {
-  group: "shared",
-  onEnd: () => updateTaskCounters(tasksData),
-  draggable: ".task__container:not(.no-drag)",
-});
-
-export const updateTaskCounters = () => {
-  todoCategory.updateTaskCountFromDOM();
-  inProgressCategory.updateTaskCountFromDOM();
-  completedCategory.updateTaskCountFromDOM();
-
-  // update tasks data
-  tasksData.todo = Array.from(
-    toDoColumnElement.querySelectorAll(".task__container")
-  ).map((taskElement) => taskElement.__data);
-  tasksData["in-progress"] = Array.from(
-    inProgressColumnElement.querySelectorAll(".task__container")
-  ).map((taskElement) => taskElement.__data);
-  tasksData.completed = Array.from(
-    completedColumnElement.querySelectorAll(".task__container")
-  ).map((taskElement) => taskElement.__data);
-
-  // save to local storage
-  WebStorageAPI.save(tasksData);
+const columns = {
+  "todo": document.querySelector(".main__column--todo"),
+  "in-progress": document.querySelector(".main__column--in-progress"),
+  "completed": document.querySelector(".main__column--completed")
 };
 
-document.addEventListener("DOMContentLoaded", () => {
-  updateTaskCounters();
-});
+const columnsCount = {
+  'todoCount': document.querySelector('.main__column-title__taskcount--todo'),
+  'inProgressCount': document.querySelector('.main__column-title__taskcount--inprogress'),
+  'completedCount': document.querySelector('.main__column-title__taskcount--completed')
+};
+
+""
+const sortableOptions = {
+  group: "shared",
+  onEnd: () => updateTaskCounters(),
+  draggable: ".task__container:not(.no-drag)",
+};
+
+const sortableColumns = Object.entries(columns).reduce((acc, [key, value]) => {
+  acc[key] = new Sortable(value, sortableOptions);
+  return acc;
+}, {});
+
+export const updateTaskCounters = () => {
+  const columnKeys = Object.keys(columns);
+
+  for (let i = 0; i < columnKeys.length; i++) {
+    const column = columnKeys[i];
+    const taskCount = sortableColumns[column].el.querySelectorAll(".task__container").length;
+
+    let columnCountKey;
+    if (column === 'todo') {
+      columnCountKey = 'todoCount';
+    } else if (column === 'in-progress') {
+      columnCountKey = 'inProgressCount';
+    } else if (column === 'completed') {
+      columnCountKey = 'completedCount';
+    }
+
+    if (columnsCount[columnCountKey]) {
+      columnsCount[columnCountKey].textContent = taskCount;
+    }
+  }
+};

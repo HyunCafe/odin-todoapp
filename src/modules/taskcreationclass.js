@@ -13,22 +13,23 @@ export class TaskCreation {
     title,
     description,
     tags = [],
-    priority,
-    add,
+    priority = 1,
+    add = false,
     content = "",
-    taskId,
-    dueDate
+    taskId = '',
+    dueDate = null
   ) {
     this.#id = taskId || new Date().getTime().toString();
     this.#title = title;
     this.#description = description;
-    this.#tags = tags || [];
-    this.#priority = priority || 1;
-    this.#add = add || false;
+    this.#tags = tags;
+    this.#priority = priority;
+    this.#add = add;
     this.#completed = false;
     this.#content = content;
-    this.#dueDate = dueDate ? new Date(dueDate) : new Date();
+    this.#dueDate = dueDate ? new Date(dueDate) : null;
   }
+
 
   get id() {
     return this.#id;
@@ -100,14 +101,14 @@ export class TaskCreation {
 }
 
 export const createTaskFromObject = (task) => {
-  return new TaskCreation(
+  const newTask = new TaskCreation(
     task.title,
     task.description,
     task.tags.split(","),
     task.priority,
-    task.add,
-    task.content,
     task.taskId,
     task.dueDate
   );
+  newTask.content = task.content; // set the content separately
+  return newTask;
 };

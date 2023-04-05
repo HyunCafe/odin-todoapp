@@ -1,61 +1,38 @@
 "use strict";
 
-import { TaskCreation, createTaskFromObject } from "./taskcreationclass.js";
 import { handleFormSubmit } from "./showtaskdetails";
-import { appendTask, getTaskColumn } from "./dom-manipulation.js";
-import { defaultTasks, updateTaskCounters } from "../index.js";
-import { populateOffcanvasForm } from "./showtaskdetails";
+import {} from "./showtaskdetails";
 
 // <------------------------ Save to Local Storage ------------------------> //
 
 export const WebStorageAPI = {
-  keyName: "Tasks",
-  save(tasksData) {
-    localStorage.setItem(this.keyName, JSON.stringify(tasksData));
-  },
   load() {
-    const tasksData = JSON.parse(localStorage.getItem(this.keyName)) || {
-      todo: [],
-      "in-progress": [],
-      completed: [],
-      trash: [],
-    };
+    const Tasks = localStorage.getItem("Tasks");
+    // console.log("Tasks data:", Tasks);
+    return JSON.parse(Tasks);
+  },
 
-    return tasksData;
+  save(Tasks) {
+    localStorage.setItem("Tasks", JSON.stringify(Tasks));
   },
 };
-// localStorage.clear()
+
+localStorage.clear();
 // <------------------------ Delete from Local Storage ------------------------> //
 
 export const deleteTaskFromLocalStorage = (taskId) => {
-  const tasksData = WebStorageAPI.load();
+  const Tasks = WebStorageAPI.load();
 
-  Object.keys(tasksData).forEach((columnName) => {
-    tasksData[columnName] = tasksData[columnName].filter(
+  Object.keys(Tasks).forEach((columnName) => {
+    Tasks[columnName] = Tasks[columnName].filter(
       (task) => task.taskId !== taskId
     );
   });
 
-  WebStorageAPI.save(tasksData);
+  WebStorageAPI.save(Tasks);
 };
 
 // <------------------------ Update to Local Storage ------------------------> //
-
-export const updateTaskElement = (taskElement, task) => {
-  // Open the offcanvas element
-  const offcanvas = document.querySelector(".offcanvas");
-  offcanvas.classList.add("offcanvas--open");
-
-  // Populate the form fields with the current task data
-  populateOffcanvasForm(task);
-
-  // Set up a new form submit event listener with the current task data
-  const form = document.querySelector(".project-form");
-  form.removeEventListener("submit", handleFormSubmit); // Remove previous event listener
-  form.addEventListener("submit", (event) =>
-    handleFormSubmit(event, taskElement, task)
-  );
-};
 
 // <------------------------ Tag Counting Feature ------------------------> //
 let tagCount = {};
