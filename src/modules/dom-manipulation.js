@@ -1,8 +1,8 @@
 "use strict";
 
 import { isValid, formatDistance, parseISO } from "date-fns";
-import { WebStorageAPI, deleteTaskFromLocalStorage } from "./local-storage";
-import { updateTaskCounters } from "./taskcategory.js";
+import { WebStorageAPI, deleteTaskFromLocalStorage, updateTasks } from "./local-storage";
+import { columns } from "./sorting";
 import { createTaskFromObject } from "./taskcreationclass";
 
 // <------------------------ Task Column Helper Function ------------------------> //
@@ -20,7 +20,7 @@ export const getTaskColumn = (columnName) => {
 // <------------------------ Create Task Element ------------------------> //
 const createTaskElementHTML = (taskCard) => {
   const taskElement = document.createElement("div");
-  taskElement.classList.add("task__container", "task");
+  taskElement.classList.add("task__container");
   taskElement.setAttribute("data-task-id", taskCard.id);
 
   const taskHeader = document.createElement("div");
@@ -30,6 +30,10 @@ const createTaskElementHTML = (taskCard) => {
   taskTitle.classList.add("task__title");
   taskTitle.textContent = taskCard.title;
 
+  const taskPriority = document.createElement("span");
+  taskElement.setAttribute("data-priority", taskCard.priority);
+
+  
   const deleteIcon = document.createElement("span");
   deleteIcon.classList.add("task__delete-icon", "material-icons");
   deleteIcon.textContent = "delete";
@@ -48,16 +52,11 @@ const createTaskElementHTML = (taskCard) => {
   const taskDueDate = document.createElement("span");
   taskDueDate.classList.add("task__due-date");
 
-  if (typeof taskCard.dueDate === "string") {
-    taskCard.dueDate = parseISO(taskCard.dueDate);
-  }
-
-  if (isValid(taskCard.dueDate)) {
-    const formattedDueDate = formatDistance(taskCard.dueDate, new Date(), {
-      addSuffix: true,
-    });
-    taskDueDate.textContent = `Due: ${formattedDueDate}`;
-  }
+  const formattedDueDate = formatDistance(taskCard.dueDate, new Date(), {
+    addSuffix: true,
+  });
+  taskDueDate.textContent = `Due: ${formattedDueDate}`;
+  taskDueDate.setAttribute("data-due-date", taskCard.dueDate);
 
   taskHeader.append(taskTitle);
   taskHeader.append(deleteIcon);
@@ -65,6 +64,7 @@ const createTaskElementHTML = (taskCard) => {
   taskElement.append(taskDescription);
   taskFooter.append(taskDueDate);
   taskFooter.append(taskTags);
+  taskFooter.append(taskPriority); 
   taskElement.append(taskFooter);
 
   // Add the click event listener to the task Card
@@ -79,7 +79,6 @@ export const appendTaskToColumn = (taskCard, columnName) => {
   // Get the appropriate column element
   const columnElement = getTaskColumn(columnName);
   const taskCardElement = createTaskElementHTML(taskCard);
-
   // Assign border color based on priority level
   if (taskCard.priority === "Urgent") {
     taskCardElement.classList.add("task--urgent");
@@ -98,18 +97,36 @@ export const appendTaskToColumn = (taskCard, columnName) => {
   });
 
   taskCardElement.__data = taskCard;
-
-  // For example, attaching the delete event listener to the delete icon
+  // attaching the delete event listener to the delete icon
   const deleteIcon = taskCardElement.querySelector(".task__delete-icon");
   deleteIcon.addEventListener("click", () => {
     deleteTaskFromLocalStorage(taskCard.id);
     taskCardElement.remove();
     updateTaskCounters();
   });
-
   // Append the task element to the column
   columnElement.append(taskCardElement);
 };
+
+addButtons.forEach((button) => {
+  let tasks = WebStorageAPI.load();
+  button.addEventListener("click", () => {
+    const columnElement = button.closest(".main__column");
+    const columnName = Array.from(columnElement.classList)
+      .find((className) => className.startsWith("main__column--"))
+      .split("--")[1];
+
+    const taskCard = createNewTask({}); // Create a new empty task card
+
+    // Append the task card to the column
+    appendTaskToColumn(taskCard, columnName);
+
+    // Update tasks object
+    tasks = updateTasks(columns)
+    // Save tasks to local storage
+    WebStorageAPI.save(tasks);
+  });
+});
 
 // <------------------------ Mark as Completed Logic------------------------> //
 
@@ -138,76 +155,13 @@ const createNewTask = (taskData) => {
   };
 
   const task = { ...defaultTaskData, ...taskData };
-  // console.log(task.taskId);
 
   const taskCard = createTaskFromObject(task);
 
   return taskCard;
 };
 
-// Load tasks from local storage when the application starts
-let tasks = WebStorageAPI.load();
-
-addButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    const columnElement = button.closest(".main__column");
-    const columnName = Array.from(columnElement.classList)
-      .find((className) => className.startsWith("main__column--"))
-      .split("--")[1];
-
-    const taskCard = createNewTask({}); // Create a new empty task card
-
-    // Append the task card to the column
-    appendTaskToColumn(taskCard, columnName);
-    WebStorageAPI.save(tasks);
-  });
-});
-
-submitBtn.addEventListener("click", () => {
-  const taskCard = createNewTask();
-  const columnName = "";
-  appendTaskToColumn(taskCard, columnName);
-  WebStorageAPI.save(tasks);
-});
-
 // <------------------------ Delete and Move to Trash ------------------------> //
-function addDeleteIconEventListener(deleteIcon, taskElement) {
-  deleteIcon.addEventListener("click", (event) => {
-    event.stopPropagation(); // Prevent triggering the taskElement click event
-
-    // Load tasks from local storage, parse them into an object
-    let tasksData = JSON.parse(localStorage.getItem("tasks"));
-    const taskId = taskElement.dataset.taskId;
-    const currentColumn =
-      taskElement.closest(".main__column").dataset.columnName;
-
-    // Find the task in the tasksData object
-    const taskIndex = tasksData[currentColumn].findIndex(
-      (task) => task.taskId === taskId
-    );
-
-    // If the task is in the Trash column, remove it from tasksData object and local storage
-    if (currentColumn === "trash") {
-      tasksData[currentColumn].splice(taskIndex, 1);
-      localStorage.setItem("tasks", JSON.stringify(tasksData));
-      removeTaskFromDisplay(taskElement);
-    } else {
-      // Remove the task from its current column and move it to the Trash column
-      const task = tasksData[currentColumn].splice(taskIndex, 1)[0];
-      const trashColumn = document.querySelector(".main__column--trash");
-      appendTask(task, trashColumn, (newTaskElement) => {
-        newTaskElement.dataset.taskId = taskId;
-        newTaskElement.className = taskElement.className;
-      });
-      saveCategories();
-      updateTaskCounters();
-
-      // Save the updated tasksData object to local storage
-      localStorage.setItem("tasks", JSON.stringify(tasksData));
-      removeTaskFromDisplay(taskElement);
-    }
-  });
-}
 
 // <------------------------ Update Task Display------------------------> //
 
