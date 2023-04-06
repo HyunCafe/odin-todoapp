@@ -17,7 +17,7 @@ export const WebStorageAPI = {
   },
 };
 
-localStorage.clear();
+// localStorage.clear();
 // <------------------------ Delete from Local Storage ------------------------> //
 
 export const deleteTaskFromLocalStorage = (taskId) => {
@@ -38,7 +38,7 @@ export const deleteTaskFromLocalStorage = (taskId) => {
 let tagCount = {};
 
 export const tagTracker = () => {
-  const tasks = WebStorageAPI.load();
+  let tasks = WebStorageAPI.load() || {};
 
   Object.keys(tasks).forEach((columnName) => {
     const taskList = tasks[columnName];
@@ -61,6 +61,7 @@ export const tagTracker = () => {
 
   return sortedTagCount;
 };
+
 
 export const updateTagDisplay = (sortedTagCount, maxTags = 10) => {
   const tagContainer = document.querySelector(".sidebar__tags");
