@@ -10,14 +10,14 @@ import { defaultTasks } from "./modules/default-tasks.js";
 const todoColumn = document.querySelector(".main__column--todo");
 
 let Tasks = JSON.parse(localStorage.getItem("Tasks"));
-if (!Tasks) {
-  Tasks = {
-    todo: defaultTasks,
-    "in-progress": [],
-    completed: [],
-    trash: [],
-  };
-}
+// if (!Tasks) {
+//   Tasks = {
+//     todo: defaultTasks,
+//     "in-progress": [],
+//     completed: [],
+//     trash: [],
+//   };
+// }
 
 localStorage.setItem("Tasks", JSON.stringify(Tasks));
 

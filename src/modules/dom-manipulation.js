@@ -3,6 +3,7 @@
 import { isValid, formatDistance, parseISO } from "date-fns";
 import { WebStorageAPI, deleteTaskFromLocalStorage } from "./local-storage";
 import { updateTaskCounters } from "./taskcategory.js";
+import { createTaskFromObject } from "./taskcreationclass";
 
 // <------------------------ Task Column Helper Function ------------------------> //
 
@@ -17,7 +18,7 @@ export const getTaskColumn = (columnName) => {
 };
 
 // <------------------------ Create Task Element ------------------------> //
-function createTaskElement(taskCard) {
+const createTaskElementHTML = (taskCard) => {
   const taskElement = document.createElement("div");
   taskElement.classList.add("task__container", "task");
   taskElement.setAttribute("data-task-id", taskCard.id);
@@ -68,131 +69,65 @@ function createTaskElement(taskCard) {
 
   // Add the click event listener to the task Card
   return taskElement;
-}
+};
 
 // <------------------------ Append Task to Column ------------------------> //
-const handleTaskDragEnd = (taskElement, categoryElement, columnName) => {
-  const completedColumn = document.querySelector(".main__column--completed");
-  const trashColumn = document.querySelector(".main__column--trash");
-  const taskContainer = taskElement.closest(".task__container");
-  const isInCompletedColumn = completedColumn.contains(taskContainer);
+const addButtons = document.querySelectorAll(".main__column-title__button");
+const submitBtn = document.querySelector(".project-form__btn-save");
 
-  if (isInCompletedColumn) {
-    taskContainer.classList.add("task--completed");
-  } else if (
-    !completedColumn.contains(taskContainer) &&
-    !trashColumn.contains(taskContainer)
-  ) {
-    taskContainer.classList.remove("task--completed");
-  }
+const appendTaskToColumn = (taskCard, columnName) => {
+  // Get the appropriate column element
+  const columnElement = getTaskColumn(columnName);
+  const taskCardElement = createTaskElementHTML(taskCard);
 
-  // Update the Tasks in memory
-  const Tasks = WebStorageAPI.load();
-  Tasks[columnName] = Array.from(categoryElement.children).map(
-    (element) => element.__data
-  );
-
-  // Save the updated Tasks to local storage
-  WebStorageAPI.save(Tasks);
-};
-
-export const appendTask = (task, categoryElement, callback) => {
-  const taskElement = createTaskElement(task);
-  const deleteIcon = taskElement.querySelector(".task__delete-icon");
-  addDeleteIconEventListener(deleteIcon, taskElement);
-
-  // Assign border color based on priority level
-  if (task.priority === "Urgent") {
-    taskElement.classList.add("task--urgent");
-  } else if (task.priority === "High") {
-    taskElement.classList.add("task--high");
-  } else if (task.priority === "completed") {
-    taskElement.classList.add("task--completed");
-  } else {
-    taskElement.classList.add("task--low");
-  }
-
-  taskElement.__data = task;
-  categoryElement.append(taskElement);
-
-  if (callback && typeof callback === "function") {
-    callback(taskElement);
-  }
-
-  // Update the Tasks for the current category
-  const Tasks = WebStorageAPI.load();
-  const columnName = categoryElement.dataset.columnName;
-  console.log("Before push to Tasks:", Tasks);
-
-  // Check if the task with the same taskId already exists in the Tasks object
-  if (!Tasks[columnName].find((t) => t.taskId === task.taskId)) {
-    Tasks[columnName].push(task);
-
-    // Save the updated Tasks to local storage
-    WebStorageAPI.save(Tasks);
-  }
-
-  // Add an event listener to the task element for the Complete Color Code
-  taskElement.addEventListener("dragend", () =>
-    handleTaskDragEnd(taskElement, categoryElement, columnName)
-  );
-};
-
-// <------------------------ Delete and Move to Trash ------------------------> //
-function addDeleteIconEventListener(deleteIcon, taskElement) {
-  deleteIcon.addEventListener("click", (event) => {
-    event.stopPropagation(); // Prevent triggering the taskElement click event
-
-    // Load tasks from local storage, parse them into an object
-    const Tasks = JSON.parse(localStorage.getItem("Tasks"));
-    const taskId = taskElement.dataset.taskId;
-    const currentColumn =
-      taskElement.closest(".main__column").dataset.columnName;
-
-    // Find the task in the Tasks object
-    const taskIndex = Tasks[currentColumn].findIndex(
-      (task) => task.taskId === taskId
-    );
-
-    // Remove the task from its current column
-    const task = Tasks[currentColumn].splice(taskIndex, 1)[0];
-    removeTaskFromDisplay(taskElement);
-
-    // Move the task to the Trash column if it's not already there
-    const trashColumn = document.querySelector(".main__column--trash");
-    if (currentColumn !== "trash") {
-      appendTask(task, trashColumn, (newTaskElement) => {
-        // Re-apply the saved taskId to the taskElement in the trash column
-        newTaskElement.dataset.taskId = taskId;
-
-        // Copy the classes from the original task element
-        newTaskElement.className = taskElement.className;
-      });
-    }
-    WebStorageAPI.save(Tasks);
-
-    // Update the Tasks object and save it back to local storage
-    localStorage.setItem("Tasks", JSON.stringify(Tasks));
-
-    updateTaskCounters(Tasks);
+  // For example, attaching the delete event listener to the delete icon
+  const deleteIcon = taskCardElement.querySelector(".task__delete-icon");
+  deleteIcon.addEventListener("click", () => {
+    deleteTaskFromLocalStorage(taskCard.id);
+    taskCardElement.remove();
+    updateTaskCounters();
   });
-}
+
+  // Append the task element to the column
+  columnElement.append(taskCardElement);
+};
+// <---------------------- Add Event Listener for Create and Append----------------------> //
+
+const createNewTask = () => {
+  const taskData = {
+    title: "Enter Title",
+    description: "Enter Description",
+    tags: "#Tag #Tag2",
+    priority: "low",
+    taskId: new Date().getTime().toString(),
+    dueDate: new Date(),
+    content: "Content",
+  };
+  const taskCard = createTaskFromObject(taskData);
+
+  return taskCard;
+};
+
+addButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    const columnElement = button.closest(".main__column");
+    // Get the column name from the column element's class
+    const columnName = Array.from(columnElement.classList)
+      .find((className) => className.startsWith("main__column--"))
+      .split("--")[1]; // Updated this line to extract the correct column name
+
+    const taskCard = createNewTask();
+    appendTaskToColumn(taskCard, columnName);
+  });
+});
+
+submitBtn.addEventListener("click", () => {
+  const taskCard = createNewTask();
+  const columnName = "";
+  appendTaskToColumn(taskCard, columnName);
+});
+// <------------------------ Delete and Move to Trash ------------------------> //
 
 // <------------------------ Update Task Display------------------------> //
 
-const removeTaskFromDisplay = (taskElement) => {
-  const taskId = taskElement.getAttribute("data-task-id");
-  taskElement.remove();
-  deleteTaskFromLocalStorage(taskId);
-};
-
 // <------------------------ Sortable Task Column Initialization------------------------> //
-document.addEventListener("DOMContentLoaded", () => {
-  const Tasks = WebStorageAPI.load();
-
-  Object.entries(Tasks).forEach(([columnName, tasks]) => {
-    tasks.forEach((task) => {
-      appendTask(task, getTaskColumn(columnName));
-    });
-  });
-});
