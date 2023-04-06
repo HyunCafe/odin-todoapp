@@ -3,6 +3,8 @@
 import { handleFormSubmit } from "./showtaskdetails";
 import {} from "./showtaskdetails";
 
+
+  // console.log("Tasks data:", Tasks);
 // <------------------------ Save to Local Storage ------------------------> //
 
 export const WebStorageAPI = {
@@ -33,6 +35,43 @@ export const deleteTaskFromLocalStorage = (taskId) => {
 };
 
 // <------------------------ Update to Local Storage ------------------------> //
+export const updateTasks = (columns, tasks) => {
+  console.log("Before updating tasks:", JSON.stringify(tasks));
+
+  for (const columnName in columns) {
+    const columnElement = columns[columnName];
+    const taskElements = columnElement.querySelectorAll(".task__container");
+    const updatedTasks = [];
+
+    taskElements.forEach((taskElement) => {
+      const taskId = taskElement.dataset.taskId;
+
+      // Search for the task in all categories
+      let task = null;
+      for (const key in tasks) {
+        const foundTask = tasks[key].find((t) => t.taskId === taskId);
+        if (foundTask) {
+          task = foundTask;
+          break;
+        }
+      }
+
+      if (task) {
+        console.log("Task found:", JSON.stringify(task));
+        updatedTasks.push(task);
+      } else {
+        console.log("Task not found for taskId:", taskId);
+      }
+    });
+
+    console.log(`Updated tasks for ${columnName}:`, JSON.stringify(updatedTasks));
+    tasks[columnName] = updatedTasks;
+  }
+
+  console.log("After updating tasks:", JSON.stringify(tasks));
+  WebStorageAPI.save(tasks);
+};
+
 
 // <------------------------ Tag Counting Feature ------------------------> //
 let tagCount = {};

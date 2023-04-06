@@ -126,8 +126,8 @@ const markTaskAsCompleted = (taskContainer) => {
 
 // <---------------------- Add Event Listener for Create and Append----------------------> //
 
-const createNewTask = () => {
-  const taskData = {
+const createNewTask = (taskData) => {
+  const defaultTaskData = {
     title: "Enter Title",
     description: "Enter Description",
     tags: "#Tag #Tag2",
@@ -136,7 +136,11 @@ const createNewTask = () => {
     dueDate: new Date(),
     content: "Content",
   };
-  const taskCard = createTaskFromObject(taskData);
+
+  const task = { ...defaultTaskData, ...taskData };
+  // console.log(task.taskId);
+
+  const taskCard = createTaskFromObject(task);
 
   return taskCard;
 };
@@ -147,20 +151,15 @@ let tasks = WebStorageAPI.load();
 addButtons.forEach((button) => {
   button.addEventListener("click", () => {
     const columnElement = button.closest(".main__column");
-    // Get the column name from the column element's class
     const columnName = Array.from(columnElement.classList)
       .find((className) => className.startsWith("main__column--"))
       .split("--")[1];
 
-    const taskCard = createNewTask();
+    const taskCard = createNewTask({}); // Create a new empty task card
 
-    // Update your tasks list with the new taskCard
-    tasks.push(taskCard);
-
-    // Save the updated tasks list to localStorage
-    WebStorageAPI.save(tasks);
-
+    // Append the task card to the column
     appendTaskToColumn(taskCard, columnName);
+    WebStorageAPI.save(tasks);
   });
 });
 
@@ -168,7 +167,47 @@ submitBtn.addEventListener("click", () => {
   const taskCard = createNewTask();
   const columnName = "";
   appendTaskToColumn(taskCard, columnName);
+  WebStorageAPI.save(tasks);
 });
+
+// <------------------------ Delete and Move to Trash ------------------------> //
+function addDeleteIconEventListener(deleteIcon, taskElement) {
+  deleteIcon.addEventListener("click", (event) => {
+    event.stopPropagation(); // Prevent triggering the taskElement click event
+
+    // Load tasks from local storage, parse them into an object
+    let tasksData = JSON.parse(localStorage.getItem("tasks"));
+    const taskId = taskElement.dataset.taskId;
+    const currentColumn =
+      taskElement.closest(".main__column").dataset.columnName;
+
+    // Find the task in the tasksData object
+    const taskIndex = tasksData[currentColumn].findIndex(
+      (task) => task.taskId === taskId
+    );
+
+    // If the task is in the Trash column, remove it from tasksData object and local storage
+    if (currentColumn === "trash") {
+      tasksData[currentColumn].splice(taskIndex, 1);
+      localStorage.setItem("tasks", JSON.stringify(tasksData));
+      removeTaskFromDisplay(taskElement);
+    } else {
+      // Remove the task from its current column and move it to the Trash column
+      const task = tasksData[currentColumn].splice(taskIndex, 1)[0];
+      const trashColumn = document.querySelector(".main__column--trash");
+      appendTask(task, trashColumn, (newTaskElement) => {
+        newTaskElement.dataset.taskId = taskId;
+        newTaskElement.className = taskElement.className;
+      });
+      saveCategories();
+      updateTaskCounters();
+
+      // Save the updated tasksData object to local storage
+      localStorage.setItem("tasks", JSON.stringify(tasksData));
+      removeTaskFromDisplay(taskElement);
+    }
+  });
+}
 
 // <------------------------ Update Task Display------------------------> //
 

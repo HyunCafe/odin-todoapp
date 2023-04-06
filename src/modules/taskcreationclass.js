@@ -104,11 +104,12 @@ export const createTaskFromObject = (task) => {
   const newTask = new TaskCreation(
     task.title,
     task.description,
-    task.tags.split(","),
+    task.tags ? task.tags.split(",") : [],
     task.priority,
-    task.taskId,
+    task.add, 
+    task.content,
+    task.taskId, 
     task.dueDate
   );
-  newTask.content = task.content; // set the content separately
   return newTask;
 };
