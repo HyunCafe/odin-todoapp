@@ -1,3 +1,14 @@
+'use strict';
+
+let taskIdCounter = 1;
+
+export const generateTaskId = () => {
+  const taskId = `${taskIdCounter}`;
+  taskIdCounter++;
+  return taskId;
+};
+
+
 export class TaskCreation {
   constructor(
     title,
@@ -6,10 +17,10 @@ export class TaskCreation {
     priority = 1,
     add = false,
     content = "",
-    taskId = '',
+    id = '',
     dueDate = null
   ) {
-    this.id = taskId || new Date().getTime().toString();
+    this.id = id || generateTaskId();
     this.title = title;
     this.description = description;
     this.tags = tags;
@@ -29,7 +40,7 @@ export const createTaskFromObject = (task) => {
     task.priority,
     task.add, 
     task.content,
-    task.taskId, 
+    task.id, 
     task.dueDate
   );
   return newTask;

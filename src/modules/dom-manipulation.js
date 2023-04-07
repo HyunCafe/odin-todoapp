@@ -5,6 +5,8 @@ import { WebStorageAPI, updateTasks } from "./local-storage";
 import { columns, updateTaskCounters } from "./sorting";
 import { createTaskFromObject } from "./taskcreationclass";
 import { tagTracker, updateTagDisplay } from "./tagtracker";
+import { addTaskClickListener } from "./expanded-card-details";
+
 // <------------------------ Task Column Helper Function ------------------------> //
 
 export const getTaskColumn = (columnName) => {
@@ -61,6 +63,11 @@ const createTaskElementHTML = (taskCard) => {
   taskDueDate.textContent = `Due: ${formattedDueDate}`;
   taskDueDate.setAttribute("data-due-date", taskCard.dueDate);
 
+  // Add Expanded Card Details/ Event Listener
+  const taskId = taskCard.id;
+  // addTaskClickListener(taskElement, taskId);
+
+  taskElement.dataset.id = taskCard.id;
   taskHeader.append(taskTitle);
   taskHeader.append(deleteIcon);
   taskElement.append(taskHeader);
@@ -107,6 +114,10 @@ export const appendTaskToColumn = (taskCard, columnName) => {
   taskCardElement.__data = taskCard;
   columnElement.append(taskCardElement);
   addDeleteIconEventListener(deleteIcon, taskCardElement);
+
+  let tasks = WebStorageAPI.load();
+  tasks = updateTasks(columns);
+  WebStorageAPI.save(tasks);
 };
 
 addButtons.forEach((button) => {
@@ -138,10 +149,10 @@ const markTaskAsCompleted = (taskContainer) => {
 
   if (isInCompletedColumn || isInTrashColumn) {
     taskContainer.classList.add("task--completed");
-    taskData.isCompleted = true; 
+    taskData.isCompleted = true;
   } else {
     taskContainer.classList.remove("task--completed");
-    taskData.isCompleted = false; 
+    taskData.isCompleted = false;
   }
 
   let tasks = WebStorageAPI.load();
@@ -153,11 +164,11 @@ const markTaskAsCompleted = (taskContainer) => {
 
 const createNewTask = (taskData) => {
   const defaultTaskData = {
+    taskId: taskData.taskId,
     title: "Enter Title",
     description: "Enter Description",
     tags: "#Tag #Tag2",
     priority: "low",
-    taskId: new Date().getTime().toString(),
     dueDate: new Date(),
     content: "Content",
   };
@@ -166,10 +177,9 @@ const createNewTask = (taskData) => {
 
   const taskCard = createTaskFromObject(task);
 
+
   return taskCard;
 };
-
-
 
 // <------------------------ Delete and Move to Trash ------------------------> //
 const addDeleteIconEventListener = (deleteIcon, taskElement) => {
@@ -188,12 +198,10 @@ const addDeleteIconEventListener = (deleteIcon, taskElement) => {
 
     if (currentColumn === "trash") {
       // If the task is already in the trash column, delete it from local storage
-      WebStorageAPI.save(kanbanBoard);
       taskContainer.remove();
     } else {
       // If the task is not in the trash column, move it to the trash column
       tasksData.trash.push(removedTask);
-      WebStorageAPI.save(kanbanBoard);
 
       // Remove the task from the current column and append it to the trash column
       taskContainer.remove();
@@ -201,5 +209,6 @@ const addDeleteIconEventListener = (deleteIcon, taskElement) => {
     }
 
     updateTaskCounters();
+    WebStorageAPI.save(kanbanBoard);
   });
 };

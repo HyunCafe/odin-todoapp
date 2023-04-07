@@ -1,14 +1,14 @@
 "use strict";
 
-import { handleFormSubmit } from "./showtaskdetails";
-import {} from "./showtaskdetails";
+import { handleFormSubmit } from "./expanded-card-details";
+import {} from "./expanded-card-details";
 
 // <------------------------ Save to Local Storage ------------------------> //
 
 export const WebStorageAPI = {
   load() {
     const kanbanBoard = localStorage.getItem("KanbanBoard");
-    return JSON.parse(kanbanBoard)
+    return JSON.parse(kanbanBoard);
   },
 
   save(kanbanBoard) {
@@ -20,7 +20,6 @@ WebStorageAPI.load();
 // localStorage.clear();
 // <------------------------ Delete from Local Storage ------------------------> //
 
-
 // <------------------------ Update to Local Storage ------------------------> //
 export const updateTasks = (columns) => {
   const tasks = { todo: [], "in-progress": [], completed: [], trash: [] };
@@ -28,13 +27,16 @@ export const updateTasks = (columns) => {
     const taskElements = column.querySelectorAll(".task__container");
     tasks[columnKey] = Array.from(taskElements).map((taskElement) => {
       return {
-        taskId: taskElement.dataset.id,
+        taskId: taskElement.dataset.id, 
         title: taskElement.querySelector(".task__title").textContent,
-        description: taskElement.querySelector(".task__description").textContent,
-        dueDate: new Date(taskElement.querySelector(".task__due-date").dataset.dueDate),
+        description:
+          taskElement.querySelector(".task__description").textContent,
+        dueDate: new Date(
+          taskElement.querySelector(".task__due-date").dataset.dueDate
+        ),
         tags: taskElement.querySelector(".task__tags").textContent,
         priority: taskElement.__data.priority,
-        isCompleted: taskElement.__data.isCompleted, 
+        isCompleted: taskElement.__data.isCompleted,
       };
     });
   });

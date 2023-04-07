@@ -2,17 +2,9 @@
 
 import { WebStorageAPI } from "./local-storage";
 
-let taskIdCounter = 0;
-
-const generateTaskId = () => {
-  taskIdCounter++;
-  return new Date().getTime().toString() + taskIdCounter;
-};
-
 const defaultTasks = {
   todo: [
     {
-      taskId: generateTaskId(),
       title: "Learn a new programming language",
       description:
         "Choose a programming language and start learning its syntax and best practices.",
@@ -22,7 +14,6 @@ const defaultTasks = {
       add: true,
     },
     {
-      taskId: generateTaskId(),
       title: "Finish building a to-do app",
       description:
         "Complete the final touches on the to-do app, such as adding a due date feature or enabling drag and drop functionality.",
@@ -32,7 +23,6 @@ const defaultTasks = {
       add: true,
     },
     {
-      taskId: generateTaskId(),
       title: "Read a programming book",
       description:
         "Choose a programming book and aim to read at least one chapter per day.",
@@ -42,7 +32,6 @@ const defaultTasks = {
       add: true,
     },
     {
-      taskId: generateTaskId(),
       title: "Contribute to an open source project",
       description:
         "Find an open source project that interests you and make a contribution, such as fixing a bug or implementing a new feature.",

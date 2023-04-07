@@ -214,7 +214,7 @@ h3 {
 
 /* <--------------------- Trash Details Section ---------------------> */
 .trash-popup {
-  /* display: none; */
+  display: none;
   text-align: center;
   height: 85%;
   width: 35%;
