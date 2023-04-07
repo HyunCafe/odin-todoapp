@@ -131,10 +131,12 @@ addButtons.forEach((button) => {
 
 const markTaskAsCompleted = (taskContainer) => {
   const completedColumn = document.querySelector(".main__column--completed");
+  const trashColumn = document.querySelector(".main__column--trash");
   const isInCompletedColumn = completedColumn.contains(taskContainer);
+  const isInTrashColumn = trashColumn.contains(taskContainer);
   const taskData = taskContainer.__data;
 
-  if (isInCompletedColumn) {
+  if (isInCompletedColumn || isInTrashColumn) {
     taskContainer.classList.add("task--completed");
     taskData.isCompleted = true; 
   } else {
@@ -166,6 +168,8 @@ const createNewTask = (taskData) => {
 
   return taskCard;
 };
+
+
 
 // <------------------------ Delete and Move to Trash ------------------------> //
 const addDeleteIconEventListener = (deleteIcon, taskElement) => {
