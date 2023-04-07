@@ -3,34 +3,34 @@ export class TaskCreation {
     title,
     description,
     tags = [],
-    priority,
-    add,
+    priority = 1,
+    add = false,
     content = "",
-    taskId,
-    dueDate
+    taskId = '',
+    dueDate = null
   ) {
     this.id = taskId || new Date().getTime().toString();
     this.title = title;
     this.description = description;
-    this.tags = tags || [];
-    this.priority = priority || 1;
-    this.add = add || false;
+    this.tags = tags;
+    this.priority = priority;
+    this.add = add;
     this.completed = false;
     this.content = content;
-    this.dueDate = dueDate ? new Date(dueDate) : new Date();
-
+    this.dueDate = dueDate ? new Date(dueDate) : null;
   }
 }
 
 export const createTaskFromObject = (task) => {
-  return new TaskCreation(
+  const newTask = new TaskCreation(
     task.title,
     task.description,
-    task.tags.split(","),
+    task.tags,
     task.priority,
-    task.add,
+    task.add, 
     task.content,
-    task.taskId,
+    task.taskId, 
     task.dueDate
   );
-}
+  return newTask;
+};

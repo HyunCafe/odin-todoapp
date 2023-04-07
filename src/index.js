@@ -1,44 +1,31 @@
 "use strict";
-import { TaskCreation, createTaskFromObject } from "./modules/taskcreationclass.js";
-import { appendTask } from "./modules/dom-manipulation.js";
+
 import {
-  saveCategories,
-  loadCategories,
-  updateCategory,
-  tagTracker,
-  updateTagDisplay,
+  TaskCreation,
+  createTaskFromObject,
+} from "./modules/taskcreationclass.js";
+import { appendTask, appendTaskToColumn, getTaskColumn } from "./modules/dom-manipulation.js";
+import {
+  WebStorageAPI,
 } from "./modules/local-storage";
-import { updateTaskCounters } from "./modules/taskcategory.js";
-import { populateTasksFromLocalStorage } from "./modules/local-storage.js";
 import { defaultTasks } from "./modules/default-tasks.js";
+import { updateTaskCounters } from "./modules/sorting"
+import { tagTracker, updateTagDisplay, sortedTagCount } from "./modules/tagtracker";
 
-const categoryElement = document.querySelector(".main__column--todo");
-const todoColumn = document.querySelector(".main__column--todo");
-const inProgressColumn = document.querySelector(".main__column--in-progress");
-const completedColumn = document.querySelector(".main__column--completed");
-const trashColumn = document.querySelector(".main__column--trash");
 
-let tasksData = JSON.parse(localStorage.getItem("tasks"));
-if (!tasksData) {
-  tasksData = {
-    todo: defaultTasks,
-    "in-progress": [],
-    completed: [],
-    trash: [],
-  };
-}
+export const loadTasks = () => {
+  const tasks = WebStorageAPI.load();
+  for (const columnName in tasks) {
+    const columnTasks = tasks[columnName];
+    const columnElement = getTaskColumn(columnName);
+    columnTasks.forEach((taskData) => {
+      const task = createTaskFromObject(taskData);
+      appendTaskToColumn(task, columnName);
+    });
+  }
+  const sortedTagCount = tagTracker();
+  updateTaskCounters();
+  updateTagDisplay(sortedTagCount);
+};
 
-localStorage.setItem("tasks", JSON.stringify(tasksData));
-
-// Load the categories from local storage and update the task counters on the page
-loadCategories();
-updateCategory();
-
-const sortedTagCount = tagTracker();
-updateTagDisplay(sortedTagCount, 7);
-
-// <------------------------ to Re-Add default tasks to local storage  ------------------------> //
-// defaultTasks.todo.forEach((task) => {
-//   const newTask = createTaskFromObject(task);
-//   appendTask(newTask, todoColumn);
-// });
+document.addEventListener("DOMContentLoaded", loadTasks);

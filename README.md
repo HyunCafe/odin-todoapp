@@ -139,3 +139,10 @@ completed tasks were not retaining their priority level when they were deleted f
 * I tried a few solutions, such as removing the event listener on the task element after it was clicked and changing the event listener to use the once option, but neither of these solutions worked.
 
 * The ultimate solution I ended up with was to remove the event listener on the task element inside the handleFormSubmit function. This prevented the function from being called multiple times when a user clicked on a task element to edit it. I also added an if statement to check whether the form had been submitted before running the updateTaskElementInUI function to prevent the function from being called multiple times in a row.
+
+#### Overcoming Code Complexity Modular Approach to Refactoring
+* During a recent project, I encountered a challenge that many developers face: code complexity and debugging difficulties. As the project grew in size, it became apparent that I needed to refactor the entire codebase. I approached this by breaking it down into smaller, more manageable modules, and building it back up gradually, informed by the lessons I learned from the first iteration. I meticulously analyzed each module, integrating them incrementally, and thoroughly testing and validating each before proceeding.
+
+* This methodical approach helped me control the complexity, making debugging and management easier. In addition, I was able to significantly reduce the amount of code by several hundred lines, while maintaining the same functionality as before. This not only made the project more manageable but also improved its performance.
+
+* Ultimately, I overcame the challenge by adopting a modular approach, carefully planning, and considering the long-term implications of code complexity. This experience highlighted for me the importance of addressing potential issues early in the development process.
