@@ -1,12 +1,8 @@
 "use strict";
 
 import { isValid, formatDistance, parseISO } from "date-fns";
-import {
-  WebStorageAPI,
-  deleteTaskFromLocalStorage,
-  updateTasks,
-} from "./local-storage";
-import { columns } from "./sorting";
+import { WebStorageAPI, updateTasks } from "./local-storage";
+import { columns, updateTaskCounters } from "./sorting";
 import { createTaskFromObject } from "./taskcreationclass";
 import { tagTracker, updateTagDisplay } from "./tagtracker";
 // <------------------------ Task Column Helper Function ------------------------> //
@@ -55,6 +51,10 @@ const createTaskElementHTML = (taskCard) => {
   const taskDueDate = document.createElement("span");
   taskDueDate.classList.add("task__due-date");
 
+  if (typeof taskCard.dueDate === "string") {
+    taskCard.dueDate = parseISO(taskCard.dueDate);
+  }
+
   const formattedDueDate = formatDistance(taskCard.dueDate, new Date(), {
     addSuffix: true,
   });
@@ -70,7 +70,7 @@ const createTaskElementHTML = (taskCard) => {
   taskFooter.append(taskPriority);
   taskElement.append(taskFooter);
 
-  return taskElement;
+  return { taskElement, deleteIcon };
 };
 
 // <------------------------ Append Task to Column ------------------------> //
@@ -79,7 +79,8 @@ const submitBtn = document.querySelector(".project-form__btn-save");
 
 export const appendTaskToColumn = (taskCard, columnName) => {
   const columnElement = getTaskColumn(columnName);
-  const taskCardElement = createTaskElementHTML(taskCard);
+  const { taskElement: taskCardElement, deleteIcon } =
+    createTaskElementHTML(taskCard);
 
   // Assign border color based on priority level
   if (taskCard.priority === "Urgent") {
@@ -92,6 +93,11 @@ export const appendTaskToColumn = (taskCard, columnName) => {
     taskCardElement.classList.add("task--low");
   }
 
+  // Apply the saved 'task--completed' state
+  if (taskCard.isCompleted) {
+    taskCardElement.classList.add("task--completed");
+  }
+
   // Add an event listener to the task element for Complete Color Code
   taskCardElement.addEventListener("dragend", (event) => {
     const taskContainer = event.target.closest(".task__container");
@@ -99,14 +105,8 @@ export const appendTaskToColumn = (taskCard, columnName) => {
   });
 
   taskCardElement.__data = taskCard;
-  // attaching the delete event listener to the delete icon
-  const deleteIcon = taskCardElement.querySelector(".task__delete-icon");
-  deleteIcon.addEventListener("click", () => {
-    deleteTaskFromLocalStorage(taskCard.id);
-    taskCardElement.remove();
-    updateTaskCounters();
-  });
   columnElement.append(taskCardElement);
+  addDeleteIconEventListener(deleteIcon, taskCardElement);
 };
 
 addButtons.forEach((button) => {
@@ -132,12 +132,19 @@ addButtons.forEach((button) => {
 const markTaskAsCompleted = (taskContainer) => {
   const completedColumn = document.querySelector(".main__column--completed");
   const isInCompletedColumn = completedColumn.contains(taskContainer);
+  const taskData = taskContainer.__data;
 
   if (isInCompletedColumn) {
     taskContainer.classList.add("task--completed");
+    taskData.isCompleted = true; 
   } else {
     taskContainer.classList.remove("task--completed");
+    taskData.isCompleted = false; 
   }
+
+  let tasks = WebStorageAPI.load();
+  tasks = updateTasks(columns);
+  WebStorageAPI.save(tasks);
 };
 
 // <---------------------- Add Event Listener for Create and Append----------------------> //
@@ -161,5 +168,34 @@ const createNewTask = (taskData) => {
 };
 
 // <------------------------ Delete and Move to Trash ------------------------> //
+const addDeleteIconEventListener = (deleteIcon, taskElement) => {
+  deleteIcon.addEventListener("click", () => {
+    const taskContainer = deleteIcon.closest(".task__container");
+    const taskId = taskContainer.dataset.taskId;
+    const kanbanBoard = WebStorageAPI.load();
 
+    const tasksData = kanbanBoard;
+    const currentColumn =
+      taskContainer.closest(".main__column").dataset.columnName;
+    const taskIndex = tasksData[currentColumn].findIndex(
+      (task) => task.taskId === taskId
+    );
+    const removedTask = tasksData[currentColumn].splice(taskIndex, 1)[0];
 
+    if (currentColumn === "trash") {
+      // If the task is already in the trash column, delete it from local storage
+      WebStorageAPI.save(kanbanBoard);
+      taskContainer.remove();
+    } else {
+      // If the task is not in the trash column, move it to the trash column
+      tasksData.trash.push(removedTask);
+      WebStorageAPI.save(kanbanBoard);
+
+      // Remove the task from the current column and append it to the trash column
+      taskContainer.remove();
+      appendTaskToColumn(removedTask, "trash");
+    }
+
+    updateTaskCounters();
+  });
+};

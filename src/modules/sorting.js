@@ -25,8 +25,6 @@ const sortableOptions = {
   group: "shared",
   onEnd: (e) => {
     // Update tasks object
-    tasks = updateTasks(columns);
-    WebStorageAPI.save(tasks);
     updateTaskCounters();
   },
   draggable: ".task__container:not(.no-drag)",

@@ -3,8 +3,6 @@
 import { handleFormSubmit } from "./showtaskdetails";
 import {} from "./showtaskdetails";
 
-
-  // console.log("Tasks data:", Tasks);
 // <------------------------ Save to Local Storage ------------------------> //
 
 export const WebStorageAPI = {
@@ -17,7 +15,6 @@ export const WebStorageAPI = {
     localStorage.setItem("KanbanBoard", JSON.stringify(kanbanBoard));
   },
 };
-console.log(WebStorageAPI.load());
 
 WebStorageAPI.load();
 // localStorage.clear();
@@ -26,7 +23,7 @@ WebStorageAPI.load();
 
 // <------------------------ Update to Local Storage ------------------------> //
 export const updateTasks = (columns) => {
-  const tasks = { todo: [], "in-progress": [], completed: [] };
+  const tasks = { todo: [], "in-progress": [], completed: [], trash: [] };
   Object.entries(columns).forEach(([columnKey, column]) => {
     const taskElements = column.querySelectorAll(".task__container");
     tasks[columnKey] = Array.from(taskElements).map((taskElement) => {
@@ -36,7 +33,8 @@ export const updateTasks = (columns) => {
         description: taskElement.querySelector(".task__description").textContent,
         dueDate: new Date(taskElement.querySelector(".task__due-date").dataset.dueDate),
         tags: taskElement.querySelector(".task__tags").textContent,
-        priority: taskElement.getAttribute("data-priority"),
+        priority: taskElement.__data.priority,
+        isCompleted: taskElement.__data.isCompleted, 
       };
     });
   });

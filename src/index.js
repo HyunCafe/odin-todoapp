@@ -24,6 +24,7 @@ export const loadTasks = () => {
     });
   }
   const sortedTagCount = tagTracker();
+  updateTaskCounters();
   updateTagDisplay(sortedTagCount);
 };
 

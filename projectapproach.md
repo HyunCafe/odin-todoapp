@@ -175,8 +175,7 @@ TODO:
 * Finish the additional Details display (possibly add feature sorting by tags..)
 * Calender View with Tasks appended
 * Trash feature
-* Maybe list of completed in a linear format (between date creation and completed status)
 * Finish the aesthetic styling
 * need to edit task pop up to save for status based on column, and fix completed logic
-* Date feature fixed, wont save and load correctyl from additioanl task details
+
   
