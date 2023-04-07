@@ -6,12 +6,11 @@ import {
 } from "./modules/taskcreationclass.js";
 import { appendTask, appendTaskToColumn, getTaskColumn } from "./modules/dom-manipulation.js";
 import {
-  tagTracker,
-  updateTagDisplay,
   WebStorageAPI,
 } from "./modules/local-storage";
 import { defaultTasks } from "./modules/default-tasks.js";
 import { updateTaskCounters } from "./modules/sorting"
+import { tagTracker, updateTagDisplay, sortedTagCount } from "./modules/tagtracker";
 
 
 export const loadTasks = () => {
@@ -24,5 +23,8 @@ export const loadTasks = () => {
       appendTaskToColumn(task, columnName);
     });
   }
+  const sortedTagCount = tagTracker();
+  updateTagDisplay(sortedTagCount);
 };
+
 document.addEventListener("DOMContentLoaded", loadTasks);

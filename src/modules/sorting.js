@@ -26,14 +26,11 @@ const sortableOptions = {
   onEnd: (e) => {
     // Update tasks object
     tasks = updateTasks(columns);
-    // Save tasks to local storage
     WebStorageAPI.save(tasks);
-    // Refresh task counters
     updateTaskCounters();
   },
   draggable: ".task__container:not(.no-drag)",
 };
-
 
 const sortableColumns = Object.entries(columns).reduce((acc, [key, value]) => {
   acc[key] = new Sortable(value, sortableOptions);

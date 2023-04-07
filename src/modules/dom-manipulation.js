@@ -1,10 +1,14 @@
 "use strict";
 
 import { isValid, formatDistance, parseISO } from "date-fns";
-import { WebStorageAPI, deleteTaskFromLocalStorage, updateTasks } from "./local-storage";
+import {
+  WebStorageAPI,
+  deleteTaskFromLocalStorage,
+  updateTasks,
+} from "./local-storage";
 import { columns } from "./sorting";
 import { createTaskFromObject } from "./taskcreationclass";
-
+import { tagTracker, updateTagDisplay } from "./tagtracker";
 // <------------------------ Task Column Helper Function ------------------------> //
 
 export const getTaskColumn = (columnName) => {
@@ -33,7 +37,6 @@ const createTaskElementHTML = (taskCard) => {
   const taskPriority = document.createElement("span");
   taskElement.setAttribute("data-priority", taskCard.priority);
 
-  
   const deleteIcon = document.createElement("span");
   deleteIcon.classList.add("task__delete-icon", "material-icons");
   deleteIcon.textContent = "delete";
@@ -64,10 +67,9 @@ const createTaskElementHTML = (taskCard) => {
   taskElement.append(taskDescription);
   taskFooter.append(taskDueDate);
   taskFooter.append(taskTags);
-  taskFooter.append(taskPriority); 
+  taskFooter.append(taskPriority);
   taskElement.append(taskFooter);
 
-  // Add the click event listener to the task Card
   return taskElement;
 };
 
@@ -76,9 +78,9 @@ const addButtons = document.querySelectorAll(".main__column-title__button");
 const submitBtn = document.querySelector(".project-form__btn-save");
 
 export const appendTaskToColumn = (taskCard, columnName) => {
-  // Get the appropriate column element
   const columnElement = getTaskColumn(columnName);
   const taskCardElement = createTaskElementHTML(taskCard);
+
   // Assign border color based on priority level
   if (taskCard.priority === "Urgent") {
     taskCardElement.classList.add("task--urgent");
@@ -104,7 +106,6 @@ export const appendTaskToColumn = (taskCard, columnName) => {
     taskCardElement.remove();
     updateTaskCounters();
   });
-  // Append the task element to the column
   columnElement.append(taskCardElement);
 };
 
@@ -115,15 +116,13 @@ addButtons.forEach((button) => {
     const columnName = Array.from(columnElement.classList)
       .find((className) => className.startsWith("main__column--"))
       .split("--")[1];
-
-    const taskCard = createNewTask({}); // Create a new empty task card
+    const taskCard = createNewTask({});
 
     // Append the task card to the column
     appendTaskToColumn(taskCard, columnName);
-
-    // Update tasks object
-    tasks = updateTasks(columns)
-    // Save tasks to local storage
+    const sortedTagCount = tagTracker();
+    updateTagDisplay(sortedTagCount);
+    tasks = updateTasks(columns);
     WebStorageAPI.save(tasks);
   });
 });
@@ -163,6 +162,4 @@ const createNewTask = (taskData) => {
 
 // <------------------------ Delete and Move to Trash ------------------------> //
 
-// <------------------------ Update Task Display------------------------> //
 
-// <------------------------ Sortable Task Column Initialization------------------------> //
