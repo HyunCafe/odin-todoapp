@@ -168,7 +168,7 @@ const createNewTask = (taskData) => {
     title: "Enter Title",
     description: "Enter Description",
     tags: "#Tag #Tag2",
-    priority: "low",
+    priority: "Low",
     dueDate: new Date(),
     content: "Content",
   };

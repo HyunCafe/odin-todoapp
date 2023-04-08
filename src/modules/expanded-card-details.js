@@ -124,6 +124,14 @@ export const addTaskClickListener = (taskElement, taskId) => {
   taskElement.addEventListener("click", (event) => {
     event.stopPropagation();
 
+    // Check if the clicked target or its parent has the class 'trash-icon'
+    if (
+      event.target.classList.contains("task__delete-icon") ||
+      event.target.parentElement.classList.contains("task__delete-icon")
+    ) {
+      return; // Do not open the expanded card when trash icon is clicked
+    }
+
     const taskData = getTaskDataById(taskElement);
 
     const expandedCardDetails = new ExpandedCardDetails(taskId);
