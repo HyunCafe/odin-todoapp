@@ -90,20 +90,7 @@ export const appendTaskToColumn = (taskCard, columnName) => {
     createTaskElementHTML(taskCard);
 
   // Assign border color based on priority level
-  if (taskCard.priority === "Urgent") {
-    taskCardElement.classList.add("task--urgent");
-  } else if (taskCard.priority === "High") {
-    taskCardElement.classList.add("task--high");
-  } else if (taskCard.priority === "completed") {
-    taskCardElement.classList.add("task--completed");
-  } else {
-    taskCardElement.classList.add("task--low");
-  }
-
-  // Apply the saved 'task--completed' state
-  if (taskCard.isCompleted) {
-    taskCardElement.classList.add("task--completed");
-  }
+  updateTaskPriorityClass(taskCardElement, taskCard.priority);
 
   // Add an event listener to the task element for Complete Color Code
   taskCardElement.addEventListener("dragend", (event) => {
@@ -138,6 +125,28 @@ addButtons.forEach((button) => {
   });
 });
 
+// <------------------------ Update Task Priority Class ------------------------> //
+export const updateTaskPriorityClass = (taskElement, priority) => {
+  // Remove any existing priority class
+  taskElement.classList.remove(
+    "task--urgent",
+    "task--high",
+    "task--completed",
+    "task--low"
+  );
+
+  // Assign new border color based on priority level
+  if (priority === "Urgent") {
+    taskElement.classList.add("task--urgent");
+  } else if (priority === "High") {
+    taskElement.classList.add("task--high");
+  } else if (priority === "completed") {
+    taskElement.classList.add("task--completed");
+  } else {
+    taskElement.classList.add("task--low");
+  }
+};
+
 // <------------------------ Mark as Completed Logic------------------------> //
 
 const markTaskAsCompleted = (taskContainer) => {
@@ -154,6 +163,8 @@ const markTaskAsCompleted = (taskContainer) => {
     taskContainer.classList.remove("task--completed");
     taskData.isCompleted = false;
   }
+
+  // updateTaskPriorityClass(taskContainer, taskData.priority);
 
   let tasks = WebStorageAPI.load();
   tasks = updateTasks(columns);
@@ -176,7 +187,6 @@ const createNewTask = (taskData) => {
   const task = { ...defaultTaskData, ...taskData };
 
   const taskCard = createTaskFromObject(task);
-
 
   return taskCard;
 };

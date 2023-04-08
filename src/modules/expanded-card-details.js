@@ -1,13 +1,13 @@
 "use strict";
 
-import { WebStorageAPI } from "./local-storage";
+import { WebStorageAPI, updateTasks } from "./local-storage";
+import { updateTaskPriorityClass } from "./dom-manipulation";
 
 // <---------------------- Get and Populate Expanded Card Details ----------------------> //
 const getTaskDataById = (taskId) => {
   const kanbanBoard = WebStorageAPI.load();
   for (const columnName in kanbanBoard) {
-    const columnTasks = kanbanBoard[columnName];
-    const task = columnTasks.find((task) => task.taskId === taskId);
+    const task = kanbanBoard[columnName].find((task) => task.taskId === taskId);
 
     if (task) {
       return task;
@@ -29,7 +29,8 @@ class ExpandedCardDetails {
   }
 
   getTitle() {
-    return this.expandedCardForm.querySelector("#title-input").value;
+    return this.expandedCardForm.querySelector(".project-form__title")
+      .innerText;
   }
 
   getStatus() {
@@ -94,6 +95,42 @@ class ExpandedCardDetails {
     this.setTags(this.taskData.tags);
     this.setDescription(this.taskData.description);
   }
+  saveChanges() {
+    // Update the task data with the new values from the form fields
+    this.taskData.title = this.getTitle();
+    this.taskData.status = this.getStatus();
+    this.taskData.priority = this.getPriority();
+    this.taskData.dueDate = this.getDueDate();
+    this.taskData.tags = this.getTags();
+    this.taskData.description = this.getDescription();
+
+    // Update the local storage with the new task data
+    const kanbanBoard = WebStorageAPI.load();
+    for (const columnName in kanbanBoard) {
+      const columnTasks = kanbanBoard[columnName];
+      const taskIndex = columnTasks.findIndex(
+        (task) => task.taskId === this.taskData.taskId
+      );
+
+      if (taskIndex > -1) {
+        columnTasks[taskIndex] = this.taskData;
+        WebStorageAPI.save(kanbanBoard);
+        break;
+      }
+    }
+
+    // Update the task card on the UI
+    const taskElement = document.querySelector(
+      `[data-task-id="${this.taskData.taskId}"]`
+    );
+    taskElement.querySelector(".task__title").innerText = this.taskData.title;
+    taskElement.querySelector(".task__description").innerText =
+      this.taskData.description;
+    taskElement.querySelector(".task__tags").innerText = this.taskData.tags;
+
+    // Update the task element's priority class
+    updateTaskPriorityClass(taskElement, this.taskData.priority);
+  }
 }
 
 // <------------------------ Open and Close Expanded Card Functions ------------------------> //
@@ -154,6 +191,17 @@ closeButton.addEventListener("click", (event) => {
   if (isExpanded) {
     closeExpandedCard();
   }
+});
+
+// Add click event listener to the save button
+const saveButton = document.querySelector(".project-form__btn-save");
+saveButton.addEventListener("click", (event) => {
+  event.preventDefault(); // Prevent the form from being submitted and the page from refreshing
+
+  const taskId = document.querySelector("[data-task-id]").dataset.taskId;
+  const expandedCardDetails = new ExpandedCardDetails(taskId);
+  expandedCardDetails.saveChanges();
+  closeExpandedCard(); // Close the expanded card after saving the changes
 });
 
 export default ExpandedCardDetails;
