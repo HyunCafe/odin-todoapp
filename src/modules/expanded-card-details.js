@@ -2,6 +2,7 @@
 
 import { WebStorageAPI, updateTasks } from "./local-storage";
 import { updateTaskPriorityClass } from "./dom-manipulation";
+import { formatDistance } from "date-fns";
 
 // <---------------------- Get and Populate Expanded Card Details ----------------------> //
 const getTaskDataById = (taskId) => {
@@ -16,18 +17,12 @@ const getTaskDataById = (taskId) => {
 };
 
 class ExpandedCardDetails {
-  constructor(taskId) {
+  constructor(taskId, taskElement) {
     this.taskData = getTaskDataById(taskId);
     this.expandedCard = document.querySelector(".offcanvas__body");
     this.expandedCardForm = this.expandedCard.querySelector(".project-form");
+    this.taskElement = taskElement;
   }
-
-  resetOptions(dropdownListItems) {
-    dropdownListItems.forEach((i) => {
-      i.removeAttribute("selected");
-    });
-  }
-
   getTitle() {
     return this.expandedCardForm.querySelector(".project-form__title")
       .innerText;
@@ -88,6 +83,8 @@ class ExpandedCardDetails {
   }
 
   populateFormFields() {
+    console.log(`Populating form fields for task ID: ${this.taskData.taskId}`);
+
     this.setTitle(this.taskData.title);
     this.setStatus(this.taskData.status);
     this.setPriority(this.taskData.priority);
@@ -120,13 +117,18 @@ class ExpandedCardDetails {
     }
 
     // Update the task card on the UI
-    const taskElement = document.querySelector(
-      `[data-task-id="${this.taskData.taskId}"]`
-    );
+    const taskElement = this.taskElement;
     taskElement.querySelector(".task__title").innerText = this.taskData.title;
     taskElement.querySelector(".task__description").innerText =
       this.taskData.description;
     taskElement.querySelector(".task__tags").innerText = this.taskData.tags;
+
+    const dueDateElement = taskElement.querySelector(".task__due-date");
+    const formattedDueDate = formatDistance(this.taskData.dueDate, new Date(), {
+      addSuffix: true,
+    });
+    dueDateElement.textContent = `Due: ${formattedDueDate}`;
+    dueDateElement.setAttribute("data-due-date", this.taskData.dueDate);
 
     // Update the task element's priority class
     updateTaskPriorityClass(taskElement, this.taskData.priority);
@@ -157,6 +159,8 @@ const toggleExpandedCard = () => {
 };
 
 // <------------------------ Set Click Event Listener Function  ------------------------> //
+let currentExpandedCardDetails = null;
+
 export const addTaskClickListener = (taskElement, taskId) => {
   taskElement.addEventListener("click", (event) => {
     event.stopPropagation();
@@ -169,10 +173,8 @@ export const addTaskClickListener = (taskElement, taskId) => {
       return; // Do not open the expanded card when trash icon is clicked
     }
 
-    const taskData = getTaskDataById(taskElement);
-
-    const expandedCardDetails = new ExpandedCardDetails(taskId);
-    expandedCardDetails.populateFormFields();
+    currentExpandedCardDetails = new ExpandedCardDetails(taskId, taskElement);
+    currentExpandedCardDetails.populateFormFields();
     openExpandedCard();
   });
 };
@@ -198,10 +200,10 @@ const saveButton = document.querySelector(".project-form__btn-save");
 saveButton.addEventListener("click", (event) => {
   event.preventDefault(); // Prevent the form from being submitted and the page from refreshing
 
-  const taskId = document.querySelector("[data-task-id]").dataset.taskId;
-  const expandedCardDetails = new ExpandedCardDetails(taskId);
-  expandedCardDetails.saveChanges();
-  closeExpandedCard(); // Close the expanded card after saving the changes
+  if (currentExpandedCardDetails) {
+    currentExpandedCardDetails.saveChanges();
+    closeExpandedCard(); // Close the expanded card after saving the changes
+  }
 });
 
 export default ExpandedCardDetails;
