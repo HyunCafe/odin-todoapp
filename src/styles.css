@@ -179,23 +179,25 @@ h3 {
 }
 
 /* Urgent task style */
-.task--urgent {
+[data-priority="Urgent"] {
   border: 2px solid red;
 }
 
 /* High priority task style */
-.task--high {
+[data-priority="High"] {
   border: 2px solid orange;
 }
 
 /* Low priority task style */
-.task--low {
+[data-priority="Low"] {
   border: 2px solid green;
 }
 
+
 /* Completed task style */
-.task--completed {
-  border: 2px solid blue;
+[data-priority="Completed"],
+.task__container[data-completed="true"] {
+border: 2px solid blue !important;
 }
 
 /* <------------------------ Sort and Drag n Drop  ------------------------> */

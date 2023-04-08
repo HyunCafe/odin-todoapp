@@ -1,7 +1,7 @@
 "use strict";
 
 import { WebStorageAPI, updateTasks } from "./local-storage";
-import { updateTaskPriorityClass } from "./dom-manipulation";
+import { updateTaskPriorityClass, moveTaskToColumn } from "./dom-manipulation";
 import { formatDistance } from "date-fns";
 
 // <---------------------- Get and Populate Expanded Card Details ----------------------> //
@@ -43,7 +43,7 @@ class ExpandedCardDetails {
   getTags() {
     return this.expandedCardForm
       .querySelector("#tags")
-      .value.split("#")
+      .value.split(",")
       .filter((tag) => tag);
   }
 
@@ -92,7 +92,9 @@ class ExpandedCardDetails {
     this.setTags(this.taskData.tags);
     this.setDescription(this.taskData.description);
   }
-  saveChanges() {
+
+  // <------------------------ Save Changes ------------------------> //
+  saveChanges(isCompleted = null) {
     // Update the task data with the new values from the form fields
     this.taskData.title = this.getTitle();
     this.taskData.status = this.getStatus();
@@ -100,6 +102,17 @@ class ExpandedCardDetails {
     this.taskData.dueDate = this.getDueDate();
     this.taskData.tags = this.getTags();
     this.taskData.description = this.getDescription();
+
+    if (isCompleted !== null) {
+      this.taskData.isCompleted = isCompleted;
+    }
+
+    // Update the task element's priority class and completed class
+    updateTaskPriorityClass(
+      this.taskElement,
+      this.taskData.priority,
+      this.taskData.isCompleted
+    );
 
     // Update the local storage with the new task data
     const kanbanBoard = WebStorageAPI.load();
@@ -111,7 +124,6 @@ class ExpandedCardDetails {
 
       if (taskIndex > -1) {
         columnTasks[taskIndex] = this.taskData;
-        WebStorageAPI.save(kanbanBoard);
         break;
       }
     }
@@ -130,8 +142,8 @@ class ExpandedCardDetails {
     dueDateElement.textContent = `Due: ${formattedDueDate}`;
     dueDateElement.setAttribute("data-due-date", this.taskData.dueDate);
 
-    // Update the task element's priority class
-    updateTaskPriorityClass(taskElement, this.taskData.priority);
+    // Save the updated task data to local storage
+    WebStorageAPI.save(kanbanBoard);
   }
 }
 

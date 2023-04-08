@@ -24,9 +24,13 @@ const columnsCount = {
 const sortableOptions = {
   group: "shared",
   onEnd: (e) => {
-    // Update tasks object
     updateTaskCounters();
+  
+    // Save the updated tasks to the local storage
+    tasks = updateTasks(columns);
+    WebStorageAPI.save(tasks);
   },
+  
   draggable: ".task__container:not(.no-drag)",
 };
 

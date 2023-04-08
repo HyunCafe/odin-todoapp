@@ -126,50 +126,25 @@ addButtons.forEach((button) => {
 });
 
 // <------------------------ Update Task Priority Class ------------------------> //
-export const updateTaskPriorityClass = (taskElement, priority) => {
-  // Remove any existing priority class
-  taskElement.classList.remove(
-    "task--urgent",
-    "task--high",
-    "task--completed",
-    "task--low"
-  );
-
-  // Assign new border color based on priority level
-  if (priority === "Urgent") {
-    taskElement.classList.add("task--urgent");
-  } else if (priority === "High") {
-    taskElement.classList.add("task--high");
-  } else if (priority === "completed") {
-    taskElement.classList.add("task--completed");
-  } else {
-    taskElement.classList.add("task--low");
-  }
+export const updateTaskPriorityClass = (taskElement, priority, isCompleted) => {
+  const dataPriority = taskElement.getAttribute('data-priority');
+    taskElement.setAttribute('data-priority', priority);
 };
 
 // <------------------------ Mark as Completed Logic------------------------> //
-
 const markTaskAsCompleted = (taskContainer) => {
   const completedColumn = document.querySelector(".main__column--completed");
-  const trashColumn = document.querySelector(".main__column--trash");
   const isInCompletedColumn = completedColumn.contains(taskContainer);
-  const isInTrashColumn = trashColumn.contains(taskContainer);
   const taskData = taskContainer.__data;
 
-  if (isInCompletedColumn || isInTrashColumn) {
-    taskContainer.classList.add("task--completed");
-    taskData.isCompleted = true;
-  } else {
-    taskContainer.classList.remove("task--completed");
-    taskData.isCompleted = false;
-  }
-
-  // updateTaskPriorityClass(taskContainer, taskData.priority);
+  taskData.isCompleted = isInCompletedColumn;
+  taskContainer.setAttribute("data-completed", isInCompletedColumn ? "true" : "false");
 
   let tasks = WebStorageAPI.load();
   tasks = updateTasks(columns);
   WebStorageAPI.save(tasks);
 };
+
 
 // <---------------------- Add Event Listener for Create and Append----------------------> //
 

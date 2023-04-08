@@ -178,4 +178,7 @@ TODO:
 * Finish the aesthetic styling
 * need to edit task pop up to save for status based on column, and fix completed logic
 
-  
+// completed class on task detail edit saves correctly
+// but on move to completed column it does not
+// it should also save its current class and only add completed on TOP, so when we remove
+// the completed task it will automatically revert to previous class and have UI update
