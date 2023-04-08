@@ -1,7 +1,6 @@
 "use strict";
 
-import { handleFormSubmit } from "./expanded-card-details";
-import {} from "./expanded-card-details";
+
 
 // <------------------------ Save to Local Storage ------------------------> //
 

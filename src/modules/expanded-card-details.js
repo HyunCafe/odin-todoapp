@@ -2,32 +2,24 @@
 
 import { WebStorageAPI } from "./local-storage";
 
-
-// <------------------------ Grab from Local Storage  ------------------------> //
-console.log(WebStorageAPI)
+// <---------------------- Get and Populate Expanded Card Details ----------------------> //
 const getTaskDataById = (taskId) => {
   const kanbanBoard = WebStorageAPI.load();
-  let taskData = null;
-
   for (const columnName in kanbanBoard) {
     const columnTasks = kanbanBoard[columnName];
     const task = columnTasks.find((task) => task.taskId === taskId);
 
     if (task) {
-      taskData = task;
-      break;
+      return task;
     }
   }
-
-  return taskData;
 };
-// // <---------------------- Get and Populate Expanded Card Details ----------------------> //
 
 class ExpandedCardDetails {
   constructor(taskId) {
     this.taskData = getTaskDataById(taskId);
-    this.expandedCard = document.querySelector(".project-form");
-    this.expandedCardForm = this.expandedCard.querySelector(".offcanvas__body");
+    this.expandedCard = document.querySelector(".offcanvas__body");
+    this.expandedCardForm = this.expandedCard.querySelector(".project-form");
   }
 
   resetOptions(dropdownListItems) {
@@ -40,106 +32,120 @@ class ExpandedCardDetails {
     return this.expandedCardForm.querySelector("#title-input").value;
   }
 
-  getPriority() {
-    return this.expandedCardForm.querySelector("#priorityGroup").value;
-  }
-
   getStatus() {
     return this.expandedCardForm.querySelector("#statusGroup").value;
   }
 
-  getDescription() {
-    return this.expandedCardForm.querySelector("#description-input").value;
+  getPriority() {
+    return this.expandedCardForm.querySelector("#priorityGroup").value;
   }
 
   getDueDate() {
     return this.expandedCardForm.querySelector("#due-date").valueAsDate;
   }
 
-  setTitle(title) {
-    this.expandedCardForm.querySelector("#title-input").value = title;
+  getTags() {
+    return this.expandedCardForm
+      .querySelector("#tags")
+      .value.split("#")
+      .filter((tag) => tag);
   }
 
-  setPriority(priorityIndex) {
-    const priorityDropdownItems = this.expandedCardForm.querySelectorAll(
-      "#priorityGroup option"
-    );
-    this.resetOptions(priorityDropdownItems);
-    priorityDropdownItems[priorityIndex].setAttribute("selected", "selected");
+  getDescription() {
+    return this.expandedCardForm.querySelector("#description-input").value;
+  }
+
+  setTitle(title) {
+    this.expandedCardForm.querySelector(".project-form__title").innerText =
+      title;
   }
 
   setStatus(statusIndex) {
-    const statusDropdownItems = this.expandedCardForm.querySelectorAll(
-      "#statusGroup option"
-    );
-    this.resetOptions(statusDropdownItems);
-    statusDropdownItems[statusIndex].setAttribute("selected", "selected");
+    const statusDropdown = this.expandedCardForm.querySelector("#statusGroup");
+    statusDropdown.selectedIndex = statusIndex;
+  }
+
+  setPriority(priority) {
+    this.expandedCardForm.querySelector(
+      `#priorityGroup option[value="${priority}"]`
+    ).selected = true;
+  }
+
+  setTags(tags) {
+    this.expandedCardForm.querySelector("#tags").value = tags;
+  }
+
+  setDueDate(dueDate) {
+    let dueDateObject = new Date(dueDate);
+    this.expandedCardForm.querySelector("#due-date").valueAsDate =
+      dueDateObject;
   }
 
   setDescription(description) {
-    this.expandedCardForm.querySelector("#description-input").value = description;
-  }
-
-  setDueDate(duedate) {
-    this.expandedCardForm.querySelector("#due-date").valueAsDate = duedate;
-  }
-
-  show() {
-    new Offcanvas(this.expandedCard).show();
+    this.expandedCardForm.querySelector("#description-input").value =
+      description;
   }
 
   populateFormFields() {
     this.setTitle(this.taskData.title);
-    this.setPriority(this.taskData.priority);
     this.setStatus(this.taskData.status);
-    this.setDescription(this.taskData.description);
+    this.setPriority(this.taskData.priority);
     this.setDueDate(this.taskData.dueDate);
+    this.setTags(this.taskData.tags);
+    this.setDescription(this.taskData.description);
   }
 }
 
-const expandedCardContainer = document.querySelector('.offcanvas_body')
-const expandedCardDetails = new ExpandedCardDetails();
-
-
-// <------------------------ Toggle Expanded Card ------------------------> //
-
+// <------------------------ Open and Close Expanded Card Functions ------------------------> //
 let isExpanded = false;
 
+const openExpandedCard = () => {
+  const expandedCardContainer = document.querySelector(".offcanvas");
+  expandedCardContainer.style.transform = "translateX(0%)";
+  isExpanded = true;
+};
+
+const closeExpandedCard = () => {
+  const expandedCardContainer = document.querySelector(".offcanvas");
+  expandedCardContainer.style.transform = "translateX(100%)";
+  isExpanded = false;
+};
+
 const toggleExpandedCard = () => {
-  if (isExpanded) {
-    expandedCardContainer.style.transform = "translateX(100%)";
+  if (!isExpanded) {
+    openExpandedCard();
   } else {
-    expandedCardContainer.style.transform = "translateX(0)";
+    closeExpandedCard();
   }
-  isExpanded = !isExpanded;
 };
 
 // <------------------------ Set Click Event Listener Function  ------------------------> //
 export const addTaskClickListener = (taskElement, taskId) => {
-  taskElement.addEventListener("click", () => {
-    // console.log('Clicked task element with ID:', taskId);
+  taskElement.addEventListener("click", (event) => {
+    event.stopPropagation();
 
-    const kanbanBoard = WebStorageAPI.load();
-    console.log('Kanban Board:', kanbanBoard);
+    const taskData = getTaskDataById(taskElement);
 
-    for (const columnName in kanbanBoard) {
-      const columnTasks = kanbanBoard[columnName];
-
-      const task = columnTasks.find((task) => {
-        // console.log('Comparing task ID:', task.taskId, 'with clicked task ID:', taskId);
-        return task.taskId === taskId;
-      });
-
-      if (task) {
-        const expandedCardDetails = new ExpandedCardDetails(task);
-        expandedCardDetails.populateFormFields();
-        expandedCardDetails.show();
-        break;
-      }
-    }
+    const expandedCardDetails = new ExpandedCardDetails(taskId);
+    expandedCardDetails.populateFormFields();
+    openExpandedCard();
   });
 };
 
+// Add click event listener to the document to handle clicks outside the offcanvas
+document.addEventListener("click", (event) => {
+  const expandedCardContainer = document.querySelector(".offcanvas");
+  if (!expandedCardContainer.contains(event.target) && isExpanded) {
+    closeExpandedCard();
+  }
+});
 
+// Add click event listener to the close button
+const closeButton = document.querySelector(".offcanvas__close-btn");
+closeButton.addEventListener("click", (event) => {
+  if (isExpanded) {
+    closeExpandedCard();
+  }
+});
 
 export default ExpandedCardDetails;

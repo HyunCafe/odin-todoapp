@@ -65,7 +65,7 @@ const createTaskElementHTML = (taskCard) => {
 
   // Add Expanded Card Details/ Event Listener
   const taskId = taskCard.id;
-  // addTaskClickListener(taskElement, taskId);
+  addTaskClickListener(taskElement, taskId);
 
   taskElement.dataset.id = taskCard.id;
   taskHeader.append(taskTitle);
