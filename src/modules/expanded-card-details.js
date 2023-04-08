@@ -1,11 +1,14 @@
 "use strict";
 
 import { WebStorageAPI, updateTasks } from "./local-storage";
-import { updateTaskPriorityClass, moveTaskToColumn } from "./dom-manipulation";
+import {
+  updateTaskPriorityClass,
+  markTaskAsCompleted,
+} from "./dom-manipulation";
 import { formatDistance } from "date-fns";
 
 // <---------------------- Get and Populate Expanded Card Details ----------------------> //
-const getTaskDataById = (taskId) => {
+export const getTaskDataById = (taskId) => {
   const kanbanBoard = WebStorageAPI.load();
   for (const columnName in kanbanBoard) {
     const task = kanbanBoard[columnName].find((task) => task.taskId === taskId);
@@ -105,6 +108,13 @@ class ExpandedCardDetails {
 
     if (isCompleted !== null) {
       this.taskData.isCompleted = isCompleted;
+    }
+
+    const taskId = this.taskElement.getAttribute("data-task-id");
+    console.log("Task ID from saveChanges:", taskId);
+    // Call markTaskAsCompleted if the isCompleted status changed
+    if (isCompleted !== null && isCompleted !== this.taskData.isCompleted) {
+      markTaskAsCompleted(this.taskElement, this.taskData.taskId);
     }
 
     // Update the task element's priority class and completed class

@@ -42,4 +42,4 @@ export const updateTasks = (columns) => {
   return tasks;
 };
 
-// <------------------------ Tag Counting Feature ------------------------> //
+

@@ -2,6 +2,9 @@
 import Sortable from "sortablejs";
 import { WebStorageAPI, updateTasks } from "./local-storage";
 import { loadTasks } from "../index";
+import { getTaskDataById } from "./expanded-card-details";
+import { markTaskAsCompleted } from "./dom-manipulation";
+
 
 let tasks = WebStorageAPI.load();
 
@@ -24,15 +27,27 @@ const columnsCount = {
 const sortableOptions = {
   group: "shared",
   onEnd: (e) => {
+    const taskId = e.item.getAttribute("data-id");
+    const taskData = getTaskDataById(taskId);
+    const newColumnName = e.to.getAttribute("data-column-name");
+    const isMovedToCompleted = newColumnName === "completed";
+
+    taskData.isCompleted = isMovedToCompleted;
+    e.item.setAttribute("data-completed", isMovedToCompleted ? "true" : "false");
+
+    // Call markTaskAsCompleted here
+    console.log("Task ID from sortableOptions:", taskId);
+    markTaskAsCompleted(e.item, taskId);
+
     updateTaskCounters();
-  
+
     // Save the updated tasks to the local storage
     tasks = updateTasks(columns);
     WebStorageAPI.save(tasks);
   },
-  
   draggable: ".task__container:not(.no-drag)",
 };
+
 
 const sortableColumns = Object.entries(columns).reduce((acc, [key, value]) => {
   acc[key] = new Sortable(value, sortableOptions);

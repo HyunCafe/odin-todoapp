@@ -5,7 +5,7 @@ import { WebStorageAPI, updateTasks } from "./local-storage";
 import { columns, updateTaskCounters } from "./sorting";
 import { createTaskFromObject } from "./taskcreationclass";
 import { tagTracker, updateTagDisplay } from "./tagtracker";
-import { addTaskClickListener } from "./expanded-card-details";
+import { addTaskClickListener, getTaskDataById } from "./expanded-card-details";
 
 // <------------------------ Task Column Helper Function ------------------------> //
 
@@ -92,59 +92,42 @@ export const appendTaskToColumn = (taskCard, columnName) => {
   // Assign border color based on priority level
   updateTaskPriorityClass(taskCardElement, taskCard.priority);
 
-  // Add an event listener to the task element for Complete Color Code
-  taskCardElement.addEventListener("dragend", (event) => {
-    const taskContainer = event.target.closest(".task__container");
-    markTaskAsCompleted(taskContainer);
-  });
-
   taskCardElement.__data = taskCard;
   columnElement.append(taskCardElement);
-  addDeleteIconEventListener(deleteIcon, taskCardElement);
-
-  let tasks = WebStorageAPI.load();
-  tasks = updateTasks(columns);
-  WebStorageAPI.save(tasks);
+  WebStorageAPI.save(updateTasks(columns));
 };
-
-addButtons.forEach((button) => {
-  let tasks = WebStorageAPI.load();
-  button.addEventListener("click", () => {
-    const columnElement = button.closest(".main__column");
-    const columnName = Array.from(columnElement.classList)
-      .find((className) => className.startsWith("main__column--"))
-      .split("--")[1];
-    const taskCard = createNewTask({});
-
-    // Append the task card to the column
-    appendTaskToColumn(taskCard, columnName);
-    const sortedTagCount = tagTracker();
-    updateTagDisplay(sortedTagCount);
-    tasks = updateTasks(columns);
-    WebStorageAPI.save(tasks);
-  });
-});
 
 // <------------------------ Update Task Priority Class ------------------------> //
 export const updateTaskPriorityClass = (taskElement, priority, isCompleted) => {
-  const dataPriority = taskElement.getAttribute('data-priority');
-    taskElement.setAttribute('data-priority', priority);
+  const dataPriority = taskElement.getAttribute("data-priority");
+  taskElement.setAttribute("data-priority", priority);
 };
 
 // <------------------------ Mark as Completed Logic------------------------> //
-const markTaskAsCompleted = (taskContainer) => {
+export const markTaskAsCompleted = (taskContainer, taskId) => {
   const completedColumn = document.querySelector(".main__column--completed");
   const isInCompletedColumn = completedColumn.contains(taskContainer);
-  const taskData = taskContainer.__data;
+  const taskData = getTaskDataById(taskId);
+
+  console.log(`Marking task as completed: ${taskData.taskId}`);
+  console.log(`Is task in completed column? ${isInCompletedColumn}`);
 
   taskData.isCompleted = isInCompletedColumn;
-  taskContainer.setAttribute("data-completed", isInCompletedColumn ? "true" : "false");
+  taskData.status = isInCompletedColumn ? "completed" : "in-progress";
+  taskContainer.setAttribute(
+    "data-completed",
+    isInCompletedColumn ? "true" : "false"
+  );
 
   let tasks = WebStorageAPI.load();
-  tasks = updateTasks(columns);
-  WebStorageAPI.save(tasks);
-};
+  console.log("Current tasks in local storage:", tasks);
 
+  tasks = updateTasks(columns);
+  console.log("Updated tasks in local storage:", tasks);
+
+  WebStorageAPI.save(tasks);
+  console.log("Saved tasks to local storage");
+};
 
 // <---------------------- Add Event Listener for Create and Append----------------------> //
 
@@ -160,40 +143,42 @@ const createNewTask = (taskData) => {
   };
 
   const task = { ...defaultTaskData, ...taskData };
-
   const taskCard = createTaskFromObject(task);
 
   return taskCard;
 };
 
 // <------------------------ Delete and Move to Trash ------------------------> //
-const addDeleteIconEventListener = (deleteIcon, taskElement) => {
-  deleteIcon.addEventListener("click", () => {
-    const taskContainer = deleteIcon.closest(".task__container");
+
+// <------------------------ Event Delegations ------------------------> //
+
+document.addEventListener("click", (event) => {
+  const target = event.target;
+
+  // Handle clicking the "Mark as Completed" button
+  if (target.classList.contains("task__button--completed")) {
+    const taskContainer = target.closest(".task__container");
     const taskId = taskContainer.dataset.taskId;
-    const kanbanBoard = WebStorageAPI.load();
+    markTaskAsCompleted(taskContainer, taskId);
+  }
 
-    const tasksData = kanbanBoard;
-    const currentColumn =
-      taskContainer.closest(".main__column").dataset.columnName;
-    const taskIndex = tasksData[currentColumn].findIndex(
-      (task) => task.taskId === taskId
-    );
-    const removedTask = tasksData[currentColumn].splice(taskIndex, 1)[0];
+  // Handle clicking the delete icon
+  if (target.classList.contains("task__button--delete")) {
+    const taskContainer = target.closest(".task__container");
+    taskContainer.remove();
+    WebStorageAPI.save(updateTasks(columns));
+  }
 
-    if (currentColumn === "trash") {
-      // If the task is already in the trash column, delete it from local storage
-      taskContainer.remove();
-    } else {
-      // If the task is not in the trash column, move it to the trash column
-      tasksData.trash.push(removedTask);
-
-      // Remove the task from the current column and append it to the trash column
-      taskContainer.remove();
-      appendTaskToColumn(removedTask, "trash");
-    }
-
-    updateTaskCounters();
-    WebStorageAPI.save(kanbanBoard);
-  });
-};
+  // Handle clicking the "Add New Task" button
+  if (target.classList.contains("main__column-title__button")) {
+    const columnElement = target.closest(".main__column");
+    const columnName = Array.from(columnElement.classList)
+      .find((className) => className.startsWith("main__column--"))
+      .split("--")[1];
+    const taskCard = createNewTask({});
+    appendTaskToColumn(taskCard, columnName);
+    const sortedTagCount = tagTracker();
+    updateTagDisplay(sortedTagCount);
+    WebStorageAPI.save(updateTasks(columns));
+  }
+});
