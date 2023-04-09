@@ -29,20 +29,9 @@ const sortableOptions = {
   onEnd: (e) => {
     const taskId = e.item.getAttribute("data-id");
     const taskData = getTaskDataById(taskId);
-    const newColumnName = e.to.getAttribute("data-column-name");
-    const isMovedToCompleted = newColumnName === "completed";
-
-    taskData.isCompleted = isMovedToCompleted;
-    e.item.setAttribute("data-completed", isMovedToCompleted ? "true" : "false");
-
-    // Call markTaskAsCompleted here
-    console.log("Task ID from sortableOptions:", taskId);
-    markTaskAsCompleted(e.item, taskId);
-
     updateTaskCounters();
 
     // Save the updated tasks to the local storage
-    tasks = updateTasks(columns);
     WebStorageAPI.save(updateTasks(columns));
 
   },

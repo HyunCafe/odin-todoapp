@@ -8,7 +8,6 @@ export const generateTaskId = () => {
   return taskId;
 };
 
-
 export class TaskCreation {
   constructor(
     title,
@@ -18,7 +17,8 @@ export class TaskCreation {
     add = false,
     content = "",
     id = '',
-    dueDate = null
+    dueDate = null,
+    dataCompleted = false
   ) {
     this.id = id || generateTaskId();
     this.title = title;
@@ -26,7 +26,6 @@ export class TaskCreation {
     this.tags = tags;
     this.priority = priority;
     this.add = add;
-    this.completed = false;
     this.content = content;
     this.dueDate = dueDate ? new Date(dueDate) : null;
   }
@@ -41,7 +40,7 @@ export const createTaskFromObject = (task) => {
     task.add, 
     task.content,
     task.id, 
-    task.dueDate
+    task.dueDate,
   );
   return newTask;
 };

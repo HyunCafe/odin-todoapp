@@ -86,7 +86,7 @@ class ExpandedCardDetails {
   }
 
   populateFormFields() {
-    console.log(`Populating form fields for task ID: ${this.taskData.taskId}`);
+    // console.log(`Populating form fields for task ID: ${this.taskData.taskId}`);
 
     this.setTitle(this.taskData.title);
     this.setStatus(this.taskData.status);
@@ -97,7 +97,7 @@ class ExpandedCardDetails {
   }
 
   // <------------------------ Save Changes ------------------------> //
-  saveChanges(isCompleted = null) {
+  saveChanges() {
     // Update the task data with the new values from the form fields
     this.taskData.title = this.getTitle();
     this.taskData.status = this.getStatus();
@@ -105,23 +105,11 @@ class ExpandedCardDetails {
     this.taskData.dueDate = this.getDueDate();
     this.taskData.tags = this.getTags();
     this.taskData.description = this.getDescription();
-
-    if (isCompleted !== null) {
-      this.taskData.isCompleted = isCompleted;
-    }
-
-    const taskId = this.taskElement.getAttribute("data-task-id");
-    console.log("Task ID from saveChanges:", taskId);
-    // Call markTaskAsCompleted if the isCompleted status changed
-    if (isCompleted !== null && isCompleted !== this.taskData.isCompleted) {
-      markTaskAsCompleted(this.taskElement, this.taskData.taskId);
-    }
-
-    // Update the task element's priority class and completed class
+    
+    // Update the task element's priority 
     updateTaskPriorityClass(
       this.taskElement,
       this.taskData.priority,
-      this.taskData.isCompleted
     );
 
     // Update the local storage with the new task data
@@ -138,19 +126,19 @@ class ExpandedCardDetails {
       }
     }
 
-// Update the task card on the UI
-const taskElement = this.taskElement;
-taskElement.querySelector(".task__title").innerText = this.taskData.title;
-taskElement.querySelector(".task__description").innerText =
-  this.taskData.description;
-taskElement.querySelector(".task__tags").innerText = this.taskData.tags;
+    // Update the task card on the UI
+    const taskElement = this.taskElement;
+    taskElement.querySelector(".task__title").innerText = this.taskData.title;
+    taskElement.querySelector(".task__description").innerText =
+      this.taskData.description;
+    taskElement.querySelector(".task__tags").innerText = this.taskData.tags;
 
-const dueDateElement = taskElement.querySelector(".task__due-date");
-const formattedDueDate = formatDistance(this.taskData.dueDate, new Date(), {
-  addSuffix: true,
-});
-dueDateElement.textContent = `Due: ${formattedDueDate}`;
-dueDateElement.setAttribute("data-due-date", this.taskData.dueDate);
+    const dueDateElement = taskElement.querySelector(".task__due-date");
+    const formattedDueDate = formatDistance(this.taskData.dueDate, new Date(), {
+      addSuffix: true,
+    });
+    dueDateElement.textContent = `Due: ${formattedDueDate}`;
+    dueDateElement.setAttribute("data-due-date", this.taskData.dueDate);
 
 
     // Save the updated task data to local storage
@@ -188,14 +176,16 @@ export const addTaskClickListener = (taskElement, taskId) => {
   taskElement.addEventListener("click", (event) => {
     event.stopPropagation();
 
-    // Check if the clicked target or its parent has the class 'trash-icon'
+    // Check if the clicked target or its parent has the class trash or checkbox icons
     if (
       event.target.classList.contains("task__delete-icon") ||
-      event.target.parentElement.classList.contains("task__delete-icon")
+      event.target.parentElement.classList.contains("task__delete-icon") ||
+      event.target.classList.contains("task__checkbox-icon") ||
+      event.target.parentElement.classList.contains("task__checkbox-icon")
     ) {
-      return; // Do not open the expanded card when trash icon is clicked
+      return; // Do not open the expanded card when trash icon or checkbox icon is clicked
     }
-
+    
     currentExpandedCardDetails = new ExpandedCardDetails(taskId, taskElement);
     currentExpandedCardDetails.populateFormFields();
     openExpandedCard();

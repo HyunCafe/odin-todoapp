@@ -32,6 +32,10 @@ const createTaskElementHTML = (taskCard) => {
   taskTitle.classList.add("task__title");
   taskTitle.textContent = taskCard.title;
 
+  const checkboxIcon = document.createElement("span");
+  checkboxIcon.classList.add("task__checkbox-icon", "material-icons");
+  checkboxIcon.textContent = "check_box_outline_blank";
+
   const taskPriority = document.createElement("span");
   taskElement.setAttribute("data-priority", taskCard.priority);
 
@@ -69,6 +73,8 @@ const createTaskElementHTML = (taskCard) => {
 
   taskElement.dataset.id = taskCard.id;
   taskHeader.append(taskTitle);
+  taskHeader.append(checkboxIcon);
+
   taskHeader.append(deleteIcon);
   taskElement.append(taskHeader);
   taskElement.append(taskDescription);
@@ -117,37 +123,13 @@ mainContainer.addEventListener("click", (event) => {
 
   WebStorageAPI.save(updateTasks(columns));
 });
+
 // <------------------------ Update Task Priority Class ------------------------> //
-export const updateTaskPriorityClass = (taskElement, priority, isCompleted) => {
+export const updateTaskPriorityClass = (taskElement, priority) => {
   const dataPriority = taskElement.getAttribute("data-priority");
   taskElement.setAttribute("data-priority", priority);
 };
 
-// <------------------------ Mark as Completed Logic------------------------> //
-export const markTaskAsCompleted = (taskContainer, taskId) => {
-  const completedColumn = document.querySelector(".main__column--completed");
-  const isInCompletedColumn = completedColumn.contains(taskContainer);
-  const taskData = getTaskDataById(taskId);
-
-  console.log(`Marking task as completed: ${taskData.taskId}`);
-  console.log(`Is task in completed column? ${isInCompletedColumn}`);
-
-  taskData.isCompleted = isInCompletedColumn;
-  taskData.status = isInCompletedColumn ? "completed" : "in-progress";
-  taskContainer.setAttribute(
-    "data-completed",
-    isInCompletedColumn ? "true" : "false"
-  );
-
-  let tasks = WebStorageAPI.load();
-  console.log("Current tasks in local storage:", tasks);
-
-  tasks = updateTasks(columns);
-  console.log("Updated tasks in local storage:", tasks);
-
-  WebStorageAPI.save(tasks);
-  console.log("Saved tasks to local storage");
-};
 
 // <---------------------- Add Event Listener for Create and Append----------------------> //
 
@@ -160,6 +142,7 @@ const createNewTask = (taskData) => {
     priority: "Low",
     dueDate: new Date(),
     content: "Content",
+    completed: false,
   };
 
   const task = { ...defaultTaskData, ...taskData };
@@ -167,6 +150,42 @@ const createNewTask = (taskData) => {
 
   return taskCard;
 };
+
+// <---------------------- Delegate and Check / Complete Logic----------------------> //
+
+
+document.addEventListener('click', (event) => {
+  if (event.target.classList.contains('task__checkbox-icon')) {
+    const taskContainer = event.target.closest('.task__container');
+    const taskId = taskContainer.dataset.taskId;
+    const kanbanBoard = WebStorageAPI.load();
+    const tasksData = kanbanBoard;
+
+    const currentColumn =
+      taskContainer.closest('.main__column').dataset.columnName;
+    const taskIndex = tasksData[currentColumn].findIndex(
+      (task) => task.taskId === taskId
+    );
+    tasksData[currentColumn][taskIndex].completed = true;
+    updateTaskPriorityClass(taskContainer, 3, true);
+
+    if (currentColumn === 'completed') {
+      tasksData[currentColumn][taskIndex].completed
+        ? taskContainer.querySelector('.task__checkbox-icon').textContent = 'check_box'
+        : taskContainer.querySelector('.task__checkbox-icon').textContent = 'check_box_outline_blank';
+      const previousPriority = taskContainer.getAttribute('data-previous-priority');
+      updateTaskPriorityClass(taskContainer, previousPriority, true);
+      tasksData[currentColumn][taskIndex].dataCompleted = new Date().toISOString();
+    } else {
+      taskContainer.querySelector('.task__checkbox-icon').textContent = 'check_box';
+      tasksData[currentColumn][taskIndex].dataCompleted = false;
+    }
+
+    updateTaskCounters();
+    WebStorageAPI.save(kanbanBoard);
+  }
+});
+
 
 // <------------------------ Delete and Move to Trash ------------------------> //
 const addDeleteIconEventListener = (deleteIcon, taskElement) => {
@@ -196,13 +215,7 @@ const addDeleteIconEventListener = (deleteIcon, taskElement) => {
     }
 
     updateTaskCounters();
-
-    console.log("kanbanBoard after deleting task:", kanbanBoard);
     WebStorageAPI.save(kanbanBoard);
-    console.log(
-      "kanbanBoard after saving to local storage:",
-      WebStorageAPI.load()
-    );
   });
 };
 
