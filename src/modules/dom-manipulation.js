@@ -81,8 +81,8 @@ const createTaskElementHTML = (taskCard) => {
 };
 
 // <------------------------ Append Task to Column ------------------------> //
-const addButtons = document.querySelectorAll(".main__column-title__button");
-const submitBtn = document.querySelector(".project-form__btn-save");
+
+const mainContainer = document.querySelector(".main");
 
 export const appendTaskToColumn = (taskCard, columnName) => {
   const columnElement = getTaskColumn(columnName);
@@ -94,9 +94,29 @@ export const appendTaskToColumn = (taskCard, columnName) => {
 
   taskCardElement.__data = taskCard;
   columnElement.append(taskCardElement);
+  addDeleteIconEventListener(deleteIcon, taskCardElement);
+
   WebStorageAPI.save(updateTasks(columns));
 };
 
+mainContainer.addEventListener("click", (event) => {
+  if (!event.target.classList.contains("main__column-title__button")) {
+    return;
+  }
+
+  const columnElement = event.target.closest(".main__column");
+  const columnName = Array.from(columnElement.classList)
+    .find((className) => className.startsWith("main__column--"))
+    .split("--")[1];
+  const taskCard = createNewTask({});
+
+  // Append the task card to the column
+  appendTaskToColumn(taskCard, columnName);
+  const sortedTagCount = tagTracker();
+  updateTagDisplay(sortedTagCount);
+
+  WebStorageAPI.save(updateTasks(columns));
+});
 // <------------------------ Update Task Priority Class ------------------------> //
 export const updateTaskPriorityClass = (taskElement, priority, isCompleted) => {
   const dataPriority = taskElement.getAttribute("data-priority");
@@ -149,25 +169,75 @@ const createNewTask = (taskData) => {
 };
 
 // <------------------------ Delete and Move to Trash ------------------------> //
+const addDeleteIconEventListener = (deleteIcon, taskElement) => {
+  deleteIcon.addEventListener("click", () => {
+    const taskContainer = deleteIcon.closest(".task__container");
+    const taskId = taskContainer.dataset.taskId;
+    const kanbanBoard = WebStorageAPI.load();
+
+    const tasksData = kanbanBoard;
+    const currentColumn =
+      taskContainer.closest(".main__column").dataset.columnName;
+    const taskIndex = tasksData[currentColumn].findIndex(
+      (task) => task.taskId === taskId
+    );
+    const removedTask = tasksData[currentColumn].splice(taskIndex, 1)[0];
+
+    if (currentColumn === "trash") {
+      // If the task is already in the trash column, delete it from local storage
+      taskContainer.remove();
+    } else {
+      // If the task is not in the trash column, move it to the trash column
+      tasksData.trash.push(removedTask);
+
+      // Remove the task from the current column and append it to the trash column
+      taskContainer.remove();
+      appendTaskToColumn(removedTask, "trash");
+    }
+
+    updateTaskCounters();
+
+    console.log("kanbanBoard after deleting task:", kanbanBoard);
+    WebStorageAPI.save(kanbanBoard);
+    console.log(
+      "kanbanBoard after saving to local storage:",
+      WebStorageAPI.load()
+    );
+  });
+};
+
+const deleteTask = (e) => {
+  if (!e.target.matches(".task__delete-icon")) return;
+
+  const taskContainer = e.target.closest(".task__container");
+  const taskId = taskContainer.dataset.taskId;
+  const kanbanBoard = WebStorageAPI.load();
+  const tasksData = kanbanBoard;
+  const currentColumn =
+    taskContainer.closest(".main__column").dataset.columnName;
+  const taskIndex = tasksData[currentColumn].findIndex(
+    (task) => task.taskId === taskId
+  );
+  const removedTask = tasksData[currentColumn].splice(taskIndex, 1)[0];
+
+  if (currentColumn === "trash") {
+    taskContainer.remove();
+  } else {
+    tasksData.trash.push(removedTask);
+    taskContainer.remove();
+    appendTaskToColumn(removedTask, "trash");
+  }
+
+  updateTaskCounters();
+  WebStorageAPI.save(kanbanBoard);
+};
+
+document.addEventListener("click", deleteTask);
 
 // <------------------------ Event Delegations ------------------------> //
 
 document.addEventListener("click", (event) => {
   const target = event.target;
-
-  // Handle clicking the "Mark as Completed" button
-  if (target.classList.contains("task__button--completed")) {
-    const taskContainer = target.closest(".task__container");
-    const taskId = taskContainer.dataset.taskId;
-    markTaskAsCompleted(taskContainer, taskId);
-  }
-
-  // Handle clicking the delete icon
-  if (target.classList.contains("task__button--delete")) {
-    const taskContainer = target.closest(".task__container");
-    taskContainer.remove();
-    WebStorageAPI.save(updateTasks(columns));
-  }
 
   // Handle clicking the "Add New Task" button
   if (target.classList.contains("main__column-title__button")) {

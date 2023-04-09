@@ -43,7 +43,8 @@ const sortableOptions = {
 
     // Save the updated tasks to the local storage
     tasks = updateTasks(columns);
-    WebStorageAPI.save(tasks);
+    WebStorageAPI.save(updateTasks(columns));
+
   },
   draggable: ".task__container:not(.no-drag)",
 };

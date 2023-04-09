@@ -138,19 +138,20 @@ class ExpandedCardDetails {
       }
     }
 
-    // Update the task card on the UI
-    const taskElement = this.taskElement;
-    taskElement.querySelector(".task__title").innerText = this.taskData.title;
-    taskElement.querySelector(".task__description").innerText =
-      this.taskData.description;
-    taskElement.querySelector(".task__tags").innerText = this.taskData.tags;
+// Update the task card on the UI
+const taskElement = this.taskElement;
+taskElement.querySelector(".task__title").innerText = this.taskData.title;
+taskElement.querySelector(".task__description").innerText =
+  this.taskData.description;
+taskElement.querySelector(".task__tags").innerText = this.taskData.tags;
 
-    const dueDateElement = taskElement.querySelector(".task__due-date");
-    const formattedDueDate = formatDistance(this.taskData.dueDate, new Date(), {
-      addSuffix: true,
-    });
-    dueDateElement.textContent = `Due: ${formattedDueDate}`;
-    dueDateElement.setAttribute("data-due-date", this.taskData.dueDate);
+const dueDateElement = taskElement.querySelector(".task__due-date");
+const formattedDueDate = formatDistance(this.taskData.dueDate, new Date(), {
+  addSuffix: true,
+});
+dueDateElement.textContent = `Due: ${formattedDueDate}`;
+dueDateElement.setAttribute("data-due-date", this.taskData.dueDate);
+
 
     // Save the updated task data to local storage
     WebStorageAPI.save(kanbanBoard);
