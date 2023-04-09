@@ -233,22 +233,3 @@ const deleteTask = (e) => {
 };
 
 document.addEventListener("click", deleteTask);
-
-// <------------------------ Event Delegations ------------------------> //
-
-document.addEventListener("click", (event) => {
-  const target = event.target;
-
-  // Handle clicking the "Add New Task" button
-  if (target.classList.contains("main__column-title__button")) {
-    const columnElement = target.closest(".main__column");
-    const columnName = Array.from(columnElement.classList)
-      .find((className) => className.startsWith("main__column--"))
-      .split("--")[1];
-    const taskCard = createNewTask({});
-    appendTaskToColumn(taskCard, columnName);
-    const sortedTagCount = tagTracker();
-    updateTagDisplay(sortedTagCount);
-    WebStorageAPI.save(updateTasks(columns));
-  }
-});
