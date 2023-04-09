@@ -20,12 +20,19 @@ export const loadTasks = () => {
     const columnElement = getTaskColumn(columnName);
     columnTasks.forEach((taskData) => {
       const task = createTaskFromObject(taskData);
-      appendTaskToColumn(task, columnName);
+      // console.log(task)
+      // console.log(taskData.completed)
+      if (taskData.completed) {
+        task.classList.add('task__container--completed');
+        task.querySelector('.task__checkbox-icon').textContent = 'check_box';
+      }
+      appendTaskToColumn(taskData, columnName);
     });
   }
   const sortedTagCount = tagTracker();
   updateTaskCounters();
   updateTagDisplay(sortedTagCount);
 };
+
 
 document.addEventListener("DOMContentLoaded", loadTasks);

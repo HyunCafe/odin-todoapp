@@ -1,20 +1,19 @@
 "use strict";
 
-
+const LOCAL_STORAGE_KEY = "KanbanBoard";
 
 // <------------------------ Save to Local Storage ------------------------> //
 
 export const WebStorageAPI = {
   load() {
-    const kanbanBoard = localStorage.getItem("KanbanBoard");
+    const kanbanBoard = localStorage.getItem(LOCAL_STORAGE_KEY);
     return JSON.parse(kanbanBoard);
   },
 
   save(kanbanBoard) {
-    localStorage.setItem("KanbanBoard", JSON.stringify(kanbanBoard));
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(kanbanBoard));
   },
 };
-
 WebStorageAPI.load();
 // localStorage.clear();
 // <------------------------ Delete from Local Storage ------------------------> //
@@ -33,8 +32,9 @@ export const updateTasks = (columns) => {
         dueDate: new Date(taskElement.querySelector(".task__due-date").dataset.dueDate),
         tags: taskElement.querySelector(".task__tags").textContent,
         priority: taskElement.__data.priority,
-        dataPriority: dataPriority
-      };
+        dataPriority: dataPriority,
+        completed: taskElement.classList.contains("task__container--completed"),
+      }
     });
   });
   return tasks;

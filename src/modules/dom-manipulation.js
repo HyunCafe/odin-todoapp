@@ -1,11 +1,20 @@
+/// Current Issue is one, the save button is not grabbing the right taskid or saving to the right one
+// next issue is that the save button is being called multime times each time we save so multiple events called
+//
+
 "use strict";
 
-import { isValid, formatDistance, parseISO } from "date-fns";
+import { formatDistance, parseISO } from "date-fns";
 import { WebStorageAPI, updateTasks } from "./local-storage";
 import { columns, updateTaskCounters } from "./sorting";
 import { createTaskFromObject } from "./taskcreationclass";
 import { tagTracker, updateTagDisplay } from "./tagtracker";
-import { addTaskClickListener, getTaskDataById } from "./expanded-card-details";
+import {
+  getTaskDataById,
+  ExpandedCardDetails,
+  openExpandedCard,
+  closeExpandedCard,
+} from "./expanded-card-details";
 
 // <------------------------ Task Column Helper Function ------------------------> //
 
@@ -21,9 +30,11 @@ export const getTaskColumn = (columnName) => {
 
 // <------------------------ Create Task Element ------------------------> //
 const createTaskElementHTML = (taskCard) => {
+  console.log("taskCard:", taskCard); // log the taskCard object
+
   const taskElement = document.createElement("div");
   taskElement.classList.add("task__container");
-  taskElement.setAttribute("data-task-id", taskCard.id);
+  taskElement.setAttribute("data-task-id", taskCard.taskId);
 
   const taskHeader = document.createElement("div");
   taskHeader.classList.add("task__header");
@@ -57,24 +68,33 @@ const createTaskElementHTML = (taskCard) => {
   const taskDueDate = document.createElement("span");
   taskDueDate.classList.add("task__due-date");
 
+  //  // Add click event listener to task element
+  //  addTaskClickListener(taskElement, taskCard.id);
+
   if (typeof taskCard.dueDate === "string") {
     taskCard.dueDate = parseISO(taskCard.dueDate);
   }
 
+  // Time Date Format
   const formattedDueDate = formatDistance(taskCard.dueDate, new Date(), {
     addSuffix: true,
   });
+
   taskDueDate.textContent = `Due: ${formattedDueDate}`;
   taskDueDate.setAttribute("data-due-date", taskCard.dueDate);
 
-  // Add Expanded Card Details/ Event Listener
-  const taskId = taskCard.id;
-  addTaskClickListener(taskElement, taskId);
+  // Check Box
+  checkboxIcon.textContent = taskCard.completed
+    ? "check_box"
+    : "check_box_outline_blank";
 
-  taskElement.dataset.id = taskCard.id;
+  if (taskCard.completed) {
+    taskElement.classList.add("task__container--completed");
+  }
+
+  taskElement.dataset.id = taskCard.taskId;
   taskHeader.append(taskTitle);
   taskHeader.append(checkboxIcon);
-
   taskHeader.append(deleteIcon);
   taskElement.append(taskHeader);
   taskElement.append(taskDescription);
@@ -95,33 +115,20 @@ export const appendTaskToColumn = (taskCard, columnName) => {
   const { taskElement: taskCardElement, deleteIcon } =
     createTaskElementHTML(taskCard);
 
-  // Assign border color based on priority level
   updateTaskPriorityClass(taskCardElement, taskCard.priority);
-
   taskCardElement.__data = taskCard;
   columnElement.append(taskCardElement);
-  addDeleteIconEventListener(deleteIcon, taskCardElement);
-
   WebStorageAPI.save(updateTasks(columns));
+  updateTagDisplay(tagTracker());
 };
 
 mainContainer.addEventListener("click", (event) => {
-  if (!event.target.classList.contains("main__column-title__button")) {
-    return;
+  if (event.target.classList.contains("main__column-title__button")) {
+    const columnElement = event.target.closest(".main__column");
+    const columnName = columnElement.classList.value.split("main__column--")[1];
+    appendTaskToColumn(createNewTask({}), columnName);
+    WebStorageAPI.save(updateTasks(columns));
   }
-
-  const columnElement = event.target.closest(".main__column");
-  const columnName = Array.from(columnElement.classList)
-    .find((className) => className.startsWith("main__column--"))
-    .split("--")[1];
-  const taskCard = createNewTask({});
-
-  // Append the task card to the column
-  appendTaskToColumn(taskCard, columnName);
-  const sortedTagCount = tagTracker();
-  updateTagDisplay(sortedTagCount);
-
-  WebStorageAPI.save(updateTasks(columns));
 });
 
 // <------------------------ Update Task Priority Class ------------------------> //
@@ -130,12 +137,11 @@ export const updateTaskPriorityClass = (taskElement, priority) => {
   taskElement.setAttribute("data-priority", priority);
 };
 
-
 // <---------------------- Add Event Listener for Create and Append----------------------> //
 
 const createNewTask = (taskData) => {
   const defaultTaskData = {
-    taskId: taskData.taskId,
+    id: taskData.id,
     title: "Enter Title",
     description: "Enter Description",
     tags: "#Tag #Tag2",
@@ -151,49 +157,40 @@ const createNewTask = (taskData) => {
   return taskCard;
 };
 
-// <---------------------- Delegate and Check / Complete Logic----------------------> //
+// <---------------------- Delegate Events Trash, Delete, Checkbox Logic----------------------> //
+let currentExpandedCardDetails = null;
+const saveButton = document.querySelector(".project-form__btn-save");
 
+const handleCheckboxClick = (taskElement, taskId) => {
+  const currentColumn = taskElement.closest(".main__column").dataset.columnName;
+  const kanbanBoard = WebStorageAPI.load();
+  const taskData = kanbanBoard[currentColumn].find(
+    (task) => task.taskId === taskId
+  );
 
-document.addEventListener('click', (event) => {
-  if (event.target.classList.contains('task__checkbox-icon')) {
-    const taskContainer = event.target.closest('.task__container');
-    const taskId = taskContainer.dataset.taskId;
-    const kanbanBoard = WebStorageAPI.load();
-    const tasksData = kanbanBoard;
+  taskData.completed = !taskData.completed;
+  taskElement.classList.toggle("task__container--completed");
+  taskElement.querySelector(".task__checkbox-icon").textContent =
+    taskData.completed ? "check_box" : "check_box_outline_blank";
 
-    const currentColumn =
-      taskContainer.closest('.main__column').dataset.columnName;
-    const taskIndex = tasksData[currentColumn].findIndex(
-      (task) => task.taskId === taskId
-    );
-    tasksData[currentColumn][taskIndex].completed = true;
-    updateTaskPriorityClass(taskContainer, 3, true);
+  updateTaskCounters();
+  WebStorageAPI.save(kanbanBoard);
+};
 
-    if (currentColumn === 'completed') {
-      tasksData[currentColumn][taskIndex].completed
-        ? taskContainer.querySelector('.task__checkbox-icon').textContent = 'check_box'
-        : taskContainer.querySelector('.task__checkbox-icon').textContent = 'check_box_outline_blank';
-      const previousPriority = taskContainer.getAttribute('data-previous-priority');
-      updateTaskPriorityClass(taskContainer, previousPriority, true);
-      tasksData[currentColumn][taskIndex].dataCompleted = new Date().toISOString();
-    } else {
-      taskContainer.querySelector('.task__checkbox-icon').textContent = 'check_box';
-      tasksData[currentColumn][taskIndex].dataCompleted = false;
-    }
-
-    updateTaskCounters();
-    WebStorageAPI.save(kanbanBoard);
+const handleTaskContainerClick = (event) => {
+  const taskElement = event.target.closest(".task__container");
+  if (!taskElement) {
+    return;
   }
-});
 
+  const taskId = taskElement.dataset.taskId;
 
-// <------------------------ Delete and Move to Trash ------------------------> //
-const addDeleteIconEventListener = (deleteIcon, taskElement) => {
-  deleteIcon.addEventListener("click", () => {
-    const taskContainer = deleteIcon.closest(".task__container");
+  if (event.target.classList.contains("task__checkbox-icon")) {
+    handleCheckboxClick(taskElement, taskId);
+  } else if (event.target.classList.contains("task__delete-icon")) {
+    const taskContainer = event.target.closest(".task__container");
     const taskId = taskContainer.dataset.taskId;
     const kanbanBoard = WebStorageAPI.load();
-
     const tasksData = kanbanBoard;
     const currentColumn =
       taskContainer.closest(".main__column").dataset.columnName;
@@ -203,46 +200,47 @@ const addDeleteIconEventListener = (deleteIcon, taskElement) => {
     const removedTask = tasksData[currentColumn].splice(taskIndex, 1)[0];
 
     if (currentColumn === "trash") {
-      // If the task is already in the trash column, delete it from local storage
       taskContainer.remove();
     } else {
-      // If the task is not in the trash column, move it to the trash column
       tasksData.trash.push(removedTask);
-
-      // Remove the task from the current column and append it to the trash column
       taskContainer.remove();
       appendTaskToColumn(removedTask, "trash");
     }
 
     updateTaskCounters();
     WebStorageAPI.save(kanbanBoard);
-  });
-};
-
-const deleteTask = (e) => {
-  if (!e.target.matches(".task__delete-icon")) return;
-
-  const taskContainer = e.target.closest(".task__container");
-  const taskId = taskContainer.dataset.taskId;
-  const kanbanBoard = WebStorageAPI.load();
-  const tasksData = kanbanBoard;
-  const currentColumn =
-    taskContainer.closest(".main__column").dataset.columnName;
-  const taskIndex = tasksData[currentColumn].findIndex(
-    (task) => task.taskId === taskId
-  );
-  const removedTask = tasksData[currentColumn].splice(taskIndex, 1)[0];
-
-  if (currentColumn === "trash") {
-    taskContainer.remove();
   } else {
-    tasksData.trash.push(removedTask);
-    taskContainer.remove();
-    appendTaskToColumn(removedTask, "trash");
+    console.log(`Task with ID ${taskId} clicked.`);
+    currentExpandedCardDetails = new ExpandedCardDetails(taskId, taskElement);
+    currentExpandedCardDetails.populateFormFields();
+    openExpandedCard();
+
+    // Remove existing event listeners before adding a new one
+    saveButton.removeEventListener("click", saveButtonHandler);
+    saveButton.addEventListener("click", saveButtonHandler);
   }
-
-  updateTaskCounters();
-  WebStorageAPI.save(kanbanBoard);
 };
+const saveButtonHandler = () => {
+  currentExpandedCardDetails.saveChanges();
+  closeExpandedCard();
+};
+document.addEventListener("click", (event) => {
+  handleTaskContainerClick(event);
+});
+// Add click event listener to the document to handle clicks outside the offcanvas
+let isExpanded = false;
 
-document.addEventListener("click", deleteTask);
+document.addEventListener("click", (event) => {
+  const expandedCardContainer = document.querySelector(".offcanvas");
+  if (!expandedCardContainer.contains(event.target) && isExpanded) {
+    closeExpandedCard();
+  }
+});
+
+// Add click event listener to the close button
+const closeButton = document.querySelector(".offcanvas__close-btn");
+closeButton.addEventListener("click", (event) => {
+  if (isExpanded) {
+    closeExpandedCard();
+  }
+});

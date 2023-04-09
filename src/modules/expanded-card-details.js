@@ -1,10 +1,7 @@
 "use strict";
 
-import { WebStorageAPI, updateTasks } from "./local-storage";
-import {
-  updateTaskPriorityClass,
-  markTaskAsCompleted,
-} from "./dom-manipulation";
+import { WebStorageAPI } from "./local-storage";
+import { updateTaskPriorityClass } from "./dom-manipulation";
 import { formatDistance } from "date-fns";
 
 // <---------------------- Get and Populate Expanded Card Details ----------------------> //
@@ -19,7 +16,7 @@ export const getTaskDataById = (taskId) => {
   }
 };
 
-class ExpandedCardDetails {
+export class ExpandedCardDetails {
   constructor(taskId, taskElement) {
     this.taskData = getTaskDataById(taskId);
     this.expandedCard = document.querySelector(".offcanvas__body");
@@ -105,12 +102,9 @@ class ExpandedCardDetails {
     this.taskData.dueDate = this.getDueDate();
     this.taskData.tags = this.getTags();
     this.taskData.description = this.getDescription();
-    
-    // Update the task element's priority 
-    updateTaskPriorityClass(
-      this.taskElement,
-      this.taskData.priority,
-    );
+
+    // Update the task element's priority
+    updateTaskPriorityClass(this.taskElement, this.taskData.priority);
 
     // Update the local storage with the new task data
     const kanbanBoard = WebStorageAPI.load();
@@ -140,83 +134,35 @@ class ExpandedCardDetails {
     dueDateElement.textContent = `Due: ${formattedDueDate}`;
     dueDateElement.setAttribute("data-due-date", this.taskData.dueDate);
 
-
     // Save the updated task data to local storage
     WebStorageAPI.save(kanbanBoard);
+
+    return this.taskData; // return the updated taskData
   }
 }
 
 // <------------------------ Open and Close Expanded Card Functions ------------------------> //
 let isExpanded = false;
+let currentExpandedCardDetails = null;
 
-const openExpandedCard = () => {
+export const openExpandedCard = () => {
   const expandedCardContainer = document.querySelector(".offcanvas");
   expandedCardContainer.style.transform = "translateX(0%)";
   isExpanded = true;
 };
 
-const closeExpandedCard = () => {
+export const closeExpandedCard = () => {
   const expandedCardContainer = document.querySelector(".offcanvas");
   expandedCardContainer.style.transform = "translateX(100%)";
   isExpanded = false;
 };
 
-const toggleExpandedCard = () => {
+export const toggleExpandedCard = () => {
   if (!isExpanded) {
     openExpandedCard();
   } else {
     closeExpandedCard();
   }
 };
-
-// <------------------------ Set Click Event Listener Function  ------------------------> //
-let currentExpandedCardDetails = null;
-
-export const addTaskClickListener = (taskElement, taskId) => {
-  taskElement.addEventListener("click", (event) => {
-    event.stopPropagation();
-
-    // Check if the clicked target or its parent has the class trash or checkbox icons
-    if (
-      event.target.classList.contains("task__delete-icon") ||
-      event.target.parentElement.classList.contains("task__delete-icon") ||
-      event.target.classList.contains("task__checkbox-icon") ||
-      event.target.parentElement.classList.contains("task__checkbox-icon")
-    ) {
-      return; // Do not open the expanded card when trash icon or checkbox icon is clicked
-    }
-    
-    currentExpandedCardDetails = new ExpandedCardDetails(taskId, taskElement);
-    currentExpandedCardDetails.populateFormFields();
-    openExpandedCard();
-  });
-};
-
-// Add click event listener to the document to handle clicks outside the offcanvas
-document.addEventListener("click", (event) => {
-  const expandedCardContainer = document.querySelector(".offcanvas");
-  if (!expandedCardContainer.contains(event.target) && isExpanded) {
-    closeExpandedCard();
-  }
-});
-
-// Add click event listener to the close button
-const closeButton = document.querySelector(".offcanvas__close-btn");
-closeButton.addEventListener("click", (event) => {
-  if (isExpanded) {
-    closeExpandedCard();
-  }
-});
-
-// Add click event listener to the save button
-const saveButton = document.querySelector(".project-form__btn-save");
-saveButton.addEventListener("click", (event) => {
-  event.preventDefault(); // Prevent the form from being submitted and the page from refreshing
-
-  if (currentExpandedCardDetails) {
-    currentExpandedCardDetails.saveChanges();
-    closeExpandedCard(); // Close the expanded card after saving the changes
-  }
-});
 
 export default ExpandedCardDetails;

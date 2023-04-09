@@ -1,10 +1,11 @@
 'use strict';
 
-let taskIdCounter = 1;
+import { WebStorageAPI } from "./local-storage";
+
+let taskIdCounter = 5;
 
 export const generateTaskId = () => {
-  const taskId = `${taskIdCounter}`;
-  taskIdCounter++;
+  const taskId = `${Date.now()}`;
   return taskId;
 };
 
@@ -16,11 +17,11 @@ export class TaskCreation {
     priority = 1,
     add = false,
     content = "",
-    id = '',
+    taskId = '',
     dueDate = null,
     dataCompleted = false
   ) {
-    this.id = id || generateTaskId();
+    this.taskId = taskId || generateTaskId();
     this.title = title;
     this.description = description;
     this.tags = tags;
@@ -37,10 +38,11 @@ export const createTaskFromObject = (task) => {
     task.description,
     task.tags,
     task.priority,
-    task.add, 
+    task.add,
     task.content,
-    task.id, 
+    task.taskId,
     task.dueDate,
   );
   return newTask;
 };
+
