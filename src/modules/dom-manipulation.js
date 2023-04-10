@@ -61,9 +61,6 @@ const createTaskElementHTML = (taskCard) => {
   const taskDueDate = document.createElement("span");
   taskDueDate.classList.add("task__due-date");
 
-  //  // Add click event listener to task element
-  //  addTaskClickListener(taskElement, taskCard.id);
-
   if (typeof taskCard.dueDate === "string") {
     taskCard.dueDate = parseISO(taskCard.dueDate);
   }
@@ -173,14 +170,26 @@ const handleCheckboxClick = (taskElement, taskId) => {
 };
 
 const handleCheckboxIconClick = (event) => {
+  const taskElement = event.target.closest(".task__container");
+  const taskId = taskElement.dataset.taskId;
+  handleCheckboxClick(taskElement, taskId);
+};
+
+const handleGlobalClick = (event) => {
+  // Handle task container click
+  const taskElement = event.target.closest(".task__container");
+  if (taskElement) {
+    handleTaskContainerClick(event);
+  }
+
+  // Handle checkbox icon click
   if (event.target.classList.contains("task__checkbox-icon")) {
-    const taskElement = event.target.closest(".task__container");
-    const taskId = taskElement.dataset.taskId;
-    handleCheckboxClick(taskElement, taskId);
+    handleCheckboxIconClick(event);
   }
 };
-// Add the event listener for the checkbox icon clicks
-document.addEventListener("click", handleCheckboxIconClick);
+
+// Add the event listener for global click events
+document.addEventListener("click", handleGlobalClick);
 
 const handleTaskContainerClick = (event) => {
   const taskElement = event.target.closest(".task__container");
@@ -188,11 +197,13 @@ const handleTaskContainerClick = (event) => {
     return;
   }
   const taskId = taskElement.dataset.taskId;
-  // Check if the clicked target or its parent has the class trash or checkbox icons
+
+  // Do not open the expanded card when trash icon or checkbox icon is clicked
   if (event.target.classList.contains("task__checkbox-icon")) {
-    return; // Do not open the expanded card when trash icon or checkbox icon is clicked
+    return;
   }
 
+  // Handle task delete
   if (event.target.classList.contains("task__delete-icon")) {
     const taskContainer = event.target.closest(".task__container");
     const taskId = taskContainer.dataset.taskId;
@@ -232,7 +243,6 @@ const handleTaskContainerClick = (event) => {
     saveButton.addEventListener("click", saveButtonHandler);
   }
 };
-
 const saveButtonHandler = () => {
   if (!saveButtonHandler.isRunning) {
     saveButtonHandler.isRunning = true;
@@ -245,6 +255,3 @@ const saveButtonHandler = () => {
 };
 
 saveButtonHandler.isRunning = false;
-document.addEventListener("click", (event) => {
-  handleTaskContainerClick(event);
-});

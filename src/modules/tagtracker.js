@@ -24,7 +24,12 @@ export const countTags = (columns) => {
   
   export const tagTracker = () => {
     const tasks = WebStorageAPI.load();
-    const tagCount = countTags(tasks);
+  
+    // Exclude the trash column
+    const tasksWithoutTrash = { ...tasks };
+    delete tasksWithoutTrash.trash;
+  
+    const tagCount = countTags(tasksWithoutTrash);
     return sortTagCount(tagCount);
   };
   
