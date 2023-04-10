@@ -231,7 +231,7 @@ border: 2px solid blue !important;
 
 /* <--------------------- Trash Details Section ---------------------> */
 .trash-popup {
-  /* display: none; */
+  display: none;
   text-align: center;
   height: 85%;
   width: 35%;

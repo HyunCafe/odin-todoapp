@@ -1,7 +1,3 @@
-/// Current Issue is one, the save button is not grabbing the right taskid or saving to the right one
-// next issue is that the save button is being called multime times each time we save so multiple events called
-//
-
 "use strict";
 
 import { formatDistance, parseISO } from "date-fns";
@@ -10,7 +6,6 @@ import { columns, updateTaskCounters } from "./sorting";
 import { createTaskFromObject } from "./taskcreationclass";
 import { tagTracker, updateTagDisplay } from "./tagtracker";
 import {
-  getTaskDataById,
   ExpandedCardDetails,
   openExpandedCard,
   closeExpandedCard,
@@ -30,7 +25,6 @@ export const getTaskColumn = (columnName) => {
 
 // <------------------------ Create Task Element ------------------------> //
 const createTaskElementHTML = (taskCard) => {
-
   const taskElement = document.createElement("div");
   taskElement.classList.add("task__container");
   taskElement.setAttribute("data-task-id", taskCard.taskId);
@@ -166,7 +160,7 @@ const handleCheckboxClick = (taskElement, taskId) => {
   const taskData = kanbanBoard[currentColumn].find(
     (task) => task.taskId === taskId
   );
-
+  console.log("checkbox clicked");
   taskData.completed = !taskData.completed;
   taskElement.classList.toggle("task__container--completed");
   taskElement.querySelector(".task__checkbox-icon").textContent =
@@ -178,13 +172,26 @@ const handleCheckboxClick = (taskElement, taskId) => {
   updateTaskCounters();
 };
 
+const handleCheckboxIconClick = (event) => {
+  if (event.target.classList.contains("task__checkbox-icon")) {
+    const taskElement = event.target.closest(".task__container");
+    const taskId = taskElement.dataset.taskId;
+    handleCheckboxClick(taskElement, taskId);
+  }
+};
+// Add the event listener for the checkbox icon clicks
+document.addEventListener("click", handleCheckboxIconClick);
+
 const handleTaskContainerClick = (event) => {
   const taskElement = event.target.closest(".task__container");
   if (!taskElement) {
     return;
   }
-
   const taskId = taskElement.dataset.taskId;
+  // Check if the clicked target or its parent has the class trash or checkbox icons
+  if (event.target.classList.contains("task__checkbox-icon")) {
+    return; // Do not open the expanded card when trash icon or checkbox icon is clicked
+  }
 
   if (event.target.classList.contains("task__delete-icon")) {
     const taskContainer = event.target.closest(".task__container");
@@ -212,11 +219,10 @@ const handleTaskContainerClick = (event) => {
     kanbanBoard.trash = tasksData.trash;
 
     updateTaskCounters();
-    
+
     // Save the updated tasksData to the local storage here
     WebStorageAPI.save(kanbanBoard);
   } else {
-    // console.log(`Task with ID ${taskId} clicked.`);
     currentExpandedCardDetails = new ExpandedCardDetails(taskId, taskElement);
     currentExpandedCardDetails.populateFormFields();
     openExpandedCard();
@@ -226,7 +232,6 @@ const handleTaskContainerClick = (event) => {
     saveButton.addEventListener("click", saveButtonHandler);
   }
 };
-
 
 const saveButtonHandler = () => {
   if (!saveButtonHandler.isRunning) {

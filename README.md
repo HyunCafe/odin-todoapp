@@ -146,3 +146,8 @@ completed tasks were not retaining their priority level when they were deleted f
 * This methodical approach helped me control the complexity, making debugging and management easier. In addition, I was able to significantly reduce the amount of code by several hundred lines, while maintaining the same functionality as before. This not only made the project more manageable but also improved its performance.
 
 * Ultimately, I overcame the challenge by adopting a modular approach, carefully planning, and considering the long-term implications of code complexity. This experience highlighted for me the importance of addressing potential issues early in the development process.
+
+#### Trash saving and Performance Challenge
+The issue was that the getColumns() function was being called multiple times unnecessarily, causing performance problems and making it difficult to debug. The solution was to implement a caching mechanism by introducing a global variable columns and checking if it has a value before running the function. If the value is already cached, the function returns it directly without querying the DOM again. This significantly improved the performance and stability of the application.
+
+(Will go into more detail later)

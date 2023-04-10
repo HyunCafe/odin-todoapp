@@ -172,8 +172,8 @@ export const toggleExpandedCard = () => {
 document.addEventListener("click", (event) => {
   const expandedCardContainer = document.querySelector(".offcanvas");
   if (!expandedCardContainer.contains(event.target) && isExpanded) {
-    console.log("Closing expanded card: outside click detected");
     closeExpandedCard();
+    
   }
 });
 
