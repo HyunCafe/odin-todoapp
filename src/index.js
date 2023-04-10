@@ -1,16 +1,14 @@
 "use strict";
 
 import {
-  TaskCreation,
   createTaskFromObject,
 } from "./modules/taskcreationclass.js";
-import { appendTask, appendTaskToColumn, getTaskColumn } from "./modules/dom-manipulation.js";
+import { appendTaskToColumn, getTaskColumn } from "./modules/dom-manipulation.js";
 import {
   WebStorageAPI,
 } from "./modules/local-storage";
-import { defaultTasks } from "./modules/default-tasks.js";
 import { updateTaskCounters } from "./modules/sorting"
-import { tagTracker, updateTagDisplay, sortedTagCount } from "./modules/tagtracker";
+import { tagTracker, updateTagDisplay } from "./modules/tagtracker";
 
 
 export const loadTasks = () => {

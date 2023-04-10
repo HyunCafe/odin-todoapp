@@ -1,9 +1,5 @@
 'use strict';
 
-import { WebStorageAPI } from "./local-storage";
-
-let taskIdCounter = 5;
-
 export const generateTaskId = () => {
   const taskId = `${Date.now()}`;
   return taskId;
