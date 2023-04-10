@@ -1,12 +1,7 @@
 "use strict";
 import Sortable from "sortablejs";
 import { WebStorageAPI, updateTasks } from "./local-storage";
-import { loadTasks } from "../index";
 import { getTaskDataById } from "./expanded-card-details";
-import { markTaskAsCompleted } from "./dom-manipulation";
-
-
-let tasks = WebStorageAPI.load();
 
 export const columns = {
   todo: document.querySelector(".main__column--todo"),

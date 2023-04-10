@@ -1,8 +1,10 @@
 "use strict";
 
+import { defaultTasks } from "./default-tasks";
+
 let columns;
 
-const getColumns = () => {
+export const getColumns = () => {
   if (columns) {
     return columns;
   }
@@ -20,8 +22,8 @@ const getColumns = () => {
   // Add the trash column separately
   columns.trash = trashContainer;
 
-  // Log the call stack to see where getColumns() is called from
-  console.trace('getColumns() called');
+  // // Log the call stack to see where getColumns() is called from
+  // console.trace('getColumns() called');
 
   return columns;
 };
@@ -32,9 +34,9 @@ const LOCAL_STORAGE_KEY = "KanbanBoard";
 export const WebStorageAPI = {
   load() {
     const kanbanBoard = localStorage.getItem(LOCAL_STORAGE_KEY);
-  
+
     if (!kanbanBoard) {
-      return defaultTasks; // Assuming 'defaultTasks' is imported and contains the default structure.
+      return defaultTasks;
     }
     return JSON.parse(kanbanBoard);
   },
@@ -43,7 +45,8 @@ export const WebStorageAPI = {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(kanbanBoard));
   },
 };
-// localStorage.clear();
+
+// localStorage.clear(); reset the board
 // <------------------------ Delete from Local Storage ------------------------> //
 
 // <------------------------ Update to Local Storage ------------------------> //
@@ -57,8 +60,11 @@ export const updateTasks = () => {
       return {
         taskId: taskElement.dataset.id,
         title: taskElement.querySelector(".task__title").textContent,
-        description: taskElement.querySelector(".task__description").textContent,
-        dueDate: new Date(taskElement.querySelector(".task__due-date").dataset.dueDate),
+        description:
+          taskElement.querySelector(".task__description").textContent,
+        dueDate: new Date(
+          taskElement.querySelector(".task__due-date").dataset.dueDate
+        ),
         tags: taskElement.querySelector(".task__tags").textContent,
         priority: taskElement.__data.priority,
         dataPriority: dataPriority,

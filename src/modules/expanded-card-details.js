@@ -14,8 +14,6 @@ export const getTaskDataById = (taskId) => {
       return task;
     }
   }
-
-  console.log(`Task with ID ${taskId} not found.`);
 };
 
 export class ExpandedCardDetails {
@@ -85,8 +83,6 @@ export class ExpandedCardDetails {
   }
 
   populateFormFields() {
-    // console.log(`Populating form fields for task ID: ${this.taskData.taskId}`);
-
     this.setTitle(this.taskData.title);
     this.setStatus(this.taskData.status);
     this.setPriority(this.taskData.priority);
@@ -173,7 +169,6 @@ document.addEventListener("click", (event) => {
   const expandedCardContainer = document.querySelector(".offcanvas");
   if (!expandedCardContainer.contains(event.target) && isExpanded) {
     closeExpandedCard();
-    
   }
 });
 
@@ -181,7 +176,6 @@ document.addEventListener("click", (event) => {
 const closeButton = document.querySelector(".offcanvas__close-btn");
 closeButton.addEventListener("click", (event) => {
   if (isExpanded) {
-    console.log("Closing expanded card: close button clicked");
     closeExpandedCard();
   }
 });

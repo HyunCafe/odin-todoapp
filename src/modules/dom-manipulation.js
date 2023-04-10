@@ -1,7 +1,7 @@
 "use strict";
 
 import { formatDistance, parseISO } from "date-fns";
-import { WebStorageAPI, updateTasks } from "./local-storage";
+import { WebStorageAPI, updateTasks, getColumns } from "./local-storage";
 import { columns, updateTaskCounters } from "./sorting";
 import { createTaskFromObject } from "./taskcreationclass";
 import { tagTracker, updateTagDisplay } from "./tagtracker";
@@ -127,6 +127,24 @@ export const updateTaskPriorityClass = (taskElement, priority) => {
   taskElement.setAttribute("data-priority", priority);
 };
 
+// <------------------------ Update Task Display ------------------------> //
+export const updateTaskDisplay = (filteredTasks) => {
+  const columns = getColumns();
+  for (const columnName in filteredTasks) {
+    if (columnName === "trash") continue;
+    const column = columns[columnName];
+    const taskContainers = column.querySelectorAll(".task__container");
+    taskContainers.forEach((taskContainer) => {
+      taskContainer.remove();
+    });
+
+    filteredTasks[columnName].forEach((task) => {
+      const { taskElement } = createTaskElementHTML(task);
+      column.append(taskElement);
+    });
+  }
+};
+
 // <---------------------- Add Event Listener for Create and Append----------------------> //
 
 const createNewTask = (taskData) => {
@@ -157,7 +175,6 @@ const handleCheckboxClick = (taskElement, taskId) => {
   const taskData = kanbanBoard[currentColumn].find(
     (task) => task.taskId === taskId
   );
-  console.log("checkbox clicked");
   taskData.completed = !taskData.completed;
   taskElement.classList.toggle("task__container--completed");
   taskElement.querySelector(".task__checkbox-icon").textContent =
