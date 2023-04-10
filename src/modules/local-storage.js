@@ -7,11 +7,13 @@ const LOCAL_STORAGE_KEY = "KanbanBoard";
 export const WebStorageAPI = {
   load() {
     const kanbanBoard = localStorage.getItem(LOCAL_STORAGE_KEY);
+
     return JSON.parse(kanbanBoard);
   },
 
   save(kanbanBoard) {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(kanbanBoard));
+
   },
 };
 WebStorageAPI.load();

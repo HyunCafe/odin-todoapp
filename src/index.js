@@ -15,17 +15,15 @@ import { tagTracker, updateTagDisplay, sortedTagCount } from "./modules/tagtrack
 
 export const loadTasks = () => {
   const tasks = WebStorageAPI.load();
+  console.log("Tasks in trash column:", tasks.trash);
+
   for (const columnName in tasks) {
     const columnTasks = tasks[columnName];
+    // console.log(`Loading column: ${columnName}`);
     const columnElement = getTaskColumn(columnName);
     columnTasks.forEach((taskData) => {
       const task = createTaskFromObject(taskData);
-      // console.log(task)
-      // console.log(taskData.completed)
-      if (taskData.completed) {
-        task.classList.add('task__container--completed');
-        task.querySelector('.task__checkbox-icon').textContent = 'check_box';
-      }
+      // console.log(`Appending task to ${columnName} column:`, taskData);
       appendTaskToColumn(taskData, columnName);
     });
   }

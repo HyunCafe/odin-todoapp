@@ -14,6 +14,8 @@ export const getTaskDataById = (taskId) => {
       return task;
     }
   }
+
+  console.log(`Task with ID ${taskId} not found.`);
 };
 
 export class ExpandedCardDetails {
@@ -122,6 +124,7 @@ export class ExpandedCardDetails {
 
     // Update the task card on the UI
     const taskElement = this.taskElement;
+    taskElement.setAttribute("data-task-id", this.taskData.taskId); // Update the taskElement's data-task-id attribute
     taskElement.querySelector(".task__title").innerText = this.taskData.title;
     taskElement.querySelector(".task__description").innerText =
       this.taskData.description;
@@ -164,5 +167,23 @@ export const toggleExpandedCard = () => {
     closeExpandedCard();
   }
 };
+
+// Add click event listener to the document to handle clicks outside the offcanvas
+document.addEventListener("click", (event) => {
+  const expandedCardContainer = document.querySelector(".offcanvas");
+  if (!expandedCardContainer.contains(event.target) && isExpanded) {
+    console.log("Closing expanded card: outside click detected");
+    closeExpandedCard();
+  }
+});
+
+// Add click event listener to the close button
+const closeButton = document.querySelector(".offcanvas__close-btn");
+closeButton.addEventListener("click", (event) => {
+  if (isExpanded) {
+    console.log("Closing expanded card: close button clicked");
+    closeExpandedCard();
+  }
+});
 
 export default ExpandedCardDetails;

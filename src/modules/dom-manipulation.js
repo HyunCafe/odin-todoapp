@@ -30,7 +30,6 @@ export const getTaskColumn = (columnName) => {
 
 // <------------------------ Create Task Element ------------------------> //
 const createTaskElementHTML = (taskCard) => {
-  console.log("taskCard:", taskCard); // log the taskCard object
 
   const taskElement = document.createElement("div");
   taskElement.classList.add("task__container");
@@ -173,8 +172,10 @@ const handleCheckboxClick = (taskElement, taskId) => {
   taskElement.querySelector(".task__checkbox-icon").textContent =
     taskData.completed ? "check_box" : "check_box_outline_blank";
 
-  updateTaskCounters();
+  // Save the updated task data to the local storage
   WebStorageAPI.save(kanbanBoard);
+
+  updateTaskCounters();
 };
 
 const handleTaskContainerClick = (event) => {
@@ -185,12 +186,11 @@ const handleTaskContainerClick = (event) => {
 
   const taskId = taskElement.dataset.taskId;
 
-  if (event.target.classList.contains("task__checkbox-icon")) {
-    handleCheckboxClick(taskElement, taskId);
-  } else if (event.target.classList.contains("task__delete-icon")) {
+  if (event.target.classList.contains("task__delete-icon")) {
     const taskContainer = event.target.closest(".task__container");
     const taskId = taskContainer.dataset.taskId;
     const kanbanBoard = WebStorageAPI.load();
+
     const tasksData = kanbanBoard;
     const currentColumn =
       taskContainer.closest(".main__column").dataset.columnName;
@@ -199,18 +199,24 @@ const handleTaskContainerClick = (event) => {
     );
     const removedTask = tasksData[currentColumn].splice(taskIndex, 1)[0];
 
-    if (currentColumn === "trash") {
-      taskContainer.remove();
-    } else {
+    if (currentColumn !== "trash") {
       tasksData.trash.push(removedTask);
       taskContainer.remove();
       appendTaskToColumn(removedTask, "trash");
+    } else {
+      taskContainer.remove();
     }
 
+    // Update the kanbanBoard with the updated tasksData
+    kanbanBoard[currentColumn] = tasksData[currentColumn];
+    kanbanBoard.trash = tasksData.trash;
+
     updateTaskCounters();
+    
+    // Save the updated tasksData to the local storage here
     WebStorageAPI.save(kanbanBoard);
   } else {
-    console.log(`Task with ID ${taskId} clicked.`);
+    // console.log(`Task with ID ${taskId} clicked.`);
     currentExpandedCardDetails = new ExpandedCardDetails(taskId, taskElement);
     currentExpandedCardDetails.populateFormFields();
     openExpandedCard();
@@ -220,27 +226,20 @@ const handleTaskContainerClick = (event) => {
     saveButton.addEventListener("click", saveButtonHandler);
   }
 };
+
+
 const saveButtonHandler = () => {
-  currentExpandedCardDetails.saveChanges();
-  closeExpandedCard();
+  if (!saveButtonHandler.isRunning) {
+    saveButtonHandler.isRunning = true;
+    currentExpandedCardDetails.saveChanges();
+    closeExpandedCard();
+    setTimeout(() => {
+      saveButtonHandler.isRunning = false;
+    }, 100);
+  }
 };
+
+saveButtonHandler.isRunning = false;
 document.addEventListener("click", (event) => {
   handleTaskContainerClick(event);
-});
-// Add click event listener to the document to handle clicks outside the offcanvas
-let isExpanded = false;
-
-document.addEventListener("click", (event) => {
-  const expandedCardContainer = document.querySelector(".offcanvas");
-  if (!expandedCardContainer.contains(event.target) && isExpanded) {
-    closeExpandedCard();
-  }
-});
-
-// Add click event listener to the close button
-const closeButton = document.querySelector(".offcanvas__close-btn");
-closeButton.addEventListener("click", (event) => {
-  if (isExpanded) {
-    closeExpandedCard();
-  }
 });

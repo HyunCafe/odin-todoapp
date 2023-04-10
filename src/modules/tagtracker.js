@@ -1,9 +1,13 @@
 import { WebStorageAPI } from "./local-storage";
 
 export const countTags = (columns) => {
+    // console.log("Counting tags from columns:", columns);
+
     const tagCount = {};
   
     for (const taskList of Object.values(columns)) {
+        // console.log("Counting tags from task list:", taskList);
+
       for (const task of taskList) {
         const tags = task.tags.split("#").filter(tag => tag);
         for (const cleanTag of tags) {
