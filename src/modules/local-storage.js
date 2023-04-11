@@ -1,6 +1,6 @@
 "use strict";
 
-import { defaultTasks } from "./default-tasks";
+import { getAllTasks } from "./calender";
 
 let columns;
 

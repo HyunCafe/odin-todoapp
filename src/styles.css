@@ -91,11 +91,13 @@
 
 /* <------------------------ Main 3 Columns ------------------------> */
 
-.main {
+#tasks-view {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 1em;
   padding: 1em;
+  width: 100%;
+  height: 100%;
   /* border: 2px red solid; */
 }
 
@@ -450,6 +452,31 @@ input.form-control {
 
 .project-form__btn-save:hover {
   background-color: #0056b3;
+}
+
+/* <------------------------ Calender View ------------------------> */
+#task-calendar-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  border: 2px red solid;
+}
+
+#calendar-view {
+  display: none;
+  border: 2px red solid;
+  width: 100%;
+}
+
+/* Show the calendar view when the 'calendar-visible' class is added to the main element */
+.main.calendar-visible #calendar-view {
+  display: block;
+}
+
+/* Hide the task columns when the 'calendar-visible' class is added to the main element */
+.main.calendar-visible .main__column {
+  display: none;
 }
 
 /* <--------------------- Overlay Effects ---------------------> */
