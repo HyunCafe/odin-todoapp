@@ -35,7 +35,6 @@ export const loadTasks = () => {
   updateTaskCounters();
   updateTagDisplay(sortedTagCount);
 
-  // Add the following code at the end of the loadTasks function
   const calendar = calenderDisplay();
   const allTasks = getAllTasks();
   calendar.renderCalendar(allTasks);
