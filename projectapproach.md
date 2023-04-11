@@ -172,13 +172,8 @@ Bugs:
 Bug with date feature not showing correctly for Default tasks (not a big deal, since new tasks are by new date())
 
 TODO: 
-* Finish the additional Details display (possibly add feature sorting by tags..)
 * Calender View with Tasks appended
-* Trash feature
 * Finish the aesthetic styling
-* need to edit task pop up to save for status based on column, and fix completed logic
-
-// completed class on task detail edit saves correctly
-// but on move to completed column it does not
-// it should also save its current class and only add completed on TOP, so when we remove
-// the completed task it will automatically revert to previous class and have UI update
+// Feat 2: Calender View with appended tasks
+// Feat 3: have trash icon to show trash
+// Feat 4

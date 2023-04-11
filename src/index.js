@@ -9,6 +9,7 @@ import { WebStorageAPI } from "./modules/local-storage";
 import { updateTaskCounters } from "./modules/sorting";
 import { tagTracker, updateTagDisplay } from "./modules/tagtracker";
 import { applyFilter } from "./modules/filter-tasks";
+import { trashDisplay } from "./modules/trash-display.js";
 
 const todayFilter = document.getElementById("todayFilter");
 const next7DaysFilter = document.getElementById("next7DaysFilter");

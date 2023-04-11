@@ -148,6 +148,8 @@ completed tasks were not retaining their priority level when they were deleted f
 * Ultimately, I overcame the challenge by adopting a modular approach, carefully planning, and considering the long-term implications of code complexity. This experience highlighted for me the importance of addressing potential issues early in the development process.
 
 #### Trash saving and Performance Challenge
-The issue was that the getColumns() function was being called multiple times unnecessarily, causing performance problems and making it difficult to debug. The solution was to implement a caching mechanism by introducing a global variable columns and checking if it has a value before running the function. If the value is already cached, the function returns it directly without querying the DOM again. This significantly improved the performance and stability of the application.
+* I encountered an issue with the task cards' state not being saved correctly when I moved or deleted them. Through debugging with console.trace(), I discovered that my getColumns() function was being called multiple times, leading to performance issues and inconsistent save states. This function was used in various modules for updating, editing, and saving the states of task cards, including the updateTasks() function within local storage.
 
-(Will go into more detail later)
+* Ultimately, solve this issue, I initialized a variable outside the function scope to store the fetched columns object. Within the getColumns() function, I first checked if the variable had a value, returning the cached value immediately without further processing. If the variable was undefined or empty, I then proceeded with the original logic of fetching the columns from the DOM and storing the result in the variable.
+
+* This change reduced the number of times the function was called and improved the performance of the code, ensuring the state of the task cards was saved correctly.

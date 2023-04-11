@@ -260,6 +260,8 @@ const handleTaskContainerClick = (event) => {
     saveButton.addEventListener("click", saveButtonHandler);
   }
 };
+
+
 const saveButtonHandler = () => {
   if (!saveButtonHandler.isRunning) {
     saveButtonHandler.isRunning = true;

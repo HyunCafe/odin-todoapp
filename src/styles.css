@@ -16,21 +16,28 @@ body {
 }
 
 /* <------------------------ Side Navbar Section ------------------------> */
+
 .sidebar {
-  background-color: #ffffff;
-  padding: 0.5em;
-  height: 100%;
+  background-color: #f5f5f5;
+  padding: 20px;
+  width: 250px;
+  min-height: 100vh;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar__title {
-  margin-bottom: 0.5em;
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333;
 }
 
 .sidebar__menu,
 .sidebar__tags,
 .sidebar__status {
-  list-style-type: none;
-  margin-bottom: 0.5em;
+  list-style: none;
+  padding: 0;
+  margin-bottom: 20px;
 }
 
 .sidebar__menu-item,
@@ -38,18 +45,37 @@ body {
   display: flex;
   align-items: center;
   cursor: pointer;
+  padding: 0.5em;
+  color: #333;
+  transition: background-color 0.3s;
+}
+
+.sidebar__menu-item:hover,
+.sidebar__status-item:hover {
+  background-color: #e0e0e0;
+}
+
+.sidebar__menu-item i,
+.sidebar__status-item i {
+  margin-right: 10px;
 }
 
 .sidebar__separator {
-  border: none;
-  border-top: 1px solid #e1e4e8;
-  margin: 1em;
+  border: 0;
+  height: 2px;
+  background-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.1),
+    rgba(0, 0, 0, 0.05),
+    rgba(0, 0, 0, 0)
+  );
+  margin: 1.5em 0;
 }
 
 .tag {
   display: inline-block;
   background-color: #f0f0f0;
-  padding: 0.4em 0.4em;
+  padding: 0.5em;
   margin: 0.3em;
   border-radius: 5px;
   color: #333;
@@ -83,6 +109,7 @@ h3 {
   padding: 0.3em;
   border-radius: 5px;
 }
+
 .main__column-title__text--todo {
   background-color: rgba(0, 150, 0, 0.5);
 }
@@ -98,6 +125,7 @@ h3 {
 .main__column-title__taskcount {
   background-color: transparent;
 }
+
 /* <------------------------ Task Cards/Containers ------------------------> */
 .task__container {
   display: flex;
@@ -137,8 +165,8 @@ h3 {
 
 .task__description {
   font-size: 0.9rem;
-  min-height: 63%;
-  max-height: 63%;
+  height: auto;
+  width: auto;
   margin-bottom: 0.3em;
   /* border: 2px red solid; */
 }
@@ -152,7 +180,6 @@ h3 {
   color: #ccc;
   display: none;
 }
-
 
 .task__checkbox-icon.checked {
   color: green;
@@ -207,12 +234,11 @@ h3 {
   border: 2px solid green;
 }
 
-
 /* Completed task style */
 .task__container--completed,
 [data-priority="Completed"],
 .task__container[data-completed="true"] {
-border: 2px solid blue !important;
+  border: 2px solid blue !important;
 }
 
 /* <------------------------ Sort and Drag n Drop  ------------------------> */
@@ -260,7 +286,7 @@ border: 2px solid blue !important;
   width: 45%;
   background-color: #ffffff;
   border: 2px grey solid;
-  transform: translateX(100%); comment out
+  transform: translateX(100%);
   transition: transform 0.3s ease;
 }
 
@@ -354,7 +380,7 @@ input.form-control {
 }
 
 .project-form__floating textarea {
-  height: 23em;
+  min-height: 25em;
 }
 
 .project-form__floating label {
@@ -372,7 +398,7 @@ input.form-control {
 }
 
 .project-form__btn-save {
-  margin-top: 0.5em;
+  margin-top: 1.5em;
   padding: 8px 16px;
   font-size: 1rem;
   border-radius: 4px;
@@ -383,4 +409,29 @@ input.form-control {
 
 .project-form__btn-save:hover {
   background-color: #0056b3;
+}
+
+/* Overlay Effect  */
+.popup-active .backdrop-overlay {
+  display: block;
+}
+
+.backdrop-overlay {
+  position: fixed;
+  opacity: 0.5;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000;
+  display: none;
+}
+
+.trash-popup {
+  z-index: 2;
+}
+
+.offcanvas {
+  z-index: 2;
 }

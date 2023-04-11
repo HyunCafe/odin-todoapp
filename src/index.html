@@ -13,11 +13,12 @@
 </head>
 
 <body>
-  <!------------------------ Side Navbar Section ------------------------>
-  <div class="container">
-    <aside class="sidebar">
-      <h2 class="sidebar__title">Home</h2>
+<!------------------------ Side Navbar Section ------------------------>
+<div class="container">
 
+  <aside class="sidebar">
+    <section class="sidebar__section">
+      <h2 class="sidebar__title">Filters</h2>
       <ul class="sidebar__menu">
         <li class="sidebar__menu-item" id="allTasksFilter">
           <i class="material-icons">assignment</i> All Tasks
@@ -28,23 +29,22 @@
         <li class="sidebar__menu-item" id="next7DaysFilter">
           <i class="material-icons">calendar_today</i> Next 7 Days
         </li>
+        <li class="sidebar__menu-item" id="trashFilter">
+          <i class="material-icons">delete_outline</i> Trash
+        </li>
       </ul>
+    </section>
 
-      <hr class="sidebar__separator" />
+    <hr class="sidebar__separator" />
 
+    <section class="sidebar__section">
       <h2 class="sidebar__title">Tags</h2>
       <ul class="sidebar__tags">
+        <!-- Tag items here -->
       </ul>
-
-      <hr class="sidebar__separator" />
-
-      <h2 class="sidebar__title">Status</h2>
-      <ul class="sidebar__status">
-        <li class="sidebar__status-item">In Progress</li>
-        <li class="sidebar__status-item">Completed</li>
-        <li class="sidebar__status-item">Trash</li>
-      </ul>
-    </aside>
+    </section>
+  </aside>
+  
     <!------------------------ 3 Main Column Section ------------------------>
     <main class="main">
       <section class="main__column main__column--todo" data-column-name="todo">
@@ -82,21 +82,11 @@
     </div>
 
     <!------------------------ Additional Details Pop Up ------------------------>
-
     <div class="offcanvas">
       <div class="offcanvas__body">
         <form class="project-form">
           <h1 class="project-form__title" contenteditable="true"></h1>
           <button type="button" class="offcanvas__close-btn">X</button>
-
-          <div class="input-group input-group--status">
-            <label class="input-group__label" for="statusGroup">Status</label>
-            <select class="form-select" id="statusGroup">
-              <option value="To Do">To Do</option>
-              <option value="In Progress">In Progress</option>
-              <option value="Completed">Completed</option>
-            </select>
-          </div>
 
           <div class="input-group input-group--priority">
             <label class="input-group__label" for="priorityGroup">Priority</label>
@@ -104,7 +94,6 @@
               <option value="Urgent">Urgent</option>
               <option value="High">High</option>
               <option value="Low">Low</option>
-              <!-- <option value="Completed">Completed</option> -->
             </select>
           </div>
 
@@ -113,14 +102,12 @@
             <input type="date" class="form-control" id="due-date">
           </div>
           
-
           <div class="input-group input-group--tags">
             <label class="input-group__label" for="tags">Tags</label>
             <span class="input-group__tags">
               <input type="text" class="form-control" id="tags" placeholder="Enter tags" maxlength="27">
             </span>
           </div>
-
 
           <div class="project-form__floating project-form__floating--description">
             <label for="description-input"></label>
@@ -134,6 +121,8 @@
         </form>
       </div>
     </div>
+    
+    <div class="backdrop-overlay"></div>
     
   <script type="module" src="/dist/main.bundle.js" defer crossorigin="anonymous"></script>
 </body>

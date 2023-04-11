@@ -28,10 +28,6 @@ export class ExpandedCardDetails {
       .innerText;
   }
 
-  getStatus() {
-    return this.expandedCardForm.querySelector("#statusGroup").value;
-  }
-
   getPriority() {
     return this.expandedCardForm.querySelector("#priorityGroup").value;
   }
@@ -54,11 +50,6 @@ export class ExpandedCardDetails {
   setTitle(title) {
     this.expandedCardForm.querySelector(".project-form__title").innerText =
       title;
-  }
-
-  setStatus(statusIndex) {
-    const statusDropdown = this.expandedCardForm.querySelector("#statusGroup");
-    statusDropdown.selectedIndex = statusIndex;
   }
 
   setPriority(priority) {
@@ -84,7 +75,7 @@ export class ExpandedCardDetails {
 
   populateFormFields() {
     this.setTitle(this.taskData.title);
-    this.setStatus(this.taskData.status);
+    // this.setStatus(this.taskData.status);
     this.setPriority(this.taskData.priority);
     this.setDueDate(this.taskData.dueDate);
     this.setTags(this.taskData.tags);
@@ -95,7 +86,6 @@ export class ExpandedCardDetails {
   saveChanges() {
     // Update the task data with the new values from the form fields
     this.taskData.title = this.getTitle();
-    this.taskData.status = this.getStatus();
     this.taskData.priority = this.getPriority();
     this.taskData.dueDate = this.getDueDate();
     this.taskData.tags = this.getTags();
@@ -146,22 +136,22 @@ let currentExpandedCardDetails = null;
 
 export const openExpandedCard = () => {
   const expandedCardContainer = document.querySelector(".offcanvas");
+  const mainContent = document.querySelector(".main");
+
   expandedCardContainer.style.transform = "translateX(0%)";
+  document.documentElement.classList.add("popup-active"); // add class to activate backdrop overlay
+
   isExpanded = true;
 };
 
 export const closeExpandedCard = () => {
   const expandedCardContainer = document.querySelector(".offcanvas");
-  expandedCardContainer.style.transform = "translateX(100%)";
-  isExpanded = false;
-};
+  const mainContent = document.querySelector(".main");
 
-export const toggleExpandedCard = () => {
-  if (!isExpanded) {
-    openExpandedCard();
-  } else {
-    closeExpandedCard();
-  }
+  expandedCardContainer.style.transform = "translateX(100%)";
+  document.documentElement.classList.remove("popup-active"); // remove class to deactivate backdrop overlay
+
+  isExpanded = false;
 };
 
 // Add click event listener to the document to handle clicks outside the offcanvas
