@@ -29,9 +29,6 @@
         <li class="sidebar__menu-item" id="next7DaysFilter">
           <i class="material-icons">calendar_today</i> Next 7 Days
         </li>
-        <li class="sidebar__menu-item" id="calendarFilter">
-          <i class="material-icons">calendar_view_day</i> Calendar View
-        </li>
         <li class="sidebar__menu-item" id="trashFilter">
           <i class="material-icons">delete_outline</i> Trash
         </li>
@@ -48,42 +45,33 @@
     </section>
   </aside>
   
-    <!------------------------ 3 Main Column Section / Calender  ------------------------>
+    <!------------------------ 3 Main Column Section ------------------------>
     <main class="main">
-      <div id="task-calendar-container">
-        <div id="calendar-view" class="main__calendar-view">
-          <!-- Your custom calendar header here -->
-          <div id="calendar"></div>
-        </div>
-    
-        <div id="tasks-view">
-          <section class="main__column main__column--todo" data-column-name="todo">
-            <h3 class="main__column-title no-drag">
-              <span class="main__column-title__text main__column-title__text--todo">To Do: <span
-                  class="main__column-title__taskcount--todo">0</span> </span>
+      <section class="main__column main__column--todo" data-column-name="todo">
+        <h3 class="main__column-title no-drag">
+          <span class="main__column-title__text main__column-title__text--todo">To Do: <span
+              class="main__column-title__taskcount--todo">0</span> </span>
               <button class="main__column-title__button" id="todo-add-button">+</button>
             </h3>
-          </section>
-    
-          <section class="main__column main__column--in-progress" data-column-name="in-progress">
-            <h3 class="main__column-title no-drag">
-              <span class="main__column-title__text main__column-title__text--inprogress">In Progress: <span
-                  class="main__column-title__taskcount--inprogress">0</span> </span>
+      </section>
+
+      <section class="main__column main__column--in-progress" data-column-name="in-progress">
+        <h3 class="main__column-title no-drag">
+          <span class="main__column-title__text main__column-title__text--inprogress">In Progress: <span
+              class="main__column-title__taskcount--inprogress">0</span> </span>
               <button class="main__column-title__button" id="inprogress-add-button">+</button>
             </h3>
-          </section>
-    
-          <section class="main__column main__column--completed" data-column-name="completed">
-            <h3 class="main__column-title no-drag">
-              <span class="main__column-title__text main__column-title__text--completed">Completed: <span
-                  class="main__column-title__taskcount--completed">0</span> </span>
+      </section>
+
+      <section class="main__column main__column--completed" data-column-name="completed">
+        <h3 class="main__column-title no-drag">
+          <span class="main__column-title__text main__column-title__text--completed">Completed: <span
+              class="main__column-title__taskcount--completed">0</span> </span>
               <button class="main__column-title__button" id="completed-add-button">+</button>
             </h3>
-          </section>
-        </div>
-      </div>
+      </section>
     </main>
-    
+
     <!------------------------ Trash Pop Up ------------------------>
     <div class="trash-popup" id="trash-popup">
       <div class="trash-popup__content">
@@ -133,7 +121,7 @@
         </form>
       </div>
     </div>
-
+    
     <div class="backdrop-overlay"></div>
 
   <script type="module" src="/dist/main.bundle.js" defer crossorigin="anonymous"></script>
