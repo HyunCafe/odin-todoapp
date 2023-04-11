@@ -11,6 +11,7 @@ import { tagTracker, updateTagDisplay } from "./modules/tagtracker";
 import { applyFilter } from "./modules/filter-tasks";
 import { getAllTasks } from "./modules/calender.js";
 import { calenderDisplay } from "./modules/calender.js";
+import { trashDisplay } from "./modules/trash-display.js";
 
 const todayFilter = document.getElementById("todayFilter");
 const next7DaysFilter = document.getElementById("next7DaysFilter");

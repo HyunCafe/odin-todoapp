@@ -1,7 +1,5 @@
 "use strict";
 
-import { getAllTasks } from "./calender";
-
 let columns;
 
 export const getColumns = () => {

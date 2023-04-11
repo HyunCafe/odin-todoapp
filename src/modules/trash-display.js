@@ -7,7 +7,6 @@ export const trashDisplay = (event) => {
 
   trashIcon.addEventListener("click", () => {
     const taskCardTrashIcons = [...document.querySelectorAll('.task__delete-icon')];
-
     if (window.getComputedStyle(trashPopup).display === "none") {
       trashPopup.style.display = "block";
       mainContent.style.pointerEvents = "none";

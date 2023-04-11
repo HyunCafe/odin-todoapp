@@ -43,7 +43,7 @@ export const calenderDisplay = () => {
     calendar.render();
   }
   
-  const tasks = [ /* an array of tasks */ ];
+  const tasks = [ /* an array of tasks */ ]; // will fix this logic tomrrow
   renderCalendar(tasks);
   
   return { renderCalendar, getButton };
