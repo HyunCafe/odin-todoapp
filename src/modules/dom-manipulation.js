@@ -24,7 +24,7 @@ export const getTaskColumn = (columnName) => {
 };
 
 // <------------------------ Create Task Element ------------------------> //
-const createTaskElementHTML = (taskCard) => {
+const createTaskElementHTML = (taskCard, strikethrough) => {
   const taskElement = document.createElement("div");
   taskElement.classList.add("task__container");
   taskElement.setAttribute("data-task-id", taskCard.taskId);
@@ -35,6 +35,9 @@ const createTaskElementHTML = (taskCard) => {
   const taskTitle = document.createElement("h4");
   taskTitle.classList.add("task__title");
   taskTitle.textContent = taskCard.title;
+  if (strikethrough) {
+    taskTitle.classList.add("strikethrough");
+  }
 
   const checkboxIcon = document.createElement("span");
   checkboxIcon.classList.add("task__checkbox-icon", "material-icons");
@@ -50,6 +53,9 @@ const createTaskElementHTML = (taskCard) => {
   const taskDescription = document.createElement("p");
   taskDescription.classList.add("task__description");
   taskDescription.textContent = taskCard.description;
+  if (strikethrough) {
+    taskTitle.classList.add("strikethrough");
+  }
 
   const taskFooter = document.createElement("div");
   taskFooter.classList.add("task__footer");
@@ -57,9 +63,15 @@ const createTaskElementHTML = (taskCard) => {
   const taskTags = document.createElement("span");
   taskTags.classList.add("task__tags");
   taskTags.textContent = taskCard.tags;
+  if (strikethrough) {
+    taskTitle.classList.add("strikethrough");
+  }
 
   const taskDueDate = document.createElement("span");
   taskDueDate.classList.add("task__due-date");
+  if (strikethrough) {
+    taskTitle.classList.add("strikethrough");
+  }
 
   if (typeof taskCard.dueDate === "string") {
     taskCard.dueDate = parseISO(taskCard.dueDate);
@@ -80,6 +92,16 @@ const createTaskElementHTML = (taskCard) => {
 
   if (taskCard.completed) {
     taskElement.classList.add("task__container--completed");
+  }
+  // Check if the task has the strikethrough property set
+  if (taskCard.strikethrough) {
+    taskTitle.classList.add("strikethrough");
+    taskDescription.classList.add("strikethrough");
+    taskDueDate.classList.add("strikethrough");
+    taskTags.classList.add("strikethrough");
+    checkboxIcon.textContent = "check_box";
+  } else {
+    checkboxIcon.textContent = "check_box_outline_blank";
   }
 
   taskElement.dataset.id = taskCard.taskId;
@@ -139,7 +161,7 @@ export const updateTaskDisplay = (filteredTasks) => {
     });
 
     filteredTasks[columnName].forEach((task) => {
-      const { taskElement } = createTaskElementHTML(task);
+      const { taskElement } = createTaskElementHTML(task, task.strikethrough);
       column.append(taskElement);
     });
   }
@@ -189,7 +211,29 @@ const handleCheckboxClick = (taskElement, taskId) => {
 const handleCheckboxIconClick = (event) => {
   const taskElement = event.target.closest(".task__container");
   const taskId = taskElement.dataset.taskId;
+  const taskTitle = taskElement.querySelector(".task__title");
+  const taskDescription = taskElement.querySelector(".task__description");
+  const taskDueDate = taskElement.querySelector(".task__due-date");
+  const taskTags = taskElement.querySelector(".task__tags");
+
+  if (event.target.textContent === "check_box") {
+    event.target.textContent = "check_box_outline_blank";
+    taskTitle.classList.remove("strikethrough");
+    taskDescription.classList.remove("strikethrough");
+    taskDueDate.classList.remove("strikethrough");
+    taskTags.classList.remove("strikethrough");
+  } else {
+    event.target.textContent = "check_box";
+    taskTitle.classList.add("strikethrough");
+    taskDescription.classList.add("strikethrough");
+    taskDueDate.classList.add("strikethrough");
+    taskTags.classList.add("strikethrough");
+  }
+
   handleCheckboxClick(taskElement, taskId);
+  // Update local storage
+  const tasks = updateTasks();
+  WebStorageAPI.save(tasks);
 };
 
 const handleGlobalClick = (event) => {
@@ -260,7 +304,6 @@ const handleTaskContainerClick = (event) => {
     saveButton.addEventListener("click", saveButtonHandler);
   }
 };
-
 
 const saveButtonHandler = () => {
   if (!saveButtonHandler.isRunning) {

@@ -15,7 +15,8 @@ export class TaskCreation {
     content = "",
     taskId = '',
     dueDate = null,
-    dataCompleted = false
+    dataCompleted = false,
+    strikethrough = false
   ) {
     this.taskId = taskId || generateTaskId();
     this.title = title;
@@ -25,6 +26,7 @@ export class TaskCreation {
     this.add = add;
     this.content = content;
     this.dueDate = dueDate ? new Date(dueDate) : null;
+    this.strikethrough = strikethrough; 
   }
 }
 
@@ -38,6 +40,7 @@ export const createTaskFromObject = (task) => {
     task.content,
     task.taskId,
     task.dueDate,
+    task.strikethrough
   );
   return newTask;
 };

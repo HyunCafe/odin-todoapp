@@ -102,7 +102,7 @@ border: 1px solid rgba(255, 255, 255, 0.51);
   background-color: transparent;
   padding: 1em;
   overflow-y: auto;
-  border: 2px rgba(128, 128, 128, 0.7) solid;
+  border: 2px solid rgba(255, 255, 255, 0.51);
   border-radius: 16px;
 }
 
@@ -139,6 +139,29 @@ h3 {
 body > div > main > section.main__column > h3 > span {
   opacity: 1;
   font-weight: 900;
+}
+
+/* Strike through on complete items */
+.strikethrough {
+  text-decoration: line-through;
+}
+
+button.main__column-title__button {
+  background-color: #5a9; 
+  color: #fff; 
+  font-size: 18px;
+  border: none; 
+  border-radius: 50%;
+  width: 30px; 
+  height: 30px; 
+  line-height: 30px; 
+  text-align: center;
+  cursor: pointer; 
+  transition: background-color 0.3s;
+}
+
+button.main__column-title__button:hover {
+  background-color: #7ab; 
 }
 
 /* <------------------------ Task Cards/Containers ------------------------> */

@@ -68,6 +68,7 @@ export const updateTasks = () => {
         priority: taskElement.__data.priority,
         dataPriority: dataPriority,
         completed: taskElement.classList.contains("task__container--completed"),
+        strikethrough: taskElement.querySelector(".task__title").classList.contains("strikethrough"),
       };
     });
   });
