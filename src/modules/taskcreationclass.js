@@ -44,4 +44,3 @@ export const createTaskFromObject = (task) => {
   );
   return newTask;
 };
-

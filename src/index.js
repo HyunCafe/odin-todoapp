@@ -9,7 +9,8 @@ import { WebStorageAPI } from "./modules/local-storage";
 import { updateTaskCounters } from "./modules/sorting";
 import { tagTracker, updateTagDisplay } from "./modules/tagtracker";
 import { applyFilter } from "./modules/filter-tasks";
-import { trashDisplay } from "./modules/trash-display.js";
+import { getAllTasks } from "./modules/calender.js";
+import { calenderDisplay } from "./modules/calender.js";
 
 const todayFilter = document.getElementById("todayFilter");
 const next7DaysFilter = document.getElementById("next7DaysFilter");
@@ -33,6 +34,19 @@ export const loadTasks = () => {
   const sortedTagCount = tagTracker();
   updateTaskCounters();
   updateTagDisplay(sortedTagCount);
+
+  // Add the following code at the end of the loadTasks function
+  const calendar = calenderDisplay();
+  const allTasks = getAllTasks();
+  calendar.renderCalendar(allTasks);
 };
 
-document.addEventListener("DOMContentLoaded", loadTasks);
+const calendarFilter = document.getElementById("calendarFilter");
+calendarFilter.addEventListener("click", () => applyFilter("calendar"));
+
+document.addEventListener("DOMContentLoaded", () => {
+  loadTasks();
+  
+  // Call the calenderDisplay function after loading tasks
+  calenderDisplay();
+});
