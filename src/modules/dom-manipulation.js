@@ -10,7 +10,6 @@ import {
   openExpandedCard,
   closeExpandedCard,
 } from "./expanded-card-details";
-import { getAllTasks } from "./calender";
 
 // <------------------------ Task Column Helper Function ------------------------> //
 
