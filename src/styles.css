@@ -1,35 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&family=Playfair+Display&display=swap');
+
 /* <------------------------ Global Styles ------------------------> */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}
-
-body {
-  background-color: #f4f5f7;
+  font-family: "Montserrat", sans-serif;
+  color: #222222;
 }
 
 .container {
   display: grid;
-  grid-template-columns: 1fr 4fr;
+  grid-template-columns: 1fr 8fr;
+  background-image: url(/src/assets/studybg.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
   height: 100vh;
 }
 
 /* <------------------------ Side Navbar Section ------------------------> */
 
 .sidebar {
-  background-color: #f5f5f5;
   padding: 20px;
-  width: 250px;
-  min-height: 100vh;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 15em;
+  min-height: 100vh;  
+  font-family: "Montserrat", sans-serif;
+background: rgba(255, 255, 255, 0);
+border-radius: 16px;
+
+-webkit-backdrop-filter: blur(20px);
+border: 1px solid rgba(255, 255, 255, 0.51);
+
+}
+.sidebar * {
+  color: #ffffff;
 }
 
 .sidebar__title {
   font-size: 1.4rem;
   font-weight: bold;
-  margin-bottom: 20px;
-  color: #333;
+  margin-bottom: .5em;
+
 }
 
 .sidebar__menu,
@@ -37,7 +50,7 @@ body {
 .sidebar__status {
   list-style: none;
   padding: 0;
-  margin-bottom: 20px;
+  margin-bottom: .5em;
 }
 
 .sidebar__menu-item,
@@ -46,7 +59,7 @@ body {
   align-items: center;
   cursor: pointer;
   padding: 0.5em;
-  color: #333;
+  color: #ffffff;
   transition: background-color 0.3s;
 }
 
@@ -61,20 +74,14 @@ body {
 }
 
 .sidebar__separator {
-  border: 0;
-  height: 2px;
-  background-image: linear-gradient(
-    to right,
-    rgba(0, 0, 0, 0.1),
-    rgba(0, 0, 0, 0.05),
-    rgba(0, 0, 0, 0)
-  );
+  height: 3px;
+  color: #ffffff;
   margin: 1.5em 0;
 }
 
 .tag {
   display: inline-block;
-  background-color: #f0f0f0;
+  background-color: #f0f0f090;
   padding: 0.5em;
   margin: 0.3em;
   border-radius: 5px;
@@ -88,12 +95,15 @@ body {
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 1em;
   padding: 1em;
+  /* border: 2px red solid; */
 }
 
 .main__column {
-  background-color: #ffffff;
+  background-color: transparent;
   padding: 1em;
   overflow-y: auto;
+  border: 2px rgba(128, 128, 128, 0.7) solid;
+  border-radius: 16px;
 }
 
 .main__column-title {
@@ -111,19 +121,24 @@ h3 {
 }
 
 .main__column-title__text--todo {
-  background-color: rgba(0, 150, 0, 0.5);
+  background-color: rgba(0, 150, 0, 1);
 }
 
 .main__column-title__text--inprogress {
-  background-color: rgba(247, 216, 150, 0.572);
+  background-color: rgba(247, 216, 150, 1);
 }
 
 .main__column-title__text--completed {
-  background-color: rgba(108, 184, 255, 0.566);
+  background-color: rgba(108, 184, 255, 1);
 }
 
 .main__column-title__taskcount {
   background-color: transparent;
+}
+
+body > div > main > section.main__column > h3 > span {
+  opacity: 1;
+  font-weight: 900;
 }
 
 /* <------------------------ Task Cards/Containers ------------------------> */
@@ -131,16 +146,17 @@ h3 {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  border: 2px rgba(96, 90, 90, 0.582) solid;
-  background-color: white;
-  border-radius: 5px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   width: 100%;
   height: auto;
   overflow: hidden;
   padding: 10px;
   margin-bottom: 0.5em;
   position: relative;
+  background: rgba(255, 255, 255, .5);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
 }
 
 .task__header {
@@ -177,10 +193,9 @@ h3 {
   right: 5px;
   font-size: 1.5rem;
   cursor: pointer;
-  color: #ccc;
+  color: #000000;
   display: none;
 }
-
 .task__checkbox-icon.checked {
   color: green;
 }
@@ -212,7 +227,7 @@ h3 {
 
 .task__due-date {
   font-size: 0.75rem;
-  color: #a1a1a1;
+  color: #000000;
   word-spacing: -1px;
   position: absolute;
   bottom: 6px;
@@ -266,7 +281,7 @@ h3 {
   top: 50%;
   left: 50%;
   padding: 2em;
-  transform: translate(-20%, -50%);
+  transform: translate(-50%, -50%);
   background: rgb(255, 255, 255);
   box-shadow: 0 0 40px rgba(172, 177, 179, 1);
   border-radius: 10px;
@@ -284,6 +299,7 @@ h3 {
   right: 0;
   bottom: 0;
   width: 45%;
+
   background-color: #ffffff;
   border: 2px grey solid;
   transform: translateX(100%);
@@ -411,7 +427,7 @@ input.form-control {
   background-color: #0056b3;
 }
 
-/* Overlay Effect  */
+/* <--------------------- Overlay Effects ---------------------> */
 .popup-active .backdrop-overlay {
   display: block;
 }
