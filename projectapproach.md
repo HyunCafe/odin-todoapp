@@ -169,9 +169,11 @@ Features Finished
 
 
 Bugs:
-
+Bug with date feature not showing correctly for Default tasks (not a big deal, since new tasks are by new date())
 
 TODO: 
 * Calender View with Tasks appended
 * Finish the aesthetic styling
 // Feat 2: Calender View with appended tasks
+// Feat 3: have trash icon to show trash
+// Feat 4

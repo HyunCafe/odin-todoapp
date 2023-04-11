@@ -46,7 +46,7 @@ export const WebStorageAPI = {
   },
 };
 
-// localStorage.clear(); 
+// localStorage.clear(); reset the board
 
 // <------------------------ Update to Local Storage ------------------------> //
 export const updateTasks = () => {
