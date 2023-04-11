@@ -36,7 +36,7 @@ export const defaultTasks = {
       taskId: '4',
       title: "Contribute to an open source project",
       description:
-        "Find an open source project that interests you and make a contribution, such as fixing a bug or implementing a new feature.",
+        "Find an open source project that interests you and make a contribution, such as fixing a bug or implementing a new feature into it.",
       dueDate: new Date("2022-10-01"),
       tags: "#open-source #contribution",
       priority: "High",
