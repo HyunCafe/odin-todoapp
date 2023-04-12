@@ -12,6 +12,7 @@ export const getAllTasks = () => {
 export const calenderDisplay = () => {
   const calendarEl = document.getElementById("calendar-view");
   const switchToCalendarBtn = document.querySelector("#calenderFilter");
+  calendarEl.style.display = "block";
 
   function getButton() {
     return switchToCalendarBtn;

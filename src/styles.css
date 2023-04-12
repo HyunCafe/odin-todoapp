@@ -12,28 +12,31 @@
 .container {
   display: grid;
   grid-template-columns: 1fr 8fr;
-  background-image: url(/src/assets/studybg.jpg);
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0)), url(/src/assets/studybg.jpg); /* Add the gradient */
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   background-attachment: fixed;
   height: 100vh;
+  min-height: 100vh;
+  overflow-y: auto;
 }
+
 
 /* <------------------------ Side Navbar Section ------------------------> */
 
 .sidebar {
   padding: 20px;
   width: 15em;
-  min-height: 100vh;  
+  min-height: 100vh;
   font-family: "Montserrat", sans-serif;
-background: rgba(255, 255, 255, 0);
-border-radius: 16px;
-
--webkit-backdrop-filter: blur(20px);
-border: 1px solid rgba(255, 255, 255, 0.51);
+  background: rgba(255, 255, 255, );
+  border-radius: 16px;
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.51);
 
 }
+
 .sidebar * {
   color: #ffffff;
 }
@@ -81,7 +84,7 @@ border: 1px solid rgba(255, 255, 255, 0.51);
 
 .tag {
   display: inline-block;
-  background-color: #f0f0f090;
+  background-color: #f0f0f0ca;
   padding: 0.5em;
   margin: 0.3em;
   border-radius: 5px;
@@ -122,23 +125,21 @@ h3 {
   border-radius: 5px;
 }
 
-.main__column-title__text--todo {
-  background-color: rgba(0, 150, 0, 1);
-}
-
-.main__column-title__text--inprogress {
-  background-color: rgba(247, 216, 150, 1);
-}
-
-.main__column-title__text--completed {
-  background-color: rgba(108, 184, 255, 1);
+.main__column-title__text {
+  background: rgba(255, 255, 255, .8);
+  border-radius: 8px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  padding: .5em .8em;
+  font-weight: 800;
 }
 
 .main__column-title__taskcount {
   background-color: transparent;
 }
 
-body > div > main > section.main__column > h3 > span {
+body>div>main>section.main__column>h3>span {
   opacity: 1;
   font-weight: 900;
 }
@@ -149,21 +150,21 @@ body > div > main > section.main__column > h3 > span {
 }
 
 button.main__column-title__button {
-  background-color: #5a9; 
-  color: #fff; 
+  background-color: #5a9;
+  color: #fff;
   font-size: 18px;
-  border: none; 
+  border: none;
   border-radius: 50%;
-  width: 30px; 
-  height: 30px; 
-  line-height: 30px; 
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
   text-align: center;
-  cursor: pointer; 
+  cursor: pointer;
   transition: background-color 0.3s;
 }
 
 button.main__column-title__button:hover {
-  background-color: #7ab; 
+  background-color: #7ab;
 }
 
 /* <------------------------ Task Cards/Containers ------------------------> */
@@ -177,7 +178,7 @@ button.main__column-title__button:hover {
   padding: 10px;
   margin-bottom: 0.5em;
   position: relative;
-  background: rgba(255, 255, 255, .5);
+  background: rgba(255, 255, 255, .8);
   border-radius: 16px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(30px);
@@ -187,7 +188,8 @@ button.main__column-title__button:hover {
 .task__header {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 0.3em;
+  margin-bottom: 1em;
+
 }
 
 .task__title {
@@ -208,7 +210,8 @@ button.main__column-title__button:hover {
   font-size: 0.9rem;
   height: auto;
   width: auto;
-  margin-bottom: 0.3em;
+  margin-bottom: 1em;
+  line-height: 20px;
   /* border: 2px red solid; */
 }
 
@@ -221,6 +224,7 @@ button.main__column-title__button:hover {
   color: #000000;
   display: none;
 }
+
 .task__checkbox-icon.checked {
   color: green;
 }
@@ -245,40 +249,44 @@ button.main__column-title__button:hover {
 }
 
 .task__tags {
+  display: inline-block; 
+  vertical-align: middle; 
   font-size: 0.75rem;
   word-spacing: 4px;
   padding-right: 2em;
 }
 
 .task__due-date {
+  display: inline-block;
+  vertical-align: middle; 
   font-size: 0.75rem;
   color: #000000;
-  word-spacing: -1px;
+  word-spacing: 1px;
   position: absolute;
-  bottom: 6px;
-  left: 8px;
+  bottom:10px;
+  left: 12px;
 }
 
 /* Urgent task style */
 [data-priority="Urgent"] {
-  border: 2px solid red;
+  border: 5px solid rgba(255, 0, 0, 0.727);
 }
 
 /* High priority task style */
 [data-priority="High"] {
-  border: 2px solid orange;
+  border: 5px solid rgba(255, 166, 0, 0.716);
 }
 
 /* Low priority task style */
 [data-priority="Low"] {
-  border: 2px solid green;
+  border: 5px solid rgba(0, 128, 0, 0.75);
 }
 
 /* Completed task style */
 .task__container--completed,
 [data-priority="Completed"],
 .task__container[data-completed="true"] {
-  border: 2px solid blue !important;
+  border: 5px solid rgba(18, 168, 255, 0.79) !important;
 }
 
 /* <------------------------ Sort and Drag n Drop  ------------------------> */
@@ -307,7 +315,7 @@ button.main__column-title__button:hover {
   left: 50%;
   padding: 2em;
   transform: translate(-50%, -50%);
-  background: rgb(255, 255, 255);
+  background: rgba(255, 255, 255, 0.885);
   box-shadow: 0 0 40px rgba(172, 177, 179, 1);
   border-radius: 10px;
 }
@@ -453,19 +461,40 @@ input.form-control {
 }
 
 /* <------------------------ Calender View ------------------------> */
+
+.main__calendar-view {
+  width: 100%;
+  height: 100%;
+}
+
 #task-calendar-container {
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
-  border: 2px red solid;
+  /* border: 2px red solid; */
 }
 
 #calendar-view {
   display: none;
-  border: 2px red solid;
+  /* border: 2px red solid; */
+  background-color: rgba(134, 134, 134, 0.2);
   width: 100%;
 }
+
+/* Universal text selector for FullCalendar */
+#calendar-view * {
+ color: white;
+}
+
+#fc-dom-1 {
+  color: white;
+  padding-top: 1em;
+  padding-left: 3em;
+  font-size: 2rem;
+}
+
+
 
 /* Show the calendar view when the 'calendar-visible' class is added to the main element */
 .main.calendar-visible #calendar-view {

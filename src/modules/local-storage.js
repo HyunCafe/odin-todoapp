@@ -63,7 +63,7 @@ export const updateTasks = () => {
           taskElement.querySelector(".task__due-date").dataset.dueDate
         ),
         tags: taskElement.querySelector(".task__tags").textContent,
-        priority: taskElement.__data.priority,
+        priority: taskElement.__data ? taskElement.__data.priority : null,
         dataPriority: dataPriority,
         completed: taskElement.classList.contains("task__container--completed"),
         strikethrough: taskElement.querySelector(".task__title").classList.contains("strikethrough"),
