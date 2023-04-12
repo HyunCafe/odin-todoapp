@@ -145,34 +145,4 @@ needed to add a trash property
 
 ----------------------------------------
 
-
-----------------------------------------
-
-Next Step is create the dispaly look for the appendages
-
-
-
-add counter for sidenavbar on tag counts
-Have the offcanvas grab the information from the selected Cards and also transfer the new values in
-Want to add calender view, will use fullcalender lib
-
-
-
 Using FullCalender Library, Date FNS library, sortableJS library
-
-Features Finished
-* Draggable between eachother as well as each column
-* Feat: Add counter on each column representing total tasks
-* Feat: Blue indicator for completed tasks, and listens for on drop.
-* Feat: Tags and Tag Counters
-* Feat: Added status pop up populates and saves correctly
-
-
-Bugs:
-Bug with date feature not showing correctly for Default tasks (not a big deal, since new tasks are by new date())
-
-TODO: 
-* Calender View with Tasks appended
-* Finish the aesthetic styling
-// Feat 2: Calender View with appended tasks
-// Feat 4

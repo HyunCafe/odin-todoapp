@@ -5,32 +5,53 @@ For my TODO App project, I wanted to level up my planning and implementation ski
 To design the app, I drew inspiration from Notion and Trello and used Figma to visualize the app after completing the HTML pseudo-code. Although the project is still ongoing, I'm excited about the progress I've made and how much I've learned about module coding, SOLID principles, and the value of libraries.
 
 ### Summary of Key Features:
-Drag and Drop Functionality:
-* Tasks can be dragged and dropped between the three columns (todo, in progress, and completed).
 
+##### Drag and Drop Functionality:
+
+* Tasks can be dragged and dropped between the three columns (todo, in progress, and completed).
 Color-coded Priorities:
 * Tasks are color-coded based on their priority level.
 * Urgent tasks are marked with a red border, high priority tasks with a yellow border, and low priority tasks with a green border.
 
-Completion Color Code:
-* When a task is checked off as completed or moved to the completed column, it changes color to a blue completion color.
-* If the task is moved out of the completed column, it reverts to its original priority color.
+##### Completion Color Code:
 
-Tag Tracking:
+* When a task is checked off as completed it will be marked with a blue border indicator with text strike-through.
+  
+##### Tag Tracking:
+
 * Tags can be added to tasks.
 * The frequency of tags used across tasks is tracked.
 * The top tags are displayed in a sidebar, sorted by frequency.
 * The maximum number of tags displayed can be limited by setting a specific value.
 
-Pop-up Task Display:
+##### Filtering and Sorting:
+
+* Users can filter tasks based on due dates
+
+##### Editing:
+* Users can create new tasks with a unique identifier, title, description, due date, tags, and priority.
+* Task details can be edited, and changes are saved to local storage.
+
+##### Pop-up Task Display:
 * The application includes a pop-up display that shows additional information for a task when clicked.
 
 Delete Feature:
-* Users can delete individual tasks
 
-Local Storage Saves:
+* There is a trash feature which shows recently deleted items, and if deleted from trash then removed from local storage.
+
+##### Local Storage Saves:
+
 * The application saves all data to local storage and loads it on subsequent visits.
 * The data includes all tasks, columns, tags, and their respective properties.
+
+##### Calendar View:
+
+* Users can switch to a calendar view, which shows tasks on their respective due dates.
+* The calendar view supports different display modes, such as month, week, and day views.
+
+##### Responsive Design:
+
+* The application features a responsive design, making it usable across different devices, screen sizes, and orientations.
 
 ### Libraries Used:
 * [Date FNS](https://github.com/date-fns/date-fns)
@@ -92,7 +113,80 @@ Local Storage Saves:
 * Add: Fixed the save and local state to account for completed class
 
 #### April 1, 2023
+* Feat: Added tag feature to append to DOM and display with simple styling
+* Updated: README documentation
+* Refactor: Discovered duplication bug and refactored default tasks to own module
+* Refactor: Removed duplicate code
 
+#### April 2, 2023
+* Add: Added simple style and structure for pop up trash, using old code from previous project
+* Refactor: Refactored code for completed -> trash movement, color not saved properly; Bug discovered
+* Fix: Fixed issue with trash column not saving and loading properly
+* Update README.md
+
+#### April 3, 2023
+feat: Implement show task details functionality
+- Populates task details correctly
+- Saves and loads task details
+- Bug with complete class for task details needs fixing
+
+#### April 4, 2023
+* Fix: Resolve color code issue in additional details
+* Refactor: Remove append task feature for alternative approach
+* Fix: Address date format bug and reintegrate date-fns library
+
+#### April 5, 2023
+* Refactor: Big refactor, reworking logic for storage
+* Refactored: Refactored code, might restart logic from square one
+* Feat: Created "add task card to column" by button click
+* Add: Re-added complete class logic
+
+#### April 6, 2023
+* Refactor: Considering re-working logic from scratch due to increasing complexity
+* Refactor: Complete refactor of sorting, storage, and task creation, all working as intended
+* Feat: Re-added tag count feature in its own module with simplified logic
+* Feat: Re-added trash feature working as intended
+
+#### April 7, 2023
+* Merge pull request #1 from HyunCafe/new-TestBuild
+* Merge pull request #3 from HyunCafe/new-TestBuild 
+* Note: Future bug reports will be submitted as tickets for better tracking
+* Refactor: Refactor generate ID logic, working on expanded card
+* Feat: Re-added populate expanded details on cards working as intended
+* Bug: Fix bug where expanded card detail saves are stuck on one card
+
+#### April 8, 2023
+* Fix: Fixed issue where save details on edit did not work
+* Refactor: Update priority, all working as intended except complete column issues with storage
+* Refactor: Refactor addeventlistener to event delegations
+* Refactor: Fix issue with event delegation not functioning correctly
+* Refactor: Remove redundant code
+* Refactor: Going with new feature for complete indicator UI
+
+#### April 9, 2023
+* Refactor: Move all DOM related events to DOM module, and further refactored code
+* Bug: Investigating slow load performance and issue with trash not saving
+* Fix: Fixed issue where trash and columns were being called multiple times, resulting in poor performance
+
+#### April 10, 2023
+* Fix: Checkbox feature fixed, event listeners were overriding it
+* Refactor: Code refactored, using delegation with a global event listener
+* Feat: Sorting feature added, can sort tasks by today, 7 days, or all
+* Feat: Styling features finished, added overlay for trash for effect
+* Style: Working on styling, added aesthetics
+* Add: Strikethrough property added for completed tasks
+* Style: Darker gradient added from top to bottom on cover image for better text visibility
+
+#### April 11, 2023
+* Ahh...: Learning git rebase and revert
+* Merge: Pull request #5 merged from HyunCafe/test1
+* Revert: Previous calender logic and styling changes
+* Feat: Calender logic and basic styling added
+* Fix: View fixed with new container element added
+
+#### April 12, 2023
+* Feat: Calender feature styled and functional
+* Fix: Bug with priority saving fixed
 
 ## Challenges
 #### Sort and Drag Challenge
