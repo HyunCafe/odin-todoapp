@@ -1,4 +1,5 @@
 "use strict";
+import { defaultTasks } from "./default-tasks";
 
 let columns;
 
@@ -44,7 +45,7 @@ export const WebStorageAPI = {
   },
 };
 
-// localStorage.clear(); reset the board
+// localStorage.clear(); 
 
 // <------------------------ Update to Local Storage ------------------------> //
 export const updateTasks = () => {
@@ -63,7 +64,7 @@ export const updateTasks = () => {
           taskElement.querySelector(".task__due-date").dataset.dueDate
         ),
         tags: taskElement.querySelector(".task__tags").textContent,
-        priority: taskElement.__data ? taskElement.__data.priority : null,
+        priority: taskElement.dataset.priority,
         dataPriority: dataPriority,
         completed: taskElement.classList.contains("task__container--completed"),
         strikethrough: taskElement.querySelector(".task__title").classList.contains("strikethrough"),
