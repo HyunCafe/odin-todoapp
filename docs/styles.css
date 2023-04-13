@@ -15,8 +15,8 @@
   background-image: linear-gradient(to bottom,
       rgba(0, 0, 0, 0.3),
       rgba(0, 0, 0, 0)),
-    url(/docs/assets/studybg.jpg);
-  /* Add the gradient */
+      url(../dist/assets/studybg.jpg);
+      /* Add the gradient */
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -25,6 +25,7 @@
   min-height: 100vh;
   overflow-y: auto;
 }
+
 
 /* <------------------------ Side Navbar Section ------------------------> */
 
