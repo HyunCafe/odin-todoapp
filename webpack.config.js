@@ -2,12 +2,11 @@ const path = require('path');
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 module.exports = {
-  mode: isDevelopment ? 'development' : 'production',
+  mode: 'development',
   entry: './src/index.js',
   output: {
     filename: '[name].bundle.js',
-    path: path.resolve(__dirname, 'dist'),
-    publicPath: '/dist/', 
+    path: path.resolve(__dirname, 'docs'),
   },
   module: {
     rules: [
@@ -21,7 +20,21 @@ module.exports = {
           },
         },
       },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
+      },
+      {
+        test: /\.(png|jpe?g|gif|svg)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              outputPath: 'assets',
+            },
+          },
+        ],
+      },
     ],
   },
-  devtool: 'eval-source-map', 
 };
