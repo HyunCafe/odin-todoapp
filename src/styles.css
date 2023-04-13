@@ -477,8 +477,6 @@ input.form-control {
 }
 
 #calendar-view {
-  display: none;
-  /* border: 2px red solid; */
   background-color: rgba(134, 134, 134, 0.2);
   width: 100%;
 }
