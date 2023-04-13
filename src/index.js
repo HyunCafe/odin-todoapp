@@ -48,6 +48,9 @@ calendarFilter.addEventListener("click", () => applyFilter("calendar"));
 document.addEventListener("DOMContentLoaded", () => {
   loadTasks();
   
+  // Apply the "All Tasks" filter by default
+  applyFilter("all");
+  
   // Call the calenderDisplay function after loading tasks
   calenderDisplay();
 });
