@@ -5,7 +5,6 @@ import { updateTasks } from "./local-storage";
 export const getAllTasks = () => {
   const tasksObj = updateTasks();
   const allTasks = [].concat(...Object.values(tasksObj));
-  console.log(allTasks)
   return allTasks;
 };
 
@@ -44,7 +43,7 @@ export const calenderDisplay = () => {
     calendar.render();
   }
   
-  const tasks = [ /* an array of tasks */ ]; // will fix this logic tomrrow
+  const tasks = [ /* an array of tasks */ ]; 
   renderCalendar(tasks);
   
   return { renderCalendar, getButton };

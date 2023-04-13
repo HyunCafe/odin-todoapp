@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&family=Playfair+Display&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500&family=Playfair+Display&display=swap");
 
 /* <------------------------ Global Styles ------------------------> */
 * {
@@ -12,7 +12,11 @@
 .container {
   display: grid;
   grid-template-columns: 1fr 8fr;
-  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0)), url(/src/assets/studybg.jpg); /* Add the gradient */
+  background-image: linear-gradient(to bottom,
+      rgba(0, 0, 0, 0.3),
+      rgba(0, 0, 0, 0)),
+    url(/src/assets/studybg.jpg);
+  /* Add the gradient */
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -21,7 +25,6 @@
   min-height: 100vh;
   overflow-y: auto;
 }
-
 
 /* <------------------------ Side Navbar Section ------------------------> */
 
@@ -126,12 +129,12 @@ h3 {
 }
 
 .main__column-title__text {
-  background: rgba(255, 255, 255, .8);
+  background: rgba(255, 255, 255, 0.8);
   border-radius: 8px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
-  padding: .5em .8em;
+  padding: 0.5em 0.8em;
   font-weight: 800;
 }
 
@@ -178,7 +181,7 @@ button.main__column-title__button:hover {
   padding: 10px;
   margin-bottom: 0.5em;
   position: relative;
-  background: rgba(255, 255, 255, .8);
+  background: rgba(255, 255, 255, 0.8);
   border-radius: 16px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(30px);
@@ -189,7 +192,6 @@ button.main__column-title__button:hover {
   display: flex;
   justify-content: space-between;
   margin-bottom: 1em;
-
 }
 
 .task__title {
@@ -249,8 +251,8 @@ button.main__column-title__button:hover {
 }
 
 .task__tags {
-  display: inline-block; 
-  vertical-align: middle; 
+  display: inline-block;
+  vertical-align: middle;
   font-size: 0.75rem;
   word-spacing: 4px;
   padding-right: 2em;
@@ -258,12 +260,12 @@ button.main__column-title__button:hover {
 
 .task__due-date {
   display: inline-block;
-  vertical-align: middle; 
+  vertical-align: middle;
   font-size: 0.75rem;
   color: #000000;
   word-spacing: 1px;
   position: absolute;
-  bottom:10px;
+  bottom: 10px;
   left: 12px;
 }
 
@@ -332,7 +334,6 @@ button.main__column-title__button:hover {
   right: 0;
   bottom: 0;
   width: 45%;
-
   background-color: #ffffff;
   border: 2px grey solid;
   transform: translateX(100%);
@@ -484,7 +485,7 @@ input.form-control {
 
 /* Universal text selector for FullCalendar */
 #calendar-view * {
- color: white;
+  color: white;
 }
 
 #fc-dom-1 {
@@ -493,8 +494,6 @@ input.form-control {
   padding-left: 3em;
   font-size: 2rem;
 }
-
-
 
 /* Show the calendar view when the 'calendar-visible' class is added to the main element */
 .main.calendar-visible #calendar-view {
@@ -529,4 +528,252 @@ input.form-control {
 
 .offcanvas {
   z-index: 2;
+}
+
+/* <--------------------- Media Queries---------------------> */
+
+@media (min-width: 1440px) {
+  .main__calendar-view {
+    padding-right: 2em;
+    padding-top: 1em;
+  }
+}
+
+@media (max-width: 1500px) {
+  .main__calendar-view {
+    padding-right: 2em;
+    padding-top: 1em;
+  }
+
+  .task__container {
+    padding: 10px;
+  }
+
+  .task__title {
+    font-size: 0.8rem;
+  }
+
+  .task__priority {
+    top: 3px;
+    right: 5em;
+    font-size: 0.8rem;
+  }
+
+  .task__description {
+    font-size: 0.7rem;
+    margin-bottom: 1em;
+  }
+
+  .task__checkbox-icon {
+    bottom: 3px;
+    right: 5px;
+    font-size: 1rem;
+    display: none;
+  }
+
+  .task__delete-icon {
+    position: absolute;
+    top: 3px;
+    right: 5px;
+    display: none;
+    font-size: 1.2rem;
+  }
+
+  .task__tags {
+    font-size: 0.6rem;
+    word-spacing: 2px;
+    padding-right: 1.8em;
+  }
+
+  .task__due-date {
+    font-size: 0.6rem;
+    word-spacing: 1px;
+    position: absolute;
+    bottom: 10px;
+    left: 12px;
+  }
+}
+
+@media (max-width: 1300px) {
+  .sidebar {
+    padding: 20px;
+    width: 13em;
+    min-height: 100vh;
+
+  }
+
+  .sidebar__title {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-bottom: 0.5em;
+  }
+
+  .tag {
+    display: inline-block;
+    background-color: #f0f0f0ca;
+    padding: 0.5em;
+    margin: 0.3em;
+    border-radius: 5px;
+    color: #333;
+  }
+
+  .task__container {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .task__title {
+    font-size: .8rem;
+  }
+
+  .task__priority {
+    top: 3px;
+    right: 5em;
+    font-size: 0.8rem;
+  }
+
+  .task__description {
+    font-size: 0.7rem;
+    padding-bottom: 2em;
+  }
+
+  .task__checkbox-icon {
+    bottom: 3px;
+    right: 5px;
+    font-size: 1rem;
+    display: none;
+  }
+
+  .task__delete-icon {
+    position: absolute;
+    top: 3px;
+    right: 5px;
+    display: none;
+    font-size: 1.2rem;
+  }
+
+  .task__tags {
+    position: absolute;
+    font-size: 0.6rem;
+    word-spacing: 0;
+    padding-top: 1em;
+    padding-right: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 18px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 90%;
+  }
+
+  .task__due-date {
+    position: absolute;
+    font-size: 0.6rem;
+    word-spacing: 1px;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 4px;
+  }
+
+  .trash-popup {
+    width: 75%;
+  }
+}
+
+
+@media (max-width: 1280px) {
+  .sidebar {
+    width: 12em;
+  }
+
+  #tasks-view {
+    grid-template-columns: 1fr;
+  }
+
+  .task__title {
+    font-size: .7rem;
+  }
+
+  .task__description {
+    font-size: 0.7rem;
+  }
+
+  .task__tags {
+    font-size: 0.6rem;
+  }
+
+  .task__due-date {
+    font-size: 0.6rem;
+  }
+
+  .offcanvas {
+    width: 65%;
+  }
+
+  .offcanvas__close-btn {
+    font-size: 1em;
+  }
+
+  .project-form__title {
+    font-size: 1.5rem;
+  }
+
+
+  .input-group__label {
+    font-size: 1rem;
+  }
+
+  .form-select {
+    font-size: .8rem;
+  }
+
+
+  .form-control {
+    font-size: 1rem;
+  }
+}
+
+
+@media (max-width: 700px) {
+  .sidebar {
+    width: 9em;
+  }
+
+  .sidebar__menu,
+  .sidebar__tags,
+  .sidebar__status {
+    font-size: .7rem;
+  }
+
+  #tasks-view {
+    grid-template-columns: 1fr;
+  }
+
+  .tag {
+    font-size: .8rem;
+  }
+
+  .task__title {
+    font-size: .7rem;
+  }
+
+  .task__description {
+    font-size: 0.7rem;
+    line-height: 12px;
+  }
+
+  .task__tags {
+    font-size: 0.6rem;
+  }
+
+  .task__due-date {
+    font-size: 0.6rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 90%;
+  }
 }
