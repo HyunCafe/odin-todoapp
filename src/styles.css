@@ -15,7 +15,7 @@
   background-image: linear-gradient(to bottom,
       rgba(0, 0, 0, 0.3),
       rgba(0, 0, 0, 0)),
-    url(./assets/studybg.jpg);
+      url(https://raw.githubusercontent.com/HyunCafe/odin-todoapp/main/src/assets/studybg.jpg);
   /* Add the gradient */
   background-size: cover;
   background-repeat: no-repeat;
