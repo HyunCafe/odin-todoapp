@@ -45,12 +45,34 @@ export const loadTasks = () => {
 const calendarFilter = document.getElementById("calendarFilter");
 calendarFilter.addEventListener("click", () => applyFilter("calendar"));
 
+
 document.addEventListener("DOMContentLoaded", () => {
   loadTasks();
-  
+
   // Apply the "All Tasks" filter by default
   applyFilter("all");
-  
+
   // Call the calenderDisplay function after loading tasks
   calenderDisplay();
+
+  // Handle sidebar toggle
+  const sidebar = document.querySelector(".sidebar");
+  const sidebarHandle = document.querySelector(".sidebar-handle");
+  const main = document.querySelector(".main");
+
+  function toggleSidebar() {
+    sidebar.classList.toggle("sidebar-hidden");
+    main.classList.toggle("main-expanded");
+  }
+
+  sidebarHandle.addEventListener("click", toggleSidebar);
+
+  // Keep the handle within the sidebar when it's not hidden
+  sidebar.addEventListener('transitionend', () => {
+    if (!sidebar.classList.contains('sidebar-hidden')) {
+      sidebarHandle.style.left = '19vw';
+    } else {
+      sidebarHandle.style.left = '-.5vw';
+    }
+  });
 });

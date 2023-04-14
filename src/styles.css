@@ -15,8 +15,7 @@
   background-image: linear-gradient(to bottom,
       rgba(0, 0, 0, 0.3),
       rgba(0, 0, 0, 0)),
-      url(https://raw.githubusercontent.com/HyunCafe/odin-todoapp/main/src/assets/studybg.jpg);
-  /* Add the gradient */
+    url(https://raw.githubusercontent.com/HyunCafe/odin-todoapp/main/src/assets/studybg.jpg);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -37,7 +36,7 @@
   border-radius: 16px;
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.51);
-
+  transition: transform 0.3s;
 }
 
 .sidebar * {
@@ -94,7 +93,23 @@
   color: #333;
 }
 
-/* <------------------------ Main 3 Columns ------------------------> */
+/* Sidebar Toggle */
+.sidebar-handle {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 135px;
+  width: 20px;
+  height: 40px;
+  background-color: transparent;
+  border-radius: 12px;
+  border-right: 2px solid white;
+  transform: translateY(-50%);
+  cursor: ew-resize;
+  z-index: 3;
+}
+
+/* -------------------- Main 3 Columns ------------------------> */
 
 #tasks-view {
   display: grid;
@@ -593,11 +608,17 @@ input.form-control {
 }
 
 @media (max-width: 1300px) {
-  .sidebar {
-    padding: 20px;
-    width: 13em;
-    min-height: 100vh;
+  .main {
+    padding-left: 150%;
+    width: 900%;
+  }
 
+
+  .sidebar {
+    position: fixed;
+    padding: 20px;
+    width: 15em;
+    min-height: 100vh;
   }
 
   .sidebar__title {
@@ -683,8 +704,14 @@ input.form-control {
 
 
 @media (max-width: 1280px) {
+  .main {
+    padding-left: 20vw;
+    width: 100vw;
+  }
+
   .sidebar {
-    width: 12em;
+    padding: 20px;
+    width: 20vw;
   }
 
   #tasks-view {
@@ -734,10 +761,19 @@ input.form-control {
   }
 }
 
+@media (max-width: 830px) {
+  .main {
+    padding-left: 22vw;
+    width: 98vw;
+  }
 
-@media (max-width: 700px) {
+  .main-expanded {
+    padding-left: 5vw;
+    width: 100vw;
+  }
+
   .sidebar {
-    width: 9em;
+    min-width: 20vw;
   }
 
   .sidebar__menu,
@@ -746,12 +782,20 @@ input.form-control {
     font-size: .7rem;
   }
 
+  .sidebar__title {
+    font-size: 1rem;
+  }
+
+  .material-icons {
+    font-size: 1rem;
+  }
+
   #tasks-view {
     grid-template-columns: 1fr;
   }
 
   .tag {
-    font-size: .8rem;
+    font-size: .6rem;
   }
 
   .task__title {
@@ -773,5 +817,63 @@ input.form-control {
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 90%;
+  }
+
+  .sidebar-handle {
+    display: block;
+    position: absolute;
+    left: 19vw;
+  }
+
+  .sidebar.sidebar-hidden {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-out;
+  }
+}
+
+
+@media (max-width: 550px) {
+  .main {
+    padding-left: 30vw;
+    width: 95vw;
+  }
+
+  .main-expanded {
+    padding-left: 5vw;
+    width: 100vw;
+  }
+
+  .sidebar {
+    min-width: 110px;
+  }
+
+  .sidebar-handle {
+    position: fixed;
+    width: 20px;
+    left: 100px !important;
+  }
+}
+
+
+@media (max-width: 380px) {
+  .main {
+    padding-left: 40vw;
+    width: 90vw;
+  }
+
+  .task__title {
+    font-size: .6rem;
+  }
+
+  .task__description {
+    font-size: 0.6rem;
+  }
+
+  .task__tags {
+    font-size: 0.5rem;
+  }
+
+  .task__due-date {
+    font-size: 0.5rem;
   }
 }
