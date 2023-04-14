@@ -843,6 +843,10 @@ input.form-control {
     width: 100vw;
   }
 
+  .main__column-title {
+    font-size: .7rem;
+  }
+
   .sidebar {
     min-width: 110px;
   }
