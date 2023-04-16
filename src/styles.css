@@ -1,6 +1,14 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500&family=Playfair+Display&display=swap");
 
 /* <------------------------ Global Styles ------------------------> */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Montserrat", sans-serif;
+  color: #222222;
+}
+
 .container {
   display: grid;
   grid-template-columns: 1fr 8fr;
