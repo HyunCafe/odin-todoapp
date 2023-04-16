@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Keep the handle within the sidebar when it's not hidden
   sidebar.addEventListener('transitionend', () => {
     if (!sidebar.classList.contains('sidebar-hidden')) {
-      sidebarHandle.style.left = '19vw';
+      sidebarHandle.style.left = '100px';
     } else {
       sidebarHandle.style.left = '-.5vw';
     }

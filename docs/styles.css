@@ -1,14 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500&family=Playfair+Display&display=swap");
 
 /* <------------------------ Global Styles ------------------------> */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Montserrat", sans-serif;
-  color: #222222;
-}
-
 .container {
   display: grid;
   grid-template-columns: 1fr 8fr;
@@ -831,7 +823,6 @@ input.form-control {
   }
 }
 
-
 @media (max-width: 550px) {
   .main {
     padding-left: 30vw;
@@ -853,31 +844,7 @@ input.form-control {
 
   .sidebar-handle {
     position: fixed;
+    left: 100px;
     width: 20px;
-    left: 100px !important;
-  }
-}
-
-
-@media (max-width: 380px) {
-  .main {
-    padding-left: 40vw;
-    width: 90vw;
-  }
-
-  .task__title {
-    font-size: .6rem;
-  }
-
-  .task__description {
-    font-size: 0.6rem;
-  }
-
-  .task__tags {
-    font-size: 0.5rem;
-  }
-
-  .task__due-date {
-    font-size: 0.5rem;
   }
 }
