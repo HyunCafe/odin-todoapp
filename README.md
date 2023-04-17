@@ -4,6 +4,12 @@ For my TODO App project, I wanted to level up my planning and implementation ski
 
 To design the app, I drew inspiration from Notion and Trello and used Figma to visualize the app after completing the HTML pseudo-code. Although the project is still ongoing, I'm excited about the progress I've made and how much I've learned about module coding, SOLID principles, and the value of libraries.
 
+
+![Project Animation](/Animation.gif)
+<p align="center">
+<a href="https://hyuncafe.github.io/odin-todoapp/" target="_blank">Live Link</a>
+</p>
+
 ### Summary of Key Features:
 
 ##### Drag and Drop Functionality:
