@@ -1,6 +1,14 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500&family=Playfair+Display&display=swap");
 
 /* <------------------------ Global Styles ------------------------> */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Montserrat", sans-serif;
+  color: #222222;
+}
+
 .container {
   display: grid;
   grid-template-columns: 1fr 8fr;
@@ -175,6 +183,21 @@ button.main__column-title__button {
 
 button.main__column-title__button:hover {
   background-color: #7ab;
+}
+
+/* Scroll Indicator for Mobile */
+.scroll-indicator {
+  display: none;
+  position: fixed;
+  right: 1.7em;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2;
+  font-weight: bold;
+  text-align: center;
+  color: rgb(255, 255, 255);
+  line-height: 4;
+  pointer-events: none;
 }
 
 /* <------------------------ Task Cards/Containers ------------------------> */
@@ -605,7 +628,6 @@ input.form-control {
     width: 900%;
   }
 
-
   .sidebar {
     position: fixed;
     padding: 20px;
@@ -694,11 +716,14 @@ input.form-control {
   }
 }
 
-
 @media (max-width: 1280px) {
   .main {
     padding-left: 20vw;
-    width: 100vw;
+    width: 95vw;
+  }
+  
+  .scroll-indicator {
+    display: block;
   }
 
   .sidebar {
@@ -753,16 +778,10 @@ input.form-control {
   }
 }
 
-
 @media (max-width: 830px) {
   .main {
     padding-left: 22vw;
-    width: 98vw;
-  }
-
-  .main-expanded {
-    padding-left: 5vw;
-    width: 100vw;
+    width: 93vw;
   }
 
   .sidebar {
@@ -811,32 +830,22 @@ input.form-control {
     text-overflow: ellipsis;
     max-width: 90%;
   }
-
-  .sidebar-handle {
-    display: block;
-    position: absolute;
-    left: 19vw;
-  }
-
-  .sidebar.sidebar-hidden {
-    transform: translateX(-100%);
-    transition: transform 0.3s ease-out;
-  }
 }
 
 @media (max-width: 550px) {
   .main {
-    padding-left: 30vw;
-    width: 95vw;
+    padding-left: 25vw;
+    width: 90vw;
   }
 
   .main-expanded {
     padding-left: 5vw;
-    width: 100vw;
+    width: 90vw;
   }
 
-  .main__column-title {
+  .main__column-title__text {
     font-size: .7rem;
+    padding: 0.8em 0.3em;
   }
 
   .sidebar {
@@ -847,5 +856,42 @@ input.form-control {
     position: fixed;
     left: 100px;
     width: 20px;
+    display: block;
+  }
+
+  .sidebar.sidebar-hidden {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-out;
+  }
+}
+
+@media (max-width: 450px) {
+  .main {
+    padding-left: 30vw;
+    width: 90vw;
+  }
+
+  .main-expanded {
+    padding-left: 5vw;
+    width: 90vw;
+  }
+  .scroll-indicator {
+    position: fixed;
+    right: 1.3em;
+  }
+}
+@media (max-width: 360px) {
+  .main {
+    padding-left: 34vw;
+    width: 90vw;
+  }
+
+  .main-expanded {
+    padding-left: 5vw;
+    width: 90vw;
+  }
+  .scroll-indicator {
+    position: fixed;
+    right: 1.3em;
   }
 }
