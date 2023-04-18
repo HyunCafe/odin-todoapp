@@ -880,10 +880,11 @@ input.form-control {
     right: 1.3em;
   }
 }
-@media (max-width: 360px) {
+
+@media (max-width: 390px) {
   .main {
     padding-left: 34vw;
-    width: 90vw;
+    width: 92vw;
   }
 
   .main-expanded {
