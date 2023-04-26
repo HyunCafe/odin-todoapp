@@ -12,7 +12,7 @@ import { applyFilter } from "./modules/filter-tasks";
 import { getAllTasks } from "./modules/calender.js";
 import { calenderDisplay } from "./modules/calender.js";
 import { trashDisplay } from "./modules/trash-display.js";
-import './styles.css';
+import "./styles.css";
 
 const todayFilter = document.getElementById("todayFilter");
 const next7DaysFilter = document.getElementById("next7DaysFilter");
@@ -45,7 +45,6 @@ export const loadTasks = () => {
 const calendarFilter = document.getElementById("calendarFilter");
 calendarFilter.addEventListener("click", () => applyFilter("calendar"));
 
-
 document.addEventListener("DOMContentLoaded", () => {
   loadTasks();
 
@@ -68,11 +67,26 @@ document.addEventListener("DOMContentLoaded", () => {
   sidebarHandle.addEventListener("click", toggleSidebar);
 
   // Keep the handle within the sidebar when it's not hidden
-  sidebar.addEventListener('transitionend', () => {
-    if (!sidebar.classList.contains('sidebar-hidden')) {
-      sidebarHandle.style.left = '100px';
+  sidebar.addEventListener("transitionend", () => {
+    if (!sidebar.classList.contains("sidebar-hidden")) {
+      sidebarHandle.style.left = "100px";
     } else {
-      sidebarHandle.style.left = '-.5vw';
+      sidebarHandle.style.left = "-.5vw";
     }
   });
+
+  // Check screen width and adjust classes
+  function adjustSidebarClasses() {
+    if (window.innerWidth <= 550) {
+      sidebar.classList.add("sidebar-hidden");
+      main.classList.add("main-expanded");
+    } else {
+      sidebar.classList.remove("sidebar-hidden");
+      main.classList.remove("main-expanded");
+    }
+  }
+
+  // Run on page load and on window resize
+  adjustSidebarClasses();
+  window.addEventListener("resize", adjustSidebarClasses);
 });

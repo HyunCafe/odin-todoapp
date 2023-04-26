@@ -848,15 +848,16 @@ input.form-control {
     padding: 0.8em 0.3em;
   }
 
-  .sidebar {
-    min-width: 110px;
-  }
 
   .sidebar-handle {
     position: fixed;
     left: 100px;
     width: 20px;
     display: block;
+  }
+
+  .sidebar {
+    min-width: 110px;
   }
 
   .sidebar.sidebar-hidden {
