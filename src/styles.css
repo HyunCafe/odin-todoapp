@@ -864,6 +864,14 @@ input.form-control {
     transform: translateX(-100%);
     transition: transform 0.3s ease-out;
   }
+
+  #calendar-view > div.fc-header-toolbar.fc-toolbar > div:nth-child(3) > button {
+    font-size: .6rem;
+  }
+
+  #calendar-view > div.fc-header-toolbar.fc-toolbar > div:nth-child(3) > div {
+    font-size: .6rem;
+  }
 }
 
 @media (max-width: 450px) {
