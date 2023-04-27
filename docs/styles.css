@@ -676,14 +676,14 @@ input.form-control {
     bottom: 3px;
     right: 5px;
     font-size: 1rem;
-    display: block;
+    display: block !important;
   }
 
   .task__delete-icon {
     position: absolute;
     top: 3px;
     right: 5px;
-    display: block;
+    display: block !important;
     font-size: 1.2rem;
   }
 
