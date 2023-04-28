@@ -64,6 +64,9 @@ Delete Feature:
 * [FullCalender](https://github.com/fullcalendar/fullcalendar)
 * [SortableJS](https://github.com/SortableJS/Sortable)
 
+### Detailed Documentation
+For a comprehensive documentation of the project, including a thorough explanation of the code, modules, and functionality, please refer to the [documentation.md](./Documentation.md) file in the root directory.
+
 
 ## Project Timeline
 
