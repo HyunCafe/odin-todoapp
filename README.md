@@ -256,3 +256,15 @@ completed tasks were not retaining their priority level when they were deleted f
 * Ultimately, solve this issue, I initialized a variable outside the function scope to store the fetched columns object. Within the getColumns() function, I first checked if the variable had a value, returning the cached value immediately without further processing. If the variable was undefined or empty, I then proceeded with the original logic of fetching the columns from the DOM and storing the result in the variable.
 
 * This change reduced the number of times the function was called and improved the performance of the code, ensuring the state of the task cards was saved correctly.
+
+
+## Future Immprovements, or Different Possible Approaches
+* Mobile First: I would have designed this project with Mobile First in mind for best practice (I am now doing this on all future projects)
+
+* Modularize CSS: I would have broken down the styles.css file into smaller files corresponding to specific components or modules, making the CSS easier to maintain and understand.
+
+* Utilize a CSS preprocessor or Framework: Instead of using vanilla CSS, I could have explored using a CSS preprocessor or a framework to take advantage of pre-built templates and improve my workflow.
+
+* Write tests: I should have written more test cases to ensure new features work well with existing ones without causing issues or breaking the application.
+
+* Incorporate a state management library: As the project grows, managing application state can become complex. I would consider using a state management library like Redux or MobX to handle application state more efficiently in the future.

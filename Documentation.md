@@ -32,9 +32,7 @@ npm start
 
 Open your browser and navigate to http://localhost:8080 to view the ToDo app.
 
-# To Do
-
-## Overview
+## Project Overview
 
 The structure of the ToDo app is organized as follows:
 
