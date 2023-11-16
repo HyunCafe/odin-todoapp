@@ -4,6 +4,10 @@ For my TODO App project, I wanted to level up my planning and implementation ski
 
 To design the app, I drew inspiration from Notion and Trello and used Figma to visualize the app after completing the HTML pseudo-code. Although the project is still ongoing, I'm excited about the progress I've made and how much I've learned about module coding, SOLID principles, and the value of libraries.
 
+Edit Notes**
+Reflecting on My Approach: Looking back at my TODO App project, I recognize that I was exploring different methods of object creation, including a mix of object literals, constructors, and classes. This exploration, while educational, resulted in a lack of streamlining in the project's codebase. With my current understanding and skills, I would now opt for a more uniform approach, specifically using classes throughout. This change would better align with standard practices in real-world scenarios, enhancing the cohesiveness and maintainability of the codebase.
+
+Addressing the Challenges: During the development process, I encountered challenges related to managing imports and exports, a complexity that stemmed from my limited experience and the diverse object creation methods I was experimenting with. The interdependence of data across various functions led to a tightly coupled system, complicating bug tracking and changes implementation. In future projects, my focus will shift towards creating more modular and independent components and centralizing shared data. This approach will help to reduce inter-module dependencies, thereby simplifying the overall code structure and improving the scalability and maintainability of the project.
 
 ![Project Animation](/Animation.gif)
 <p align="center">
